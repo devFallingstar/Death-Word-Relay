@@ -1,2 +1,2 @@
 # Death-Word-Relay
-Play a word relay game, and erase loser's file randomly, with server-client system.
+Death-Word-Relay is extremely competitive make-or-break word relay game that erase loser's file randomly.
