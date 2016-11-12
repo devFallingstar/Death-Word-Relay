@@ -2,6 +2,7 @@ package RoomServer;
 
 import java.util.Vector;
 
+
 public class Room {
 	private String name;
 	private Integer No;

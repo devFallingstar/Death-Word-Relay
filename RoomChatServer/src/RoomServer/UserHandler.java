@@ -1,9 +1,4 @@
 
-/*
- * Handler class for allow user to join the server, or release from server.
- * Plus, broadcast its message too.
- */
-
 package RoomServer;
 
 import java.io.BufferedReader;
