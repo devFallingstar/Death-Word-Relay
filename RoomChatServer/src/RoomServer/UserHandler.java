@@ -60,6 +60,7 @@ public class UserHandler extends Thread {
         	if (name == null){
         		continue;
         	}
+        	
         	synchronized(names){
         		if(!names.contains(name)){
         			names.add(name);
@@ -75,16 +76,13 @@ public class UserHandler extends Thread {
          */
         
         out.println("NAMEACCEPTED");
-        out.println("MESSAGE [SYSTEM] Command list");
-        out.println("MESSAGE                  /w name msg - whisper to name.");
-        out.println("MESSAGE                  /clear - clear the message list.");
-        out.println("MESSAGE [SYSTEM] User list : "+names);
-        
+        out.println("MESSAGE Welcome to Death Word Relay!");
         
         if (!isNameExist(name)){
         	User newUser = new User(name, in, out);
         	users.add(newUser);
         }
+        System.out.println(users);
         
         myUser = new User(name, in, out);
         Server.addUser(myUser);
@@ -105,24 +103,7 @@ public class UserHandler extends Thread {
                 return;
             }
             if (input.startsWith("/")){
-            	if (input.startsWith("/w ")){
-                	try{
-                		StringTokenizer toks = new StringTokenizer(input.substring(3)," ");
-                    	String whispName = toks.nextToken();
-                    	int nameLength = whispName.length();
-                    	String msg = input.substring(3+nameLength);
-                    	
-                    	PrintWriter whispOut = getoutStream(whispName);
-                    	
-                		whispOut.println("MESSAGE [whisper] "+name+": "+msg);
-                    	out.println("MESSAGE [whisper to "+whispName+"] "+name+": "+msg);
-                    	System.out.println("LOG : Whisper from "+name+" to "+whispName+"with msg \""+msg+"\"");
-                	}catch(Exception e){
-                		out.println("MESSAGE [SYSTEM] Wrong parameter!");
-                	}
-            	}else if(input.equals("/clear")){
-            		out.println("MESSAGE [SYSTEM] Cleared!");
-            	}else if(input.startsWith("/enter ")){
+            	if(input.startsWith("ENTERROOM")){
             		try{
                 		StringTokenizer toks = new StringTokenizer(input.substring(7)," ");
                     	String roomTitle = toks.nextToken();
@@ -135,6 +116,11 @@ public class UserHandler extends Thread {
                 	}catch(Exception e){
                 		out.println("MESSAGE [SYSTEM] Wrong parameter!");
                 	}
+            	}else if(input.equals("REQROOMLIST")){
+            		
+            		
+            	}else if(input.equals("/clear")){
+            		
             	}else{
             		out.println("MESSAGE [SYSTEM] Wrong command!");
             	}

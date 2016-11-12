@@ -12,7 +12,7 @@ public class Server {
 	private static Integer roomId = 0;
 	
 	private static Vector<User> users = new Vector<User>();
-	private static HashMap<Integer, Vector> map = new HashMap<Integer, Vector>();
+//	private static HashMap<Integer, Vector> map = new HashMap<Integer, Vector>();
 	private static HashMap<Integer, RoomManager> roomMap = new HashMap<Integer, RoomManager>();
 	
 	/**
@@ -42,14 +42,14 @@ public class Server {
     }
     
     public static int addRoom(String roomName){
-    	RoomManager newRoom = new RoomManager(roomName, );
     	int i = 1;
-    	Vector<User> roomV = new Vector<User>();
+
     	while(true){
-    		if(map.containsKey(i)){
+    		if(roomMap.containsKey(i)){
     			i++;
     		}else{
-    			map.put(i, roomV);
+    			RoomManager newRoom = new RoomManager(i, roomName);
+    			roomMap.put(i, newRoom);
     			break;
     		}
     	}
@@ -57,22 +57,27 @@ public class Server {
     }
     
     public static void removeRoom(int roomID){
-    	map.remove(roomID);
+    	roomMap.remove(roomID);
     }
     
     public static void addUserToRoom(User u){
-    	Vector<User> roomV = map.get(u.getrNo());
-    	roomV.add(u);
+    	RoomManager destRoom = roomMap.get(u.getrNo());
+    	destRoom.myRoom.addUser(u);
     	
-    	broadCast("MESSAGE [SYSTEM] "+u.getName()+" entered in room ["+roomV.+, )
+    	destRoom.broadCastRoom("MESSAGE [SYSTEM] "+u.getName()+" connected.");
+    	
+    	//자기 정보 화면 초기화 (GUI)해야함.
     }
     
     public static void removeUserFromRoom(User u){
-    	Vector<User> roomV = map.get(u.getrNo());
-    	roomV.remove(u);
+    	RoomManager destRoom = roomMap.get(u.getrNo());
+    	destRoom.myRoom.removeUser(u);
     	u.setrNo(-1);
-    	if(roomV.isEmpty()){
-    		removeRoom(u.getrNo());
+    	
+    	if(destRoom.myRoom.roomV.isEmpty()){
+    		roomMap.remove(u.getrNo());
+    	}else{
+    		destRoom.broadCastRoom("MESSAGE [SYSTEM] "+u.getName()+" disconnected.");
     	}
     }
     
@@ -82,10 +87,9 @@ public class Server {
         		u.sendMsg(msg);
         	}
     	}else{
-    		Vector<User> msgUsers = map.get(rNo);
-    		for (User u : msgUsers){
-    			u.sendMsg(msg);
-    		}
+    		RoomManager newRoom = roomMap.get(rNo);
+    		
+    		newRoom.broadCastRoom(msg);
     	}
     } 
     
