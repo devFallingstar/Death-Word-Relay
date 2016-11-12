@@ -10,6 +10,7 @@ import java.util.Vector;
 
 import GUI.*;
 
+
 public class Client {
 	/*
 	 * sockets for 
@@ -23,7 +24,6 @@ public class Client {
     
     private static Login myLogin;
     private static Waiting myWait;
-
     
     /**
      * Runs the client as an application with a closeable frame.

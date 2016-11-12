@@ -9,6 +9,7 @@ import javax.swing.*;
 
 import RoomClient.*;
 
+
 public class Waiting extends JFrame {
 	Client clnt;
 	JPanel chatPanel = new JPanel();
@@ -29,7 +30,6 @@ public class Waiting extends JFrame {
 	JScrollPane roomScrlPane = new JScrollPane(roomList);
 	
 	Container cont;
-
 	private static Vector<String> rooms = new Vector<String>();
 	
 	
