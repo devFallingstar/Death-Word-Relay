@@ -5,7 +5,6 @@ import java.util.*;
 
 import Data.User;
 
-import java.io.*;
 
 
 public class Server {
@@ -14,11 +13,11 @@ public class Server {
 	 */
 	private static final int PORT = 9001;
 	private static final int DATAPORT = 9002;
-	private static Integer roomId = 0;
 	
 	private static Vector<User> users = new Vector<User>();
-//	private static HashMap<Integer, Vector> map = new HashMap<Integer, Vector>();
 	private static HashMap<Integer, RoomManager> roomMap = new HashMap<Integer, RoomManager>();
+	private static ServerSocket dataListener;
+	private static ServerSocket listener;
 	
 	/**
      * The appplication main method, which just listens on a port and
@@ -26,17 +25,16 @@ public class Server {
      */
     public static void main(String[] args) throws Exception {
         System.out.println("The chat server is running. with port "+PORT);
-        ServerSocket listener = new ServerSocket(PORT);
-        ServerSocket dataListener = new ServerSocket(DATAPORT);
+        listener = new ServerSocket(PORT);
+        dataListener = new ServerSocket(DATAPORT);
         try {
             while (true) {
-            	if(listener.accept() != null && dataListener.accept() != null){
-            		new UserHandler(listener.accept(), dataListener.accept()).start();
-            		System.out.println("User entered");
-            	}
+            	UserHandler newUser = new UserHandler(listener.accept(), dataListener.accept());
+            	newUser.start();
             }
         } finally {
             listener.close();
+            dataListener.close();
         }
     }
     
@@ -70,38 +68,33 @@ public class Server {
     	RoomManager destRoom = roomMap.get(u.getrNo());
     	destRoom.addUserToRoom(u);
     	
-    	destRoom.broadCastRoom("MESSAGE [SYSTEM] "+u.getName()+" connected.");
-    	System.out.println("Add to"+u.getrNo());
-    	
-    	System.out.println(destRoom.playerOfRoom());
-    	//자기(myUser) 정보 화면 초기화 (GUI)해야함.
+    	destRoom.broadCastRoom("ROOMMSG [SYSTEM] "+u.getName()+" connected.");
     }
     
     public static void removeUserFromRoom(User u){
     	RoomManager destRoom = roomMap.get(u.getrNo());
-    	destRoom.removeUserFromRoom(u);
-    	u.setrNo(-1);
-    	
-    	System.out.println(destRoom.playerOfRoom());
-    	
-    	if(destRoom.playerOfRoom() == 0){
-    		roomMap.remove(destRoom.getRoomNo());
-    	}else{
-    		destRoom.broadCastRoom("MESSAGE [SYSTEM] "+u.getName()+" disconnected.");
+    	try{
+    		destRoom.removeUserFromRoom(u);
+    		u.setrNo(-1);
+        	
+        	if(destRoom.playerOfRoom() == 0){
+        		roomMap.remove(destRoom.getRoomNo());
+        	}else{
+        		destRoom.broadCastRoom("ROOMMSG [SYSTEM] "+u.getName()+" disconnected.");
+        	}
+    	}catch(NullPointerException e){
     	}
     }
     
     public static void broadCast(String msg, int rNo){
     	if (rNo == -1){
     		for (User u : users){
-    			if(u.getrNo() == -1){
-    				u.sendMsg(msg);
-    			}
+    			u.sendMsg("MESSAGE "+msg);
         	}
     	}else{
     		RoomManager newRoom = roomMap.get(rNo);
     		
-    		newRoom.broadCastRoom(msg);
+    		newRoom.broadCastRoom("ROOMMSG "+msg);
     	}
     } 
     

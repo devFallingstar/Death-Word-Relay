@@ -9,19 +9,19 @@ import javax.swing.*;
 import RoomClient.*;
 
 public class Login extends JFrame {
-	Client clnt;
+	private Client clnt;
 
-	JLabel IDlbl = new JLabel("ID :");
-	JLabel PWlbl = new JLabel("PW :");
-	JTextField IDtxt = new JTextField();
-	JTextField PWtxt = new JTextField();
-	JButton loginBtn = new JButton("Login");
+	private JLabel IDlbl = new JLabel("ID :");
+	private JLabel PWlbl = new JLabel("PW :");
+	private JTextField IDtxt = new JTextField();
+	private JTextField PWtxt = new JTextField();
+	private JButton loginBtn = new JButton("Login");
 
-	JDialog loginDlg = new JDialog(this, "Notice");
-	JLabel loginWronglbl = new JLabel("Wrong ID or Password!");
-	JButton loginWrongBtn = new JButton("Okay");
+	private JDialog loginDlg = new JDialog(this, "Notice");
+	private JLabel loginWronglbl = new JLabel("Wrong ID or Password!");
+	private JButton loginWrongBtn = new JButton("Okay");
 
-	Container cont;
+	private Container cont;
 
 	public Login() {
 		super("Login");
@@ -50,9 +50,7 @@ public class Login extends JFrame {
 		loginBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// System.out.print(IDtxt.getText() +" ||| "+PWtxt.getText());
 				try {
-					System.out.print(IDtxt.getText() + "  |||  " + PWtxt.getText());
 					clnt.sendLoginRequest(IDtxt.getText(), PWtxt.getText());
 				} catch (IOException e1) {
 					e1.printStackTrace();
@@ -80,5 +78,4 @@ public class Login extends JFrame {
 	public void wrongParam() {
 		loginDlg.setVisible(true);
 	}
-
 }

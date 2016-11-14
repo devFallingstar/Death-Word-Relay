@@ -8,7 +8,6 @@ import java.util.HashSet;
 import java.util.StringTokenizer;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.Vector;
 
 import Data.Room;
 import Data.User;
@@ -21,11 +20,8 @@ public class UserHandler extends Thread {
 	private PrintWriter out;
 	private ObjectInputStream objIn;
 	private ObjectOutputStream objOut;
-	private InputStream sin;
-	private OutputStream sout;
 	private User myUser;
-	private Server myServer;
-
+	
 	/*
 	 * HashSet for users that joining.
 	 */
@@ -40,7 +36,7 @@ public class UserHandler extends Thread {
 	public UserHandler(Socket _socket, Socket _dataSocket) {
 		this.socket = _socket;
 		this.dataSocket = _dataSocket;
-		this.myServer = new Server();
+		new Server();
 	}
 
 	/*
@@ -49,15 +45,8 @@ public class UserHandler extends Thread {
 	 * 
 	 */
 	public void run() {
-		System.out.println(this.socket.isConnected() + " | " + this.dataSocket.isConnected());
 		try {
 			// Create streams for the socket.
-			// in = new BufferedReader(new InputStreamReader(
-			// socket.getInputStream()));
-			// out = new PrintWriter(socket.getOutputStream(), true);
-			// objIn = new ObjectInputStream(dataSocket.getInputStream());
-			// objOut = new ObjectOutputStream(dataSocket.getOutputStream());
-			
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			out = new PrintWriter(socket.getOutputStream(), true);
 			objOut = new ObjectOutputStream(dataSocket.getOutputStream());
@@ -69,13 +58,12 @@ public class UserHandler extends Thread {
 			 */
 			while (true) {
 				out.println("SUBMITNAME");
-				System.out.println("Somebody come in");
+				System.out.println("LOG : Somebody come in...");
 
 				name = in.readLine();
 				if (name == null) {
 					continue;
 				}
-
 				synchronized (names) {
 					if (!names.contains(name)) {
 						names.add(name);
@@ -88,20 +76,21 @@ public class UserHandler extends Thread {
 			 * If name is accepted, add it to user hashset to manage its stream
 			 * for broadcasting a message, and care its room.
 			 */
-
 			out.println("NAMEACCEPTED");
 			out.println("MESSAGE Welcome to Death Word Relay!");
 
 			if (!isNameExist(name)) {
 				User newUser = new User(name, in, out);
 				users.add(newUser);
+				myUser = newUser;
+			}else{
+				myUser = new User(name, in, out);
 			}
-			System.out.println(users);
-
-			myUser = new User(name, in, out);
+			System.out.println("LOG : The number of current users : "+users.size());
+			
 			Server.addUser(myUser);
 
-			broadCast("MESSAGE [SYSTEM] User [" + name + "] is connected.");
+			broadCast("[SYSTEM] User [" + name + "] is connected.");
 			System.out.println("LOG : User [" + name + "] connected.");
 
 			/*
@@ -109,35 +98,32 @@ public class UserHandler extends Thread {
 			 * sends message in a room, Check its room number, and send the
 			 * message to room members only.
 			 */
-			
 			Timer roomReloadTimer = new Timer();
 			TimerTask roomReloadTask = new TimerTask(){
-
 				@Override
 				public void run() {
 					// TODO Auto-generated method stub
 					out.println("NEWROOMAVAIL");
 				}
 			};
-			roomReloadTimer.schedule(roomReloadTask, 0, 7000);
+			roomReloadTimer.schedule(roomReloadTask, 1000, 7000);
 			
 			while (true) {
 				String input = in.readLine();
 				if (input == null) {
 					return;
 				}
-				if (input.startsWith("ENTERROOM ")) {
-
-				} else if (input.startsWith("MAKEROOM ")) {
+				if (input.startsWith("MAKEROOM ")) {
 					String roomTitle = input.substring(9);
 					int roomNo = Server.addRoom(roomTitle);
 					this.myUser.setrNo(roomNo);
 					
 					out.println("ROOMMADE " + roomNo);
+					
 				} else if (input.startsWith("EXITROOM")) {
 					Server.removeUserFromRoom(myUser);
-				} else if (input.startsWith("REQROOMINFO ")) {
 					
+				} else if (input.startsWith("REQROOMINFO ")) {
 					// TODO 방에 2명있으면 정보 안주고, 1명이하면 정보 주는거 구현하기.
 					StringTokenizer toks = new StringTokenizer(input.substring(12), " ");
 					String roomNoStr = toks.nextToken();
@@ -145,33 +131,37 @@ public class UserHandler extends Thread {
 					Room curRoom = getRoomInfo(roomNo);
 					
 					String[] roomInfo = {"", ""};
-					roomInfo[0] = curRoom.getNo()+"";
-					roomInfo[1] = curRoom.getName();
+					if (curRoom == null){
+						roomInfo[0] = "-1";
+						roomInfo[1] = "WTF no room!";
+					}else{
+						roomInfo[0] = curRoom.getNo()+"";
+						roomInfo[1] = curRoom.getName();
+					}
 					
 					objOut.reset();
 					objOut.writeObject(roomInfo);
 					objOut.flush();
 					
-					Server.addUserToRoom(this.myUser);
-//					out.println("COMEINTO " + roomNo);
-//					System.out.println("COMEINTO " + roomNo);
-					
+					this.myUser.setrNo(roomNo);
 				} else if (input.equals("REQROOMLIST")) {
 					HashMap<Integer, String> newRoomList = Server.getRoomList();
 					
 					objOut.reset();
 					objOut.writeObject(newRoomList);
 					objOut.flush();
+					
 				} else if (input.startsWith("ROOMMSG ")) {
 					StringTokenizer toks = new StringTokenizer(input.substring(8), " ");
 					String roomNoStr = toks.nextToken();
-					String msg = input.substring(9);
 					int roomNo = Integer.parseInt(roomNoStr);
 					
-					Server.broadCast(msg, roomNo);
+					Server.broadCast(name + ": " + input.substring(9), roomNo);
+				} else if (input.startsWith("COMESUCC")){
+					Server.addUserToRoom(this.myUser);
 				} else if (input.startsWith("MESSAGE ")){
-					broadCast("MESSAGE " + name + ": " + input.substring(8));
-					System.out.println("LOG : [" + name + "] : " + input);
+					broadCast(name + ": " + input.substring(8));
+					System.out.println("LOG : "+ input +" (By. "+name+" With room number "+myUser.getrNo()+")");
 				}
 			}
 
@@ -179,11 +169,12 @@ public class UserHandler extends Thread {
 			e.printStackTrace();
 		} finally {
 			if (name != null) {
-				names.remove(name);
-				broadCast("MESSAGE User [" + name + "] is disconnected.");
+				broadCast("User [" + name + "] is disconnected.");
 				System.out.println("LOG : User [" + name + "] disconnected.");
-			}
-			if (out != null) {
+				names.remove(name);
+				Server.removeUserFromRoom(myUser);
+				Server.removeUser(myUser);
+//				broadCast("MESSAGE User [" + name + "] is disconnected.");
 			}
 			try {
 				socket.close();
@@ -194,6 +185,9 @@ public class UserHandler extends Thread {
 
 	private Room getRoomInfo(int rNo) {
 		RoomManager newRoomM = Server.getRoomWithNumber(rNo);
+		if (newRoomM == null){
+			return null;
+		}
 		Room currentRoom = newRoomM.getMyRoom();
 		
 		return currentRoom;
@@ -209,17 +203,6 @@ public class UserHandler extends Thread {
 	}
 
 	public void broadCast(String msg) {
-
 		Server.broadCast(msg, myUser.getrNo());
-		// for(User bUser : users){
-		// bUser.getOut().println(msg);
-		// }
 	}
-
-	public void giveRoomInfo() {
-		// TODO Server.java의 roomMap에서 번호에 해당하는 RoomManager를 가져와야함.
-		// RoomManager myRoom = myServer.getRoomWithNumber();
-
-	}
-
 }

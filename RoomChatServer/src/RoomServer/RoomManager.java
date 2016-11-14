@@ -1,14 +1,10 @@
 package RoomServer;
 
-import java.io.BufferedReader;
-import java.util.*;
-
 import Data.Room;
 import Data.User;
 
-
 public class RoomManager {
-	Room myRoom;
+	private Room myRoom;
 	
 	private Integer roomNo;
 	private String roomName;
@@ -60,8 +56,5 @@ public class RoomManager {
 	public void setRoomName(String roomName) {
 		this.roomName = roomName;
 	}
-
-	
-	
 }
 

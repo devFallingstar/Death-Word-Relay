@@ -3,14 +3,12 @@ package Data;
 import java.io.Serializable;
 import java.util.Vector;
 
-
 public class Room implements Serializable {
 	private String name;
 	private Integer No;
 	public Vector<User> roomV = new Vector<User>();
 
 	public Room(Integer roomNo, String roomName) {
-		// TODO Auto-generated constructor stub
 		this.No = roomNo;
 		this.name = roomName;
 	}
@@ -22,7 +20,6 @@ public class Room implements Serializable {
 	public void removeUser(User u){
 		this.roomV.remove(u);
 	}
-
 	
 	public String getName() {
 		return name;

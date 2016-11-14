@@ -9,41 +9,35 @@ import java.util.Vector;
 
 import javax.swing.*;
 
+import Data.Room;
 import RoomClient.*;
 
 public class Waiting extends JFrame {
-	Client clnt;
-	JPanel chatPanel = new JPanel();
+	private Client clnt;
+	private JPanel chatPanel = new JPanel();
 
-	JLabel ranklbl = new JLabel("Top 10");
-	JLabel roomlbl = new JLabel("Available Rooms");
+	private JLabel ranklbl = new JLabel("Top 10");
+	private JLabel roomlbl = new JLabel("Available Rooms");
 
-	List roomList = new List(10, false);
-	List rankList = new List(10, false);
+	private List roomList = new List(10, false);
+	private List rankList = new List(10, false);
 
-	JButton MakeRoomBtn = new JButton("Make Room");
-	JButton AutoEnterBtn = new JButton("Auto Enter");
-	JButton RefreshBtn = new JButton("Refresh");
+	private JButton MakeRoomBtn = new JButton("Make Room");
+	private JButton EnterBtn = new JButton("Enter");
+	private JButton RefreshBtn = new JButton("Refresh");
 
-	JTextField msgTxt = new JTextField(41);
-	JTextArea msgArea = new JTextArea(9, 65);
-	JScrollPane msgScrlPane = new JScrollPane(msgArea);
-	JScrollPane roomScrlPane = new JScrollPane(roomList);
+	private JTextField msgTxt = new JTextField(41);
+	private JTextArea msgArea = new JTextArea(9, 65);
+	private JScrollPane msgScrlPane = new JScrollPane(msgArea);
+	private JScrollPane roomScrlPane = new JScrollPane(roomList);
 
-	Container cont;
+	private Container cont;
 
 	private static HashMap<Integer, String> newRoomList;
 	private static Vector<String> rooms = new Vector<String>();
 
 	public Waiting() {
-
 		super("Death Word Relay ver.0.01");
-
-		try {
-			reloadRoomList();
-		} catch (ClassNotFoundException | IOException e2) {
-			e2.printStackTrace();
-		}
 
 		clnt = new Client();
 
@@ -57,7 +51,7 @@ public class Waiting extends JFrame {
 		cont = this.getContentPane();
 
 		cont.add(MakeRoomBtn);
-		cont.add(AutoEnterBtn);
+		cont.add(EnterBtn);
 		cont.add(RefreshBtn);
 		cont.add(roomScrlPane);
 		cont.add(roomlbl);
@@ -67,7 +61,7 @@ public class Waiting extends JFrame {
 		cont.add(chatPanel);
 
 		RefreshBtn.setBounds(284, 324, 113, 32);
-		AutoEnterBtn.setBounds(534, 324, 113, 32);
+		EnterBtn.setBounds(534, 324, 113, 32);
 		MakeRoomBtn.setBounds(409, 324, 113, 32);
 
 		roomScrlPane.setBounds(10, 41, 637, 277);
@@ -132,67 +126,80 @@ public class Waiting extends JFrame {
 				}
 			}
 		});
+		
+		EnterBtn.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					enterToRoom();
+				} catch (ClassNotFoundException | IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+			
+		});
 
 		roomList.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent evt) {
-				// JList tmpList = null;
-				// try{
-				// tmpList = (JList)evt.getSource();
-				// }catch(Exception e){
-				//
-				// }
-
-				if (evt.getClickCount() == 2) {
-					String title = roomList.getSelectedObjects().toString();
-					if (!title.isEmpty()) {
-						StringTokenizer toks = new StringTokenizer(title, " ");
-						String roomNoStr = toks.nextToken();
-						int rNo = Integer.parseInt(roomNoStr);
-
-						try {
-							Client.enterToRoom(rNo);
-						} catch (IOException e) {
-							e.printStackTrace();
-						} catch (ClassNotFoundException e) {
-							e.printStackTrace();
-						}
-
-					}
-
-				}
+				
 			}
 		});
 
 		this.setResizable(false);
 	}
-
+	
+	/**
+	 * When user press "Make Room" Button, this function
+	 * will take title value and return it.
+	 * @return
+	 */
 	public String getRoomName() {
 		return JOptionPane.showInputDialog(this, "Enter the Room Name", "Make new room", JOptionPane.QUESTION_MESSAGE);
+	}
+	private void noRoomAlert() {
+		JOptionPane.showMessageDialog(this, "No way! Room was vanished!");
 	}
 
 	public void gotMessage(String msg) {
 		int pos;
 
-		msgArea.append(msg.substring(8) + "\n");
+		msgArea.append(msg + "\n");
 
-		// After get a message, because user can feel uncomfortable,
-		// reload a scroll bar to bottom of Area.
-		// Plus, after reload a scroll bar, make a focus on textField.
+		/* After get a message, because user can feel uncomfortable,
+		 * reload a scroll bar to bottom of Area.
+		 * Plus, after reload a scroll bar, make a focus on textField.
+		 */
 		pos = msgArea.getText().length();
 		msgArea.setCaretPosition(pos);
 		msgArea.requestFocus();
 		msgTxt.requestFocus();
 	}
 
+	private void enterToRoom() throws ClassNotFoundException, IOException{
+		String[] elemStr = roomList.getSelectedItems();
+		if(elemStr.length != 0){
+			StringTokenizer toks = new StringTokenizer(elemStr[0].substring(0), " ");
+			String roomNoStr = toks.nextToken();
+			
+			int roomNo = Integer.parseInt(roomNoStr);
+			if(Client.getInfoForRoom(roomNo) == null){
+				noRoomAlert();
+				reloadRoomList();
+			}else{
+				Client.enterToCurrentRoom();
+				dispose();
+			}
+		}
+	}
+	
 	public void reloadRoomList() throws ClassNotFoundException, IOException {
 		newRoomList = Client.getNewRoomList();
 		rooms.removeAllElements();
 		for (Integer rNo : newRoomList.keySet()) {
-			rooms.add(rNo + "          " + newRoomList.get(rNo));
+			rooms.add(rNo + "  |         " + newRoomList.get(rNo));
 		}
 
 		roomList.removeAll();
-
 		for (String str : rooms) {
 			roomList.add(str);
 		}

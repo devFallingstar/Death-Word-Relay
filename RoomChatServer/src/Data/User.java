@@ -7,9 +7,9 @@ import java.io.Serializable;
 
 public class User implements Serializable {
 	private String name;
-	BufferedReader in;
-	PrintWriter out;
-	int rNo;
+	private BufferedReader in;
+	private PrintWriter out;
+	private int rNo;
 	
 	public User(){
 		//Make blank user.
