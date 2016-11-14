@@ -3,6 +3,9 @@ package RoomServer;
 import java.io.BufferedReader;
 import java.util.*;
 
+import Data.Room;
+import Data.User;
+
 
 public class RoomManager {
 	Room myRoom;
@@ -17,8 +20,48 @@ public class RoomManager {
 	}
 	
 	public void broadCastRoom(String msg){
-		
+		for (User u : myRoom.roomV){
+			u.getOut().println(msg);
+		}
 	}
+	
+	public void addUserToRoom(User u){
+		myRoom.addUser(u);
+	}
+	
+	public void removeUserFromRoom(User u){
+		myRoom.removeUser(u);
+	}
+	
+	public int playerOfRoom(){
+		return myRoom.roomUsers.size();
+	}
+	
+	public Room getMyRoom() {
+		return myRoom;
+	}
+
+	public Integer getRoomNo() {
+		return roomNo;
+	}
+
+	public String getRoomName() {
+		return roomName;
+	}
+
+	public void setMyRoom(Room myRoom) {
+		this.myRoom = myRoom;
+	}
+
+	public void setRoomNo(Integer roomNo) {
+		this.roomNo = roomNo;
+	}
+
+	public void setRoomName(String roomName) {
+		this.roomName = roomName;
+	}
+
+	
 	
 }
 
