@@ -12,7 +12,7 @@ public class Room implements Serializable {
 		this.No = roomNo;
 		this.name = roomName;
 	}
-	
+
 	public void addUser(User u){
 		this.roomV.add(u);
 	}

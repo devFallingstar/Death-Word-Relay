@@ -59,15 +59,17 @@ public class UserHandler extends Thread {
 			while (true) {
 				out.println("SUBMITNAME");
 				System.out.println("LOG : Somebody come in...");
-
+				System.out.println(in);
 				name = in.readLine();
 				if (name == null) {
-					continue;
+					this.interrupt();
 				}
 				synchronized (names) {
 					if (!names.contains(name)) {
 						names.add(name);
 						break;
+					}else{
+						//TODO nameì´ ì¤‘ë³µë¨ì— ë”°ë¼ NAMEACCEPTEDë¥¼ ë³´ë‚´ë©´ ì•ˆë˜ëŠ” ì½”ë“œ êµ¬í˜„
 					}
 				}
 			}
@@ -102,7 +104,6 @@ public class UserHandler extends Thread {
 			TimerTask roomReloadTask = new TimerTask(){
 				@Override
 				public void run() {
-					// TODO Auto-generated method stub
 					out.println("NEWROOMAVAIL");
 				}
 			};
@@ -124,7 +125,7 @@ public class UserHandler extends Thread {
 					Server.removeUserFromRoom(myUser);
 					
 				} else if (input.startsWith("REQROOMINFO ")) {
-					// TODO ¹æ¿¡ 2¸íÀÖÀ¸¸é Á¤º¸ ¾ÈÁÖ°í, 1¸íÀÌÇÏ¸é Á¤º¸ ÁÖ´Â°Å ±¸ÇöÇÏ±â.
+					// TODO Give info if there's 1 or 0 users. Over 2 user? no info.
 					StringTokenizer toks = new StringTokenizer(input.substring(12), " ");
 					String roomNoStr = toks.nextToken();
 					int roomNo = Integer.parseInt(roomNoStr);
@@ -174,7 +175,6 @@ public class UserHandler extends Thread {
 				names.remove(name);
 				Server.removeUserFromRoom(myUser);
 				Server.removeUser(myUser);
-//				broadCast("MESSAGE User [" + name + "] is disconnected.");
 			}
 			try {
 				socket.close();

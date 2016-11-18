@@ -8,8 +8,7 @@ import java.util.StringTokenizer;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import Data.Room;
-import Data.User;
+import Data.*;
 import GUI.*;
 
 public class Client extends JFrame {

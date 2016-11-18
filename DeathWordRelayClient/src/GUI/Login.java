@@ -16,11 +16,12 @@ public class Login extends JFrame {
 	private JTextField IDtxt = new JTextField();
 	private JTextField PWtxt = new JTextField();
 	private JButton loginBtn = new JButton("Login");
+	private JButton regBtn = new JButton("Register");
 
 	private JDialog loginDlg = new JDialog(this, "Notice");
 	private JLabel loginWronglbl = new JLabel("Wrong ID or Password!");
 	private JButton loginWrongBtn = new JButton("Okay");
-
+	
 	private Container cont;
 
 	public Login() {
@@ -28,7 +29,7 @@ public class Login extends JFrame {
 		clnt = new Client();
 
 		this.getContentPane().setLayout(null);
-		this.setBounds(0, 0, 270, 130);
+		this.setBounds(0, 0, 350, 130);
 		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
@@ -40,12 +41,14 @@ public class Login extends JFrame {
 		cont.add(IDtxt);
 		cont.add(PWtxt);
 		cont.add(loginBtn);
+		cont.add(regBtn);
 
 		IDlbl.setBounds(12, 15, 30, 21);
 		PWlbl.setBounds(12, 46, 30, 21);
 		IDtxt.setBounds(54, 15, 100, 21);
 		PWtxt.setBounds(54, 46, 100, 21);
 		loginBtn.setBounds(166, 10, 70, 70);
+		regBtn.setBounds(250, 10, 70, 70);
 
 		loginBtn.addActionListener(new ActionListener() {
 			@Override
@@ -72,6 +75,8 @@ public class Login extends JFrame {
 				loginDlg.setVisible(false);
 			}
 		});
+		this.getRootPane().setDefaultButton(loginBtn);
+		
 		this.setResizable(false);
 	}
 
