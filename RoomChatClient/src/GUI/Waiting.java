@@ -16,8 +16,13 @@ public class Waiting extends JFrame {
 	private Client clnt;
 	private JPanel chatPanel = new JPanel();
 
-	private JLabel ranklbl = new JLabel("Top 10");
-	private JLabel roomlbl = new JLabel("Available Rooms");
+	private ImageIcon waiting = new ImageIcon("watingBg.png");
+	private ImageIcon rank = new ImageIcon("rankList.png");
+	private ImageIcon room = new ImageIcon("roomList.png");
+	
+	private JLabel waitBg = new JLabel(waiting);
+	private JLabel ranklbl = new JLabel(rank);
+	private JLabel roomlbl = new JLabel(room);
 
 	private List roomList = new List(10, false);
 	private List rankList = new List(10, false);
@@ -57,32 +62,38 @@ public class Waiting extends JFrame {
 		cont.add(roomlbl);
 		cont.add(rankList);
 		cont.add(ranklbl);
-
 		cont.add(chatPanel);
+		cont.add(waitBg);
+		
+		RefreshBtn.setBounds(225, 400, 113, 32);
+		MakeRoomBtn.setBounds(350, 400, 113, 32);
+		EnterBtn.setBounds(475, 400, 113, 32);
+		
 
-		RefreshBtn.setBounds(284, 324, 113, 32);
-		EnterBtn.setBounds(534, 324, 113, 32);
-		MakeRoomBtn.setBounds(409, 324, 113, 32);
+		roomScrlPane.setBounds(15, 121, 588, 277);
+		rankList.setBounds(630, 121, 150, 319);
+		
+		roomlbl.setBounds(220, 5, room.getIconWidth(), room.getIconHeight());
+		//roomlbl.setHorizontalAlignment(SwingConstants.CENTER);
+		//roomlbl.setFont(new Font("±¼¸²", Font.BOLD, 16));
 
-		roomScrlPane.setBounds(10, 41, 637, 277);
-		rankList.setBounds(653, 41, 113, 319);
+		ranklbl.setBounds(620, 40, rank.getIconWidth() , rank.getIconHeight());
+		//ranklbl.setHorizontalAlignment(SwingConstants.CENTER);
+		//ranklbl.setFont(new Font("±¼¸²", Font.BOLD, 16));
 
-		ranklbl.setBounds(659, 21, 100, 15);
-		ranklbl.setHorizontalAlignment(SwingConstants.CENTER);
-		ranklbl.setFont(new Font("±¼¸²", Font.BOLD, 16));
-
-		roomlbl.setBounds(248, 21, 151, 15);
-		roomlbl.setHorizontalAlignment(SwingConstants.CENTER);
-		roomlbl.setFont(new Font("±¼¸²", Font.BOLD, 16));
-
-		msgScrlPane.setBounds(0, 10, 529, 334);
-		msgTxt.setBounds(0, 354, 529, 21);
+		
+		msgScrlPane.setBounds(0, 10, 583, 255);
+		msgTxt.setBounds(0,270, 583, 21);
 		msgArea.setEditable(false);
 
-		chatPanel.setBounds(10, 366, 534, 385);
+		
+		chatPanel.setBounds(15, 450,  588, 295);
 		chatPanel.add(msgScrlPane);
 		chatPanel.add(msgTxt);
-
+		
+		waitBg.setBounds(0,0,waiting.getIconWidth(),waiting.getIconHeight());
+		
+		
 		msgTxt.addActionListener(new ActionListener() {
 			/**
 			 * Responds to pressing the enter key in the textfield by sending

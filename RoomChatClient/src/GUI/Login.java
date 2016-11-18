@@ -10,12 +10,15 @@ import RoomClient.*;
 
 public class Login extends JFrame {
 	private Client clnt;
-
-	private JLabel IDlbl = new JLabel("ID :");
-	private JLabel PWlbl = new JLabel("PW :");
+	private ImageIcon idImg = new ImageIcon("idLb.png");
+	private ImageIcon pwImg = new ImageIcon("pwLb.png");
+	private ImageIcon goImg = new ImageIcon("goBt.png");
+	
+	private JLabel IDlbl = new JLabel(idImg);
+	private JLabel PWlbl = new JLabel(pwImg);
 	private JTextField IDtxt = new JTextField();
 	private JTextField PWtxt = new JTextField();
-	private JButton loginBtn = new JButton("Login");
+	private JButton loginBtn = new JButton(goImg);
 
 	private JDialog loginDlg = new JDialog(this, "Notice");
 	private JLabel loginWronglbl = new JLabel("Wrong ID or Password!");
@@ -23,7 +26,7 @@ public class Login extends JFrame {
 
 	private Container cont;
 
-	public Login() {
+	public Login() throws IOException {
 		super("Login");
 		clnt = new Client();
 
@@ -32,7 +35,15 @@ public class Login extends JFrame {
 		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
+		
+		
+		loginBtn.setBackground(Color.red);
+		loginBtn.setBorderPainted(false);
+		loginBtn.setFocusPainted(false);
+		loginBtn.setContentAreaFilled(false);
 
+	
+		
 		cont = this.getContentPane();
 
 		cont.add(IDlbl);
@@ -40,13 +51,14 @@ public class Login extends JFrame {
 		cont.add(IDtxt);
 		cont.add(PWtxt);
 		cont.add(loginBtn);
-
-		IDlbl.setBounds(12, 15, 30, 21);
-		PWlbl.setBounds(12, 46, 30, 21);
-		IDtxt.setBounds(54, 15, 100, 21);
-		PWtxt.setBounds(54, 46, 100, 21);
-		loginBtn.setBounds(166, 10, 70, 70);
-
+		cont.setBackground(Color.white);
+		
+		IDlbl.setBounds(12, 17, idImg.getIconWidth(), idImg.getIconHeight());
+		PWlbl.setBounds(10, 52, pwImg.getIconWidth(), pwImg.getIconHeight());
+		IDtxt.setBounds(54, 17, 100, 23);
+		PWtxt.setBounds(55, 52, 100, 23);
+		loginBtn.setBounds(166, 10, goImg.getIconWidth(), goImg.getIconHeight());
+		
 		loginBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
