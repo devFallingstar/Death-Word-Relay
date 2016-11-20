@@ -16,9 +16,13 @@ public class Waiting extends JFrame {
 	private Client clnt;
 	private JPanel chatPanel = new JPanel();
 
-	private ImageIcon waiting = new ImageIcon("watingBg.png");
-	private ImageIcon rank = new ImageIcon("rankList.png");
+	private ImageIcon waiting = new ImageIcon("waitingBg3.png");
+	private ImageIcon rank = new ImageIcon("rankList1.png");
 	private ImageIcon room = new ImageIcon("roomList.png");
+	private ImageIcon mkr = new ImageIcon("mkrBt.png");
+	private ImageIcon ent = new ImageIcon("entBt.png");
+	private ImageIcon rf = new ImageIcon("rfBt.png");
+	
 	
 	private JLabel waitBg = new JLabel(waiting);
 	private JLabel ranklbl = new JLabel(rank);
@@ -27,9 +31,9 @@ public class Waiting extends JFrame {
 	private List roomList = new List(10, false);
 	private List rankList = new List(10, false);
 
-	private JButton MakeRoomBtn = new JButton("Make Room");
-	private JButton EnterBtn = new JButton("Enter");
-	private JButton RefreshBtn = new JButton("Refresh");
+	private JButton MakeRoomBtn = new JButton(mkr);
+	private JButton EnterBtn = new JButton(ent);
+	private JButton RefreshBtn = new JButton(rf);
 
 	private JTextField msgTxt = new JTextField(41);
 	private JTextArea msgArea = new JTextArea(9, 65);
@@ -65,31 +69,55 @@ public class Waiting extends JFrame {
 		cont.add(chatPanel);
 		cont.add(waitBg);
 		
-		RefreshBtn.setBounds(225, 400, 113, 32);
-		MakeRoomBtn.setBounds(350, 400, 113, 32);
-		EnterBtn.setBounds(475, 400, 113, 32);
+		MakeRoomBtn.setBounds(70, 30, mkr.getIconWidth(), mkr.getIconHeight());
+		MakeRoomBtn.setBackground(Color.red);
+		MakeRoomBtn.setBorderPainted(false);
+		MakeRoomBtn.setFocusPainted(false);
+		MakeRoomBtn.setContentAreaFilled(false);
+		
+		EnterBtn.setBounds(390, 30, ent.getIconWidth(), ent.getIconHeight());
+		EnterBtn.setBackground(Color.red);
+		EnterBtn.setBorderPainted(false);
+		EnterBtn.setFocusPainted(false);
+		EnterBtn.setContentAreaFilled(false);
+		
+		RefreshBtn.setBounds(510, 30, rf.getIconWidth(), rf.getIconHeight());
+		RefreshBtn.setBackground(Color.red);
+		RefreshBtn.setBorderPainted(false);
+		RefreshBtn.setFocusPainted(false);
+		RefreshBtn.setContentAreaFilled(false);
 		
 
 		roomScrlPane.setBounds(15, 121, 588, 277);
-		rankList.setBounds(630, 121, 150, 319);
+		rankList.setBounds(630, 121, 150, 277);
 		
-		roomlbl.setBounds(220, 5, room.getIconWidth(), room.getIconHeight());
+		roomlbl.setBounds(210, 5, room.getIconWidth(), room.getIconHeight());
 		//roomlbl.setHorizontalAlignment(SwingConstants.CENTER);
-		//roomlbl.setFont(new Font("±¼¸²", Font.BOLD, 16));
+		//roomlbl.setFont(new Font("ï¿½ï¿½ï¿½ï¿½", Font.BOLD, 16));
 
 		ranklbl.setBounds(620, 40, rank.getIconWidth() , rank.getIconHeight());
 		//ranklbl.setHorizontalAlignment(SwingConstants.CENTER);
-		//ranklbl.setFont(new Font("±¼¸²", Font.BOLD, 16));
+		//ranklbl.setFont(new Font("ï¿½ï¿½ï¿½ï¿½", Font.BOLD, 16));
 
 		
 		msgScrlPane.setBounds(0, 10, 583, 255);
+		msgScrlPane.setOpaque(false);
+		msgScrlPane.getViewport().setOpaque(false);
 		msgTxt.setBounds(0,270, 583, 21);
+		msgTxt.setOpaque(false);
+		msgTxt.setForeground(Color.white);
+		msgArea.setOpaque(false);
 		msgArea.setEditable(false);
-
+		msgArea.setForeground(Color.white);
+		
+		
 		
 		chatPanel.setBounds(15, 450,  588, 295);
+		chatPanel.setOpaque(false);
 		chatPanel.add(msgScrlPane);
 		chatPanel.add(msgTxt);
+		
+		
 		
 		waitBg.setBounds(0,0,waiting.getIconWidth(),waiting.getIconHeight());
 		
@@ -216,3 +244,4 @@ public class Waiting extends JFrame {
 		}
 	}
 }
+

@@ -13,52 +13,56 @@ public class Login extends JFrame {
 	private ImageIcon idImg = new ImageIcon("idLb.png");
 	private ImageIcon pwImg = new ImageIcon("pwLb.png");
 	private ImageIcon goImg = new ImageIcon("goBt.png");
+	private ImageIcon mainImg = new ImageIcon("main.png");
 	
+	private JLabel main = new JLabel(mainImg);
 	private JLabel IDlbl = new JLabel(idImg);
 	private JLabel PWlbl = new JLabel(pwImg);
 	private JTextField IDtxt = new JTextField();
 	private JTextField PWtxt = new JTextField();
 	private JButton loginBtn = new JButton(goImg);
-	
-	private JButton regBtn = new JButton("Register");
 
 	private JDialog loginDlg = new JDialog(this, "Notice");
 	private JLabel loginWronglbl = new JLabel("Wrong ID or Password!");
 	private JButton loginWrongBtn = new JButton("Okay");
-	
+
 	private Container cont;
 
-	public Login() {
+	public Login() throws IOException {
 		super("Login");
 		clnt = new Client();
 
 		this.getContentPane().setLayout(null);
-		this.setBounds(0, 0, 350, 130);
+		this.setBounds(0, 0, 500, 720);
 		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
-
+		
+		
 		loginBtn.setBackground(Color.red);
 		loginBtn.setBorderPainted(false);
 		loginBtn.setFocusPainted(false);
 		loginBtn.setContentAreaFilled(false);
+
+	
 		
 		cont = this.getContentPane();
 
+		cont.add(main);
 		cont.add(IDlbl);
 		cont.add(PWlbl);
 		cont.add(IDtxt);
 		cont.add(PWtxt);
 		cont.add(loginBtn);
-		cont.add(regBtn);
-
-		IDlbl.setBounds(12, 17, idImg.getIconWidth(), idImg.getIconHeight());
-		PWlbl.setBounds(10, 52, pwImg.getIconWidth(), pwImg.getIconHeight());
-		IDtxt.setBounds(54, 17, 100, 23);
-		PWtxt.setBounds(55, 52, 100, 23);
-		loginBtn.setBounds(166, 10, goImg.getIconWidth(), goImg.getIconHeight());
-		regBtn.setBounds(250, 10, 70, 70);
-
+		cont.setBackground(Color.white);
+		
+		main.setBounds(0,0,mainImg.getIconWidth(),mainImg.getIconHeight());
+		IDlbl.setBounds(127, 601, idImg.getIconWidth(), idImg.getIconHeight());
+		PWlbl.setBounds(125, 636, pwImg.getIconWidth(), pwImg.getIconHeight());
+		IDtxt.setBounds(185, 601, 100, 23);
+		PWtxt.setBounds(186, 636, 100, 23);
+		loginBtn.setBounds(306, 594, goImg.getIconWidth(), goImg.getIconHeight());
+		
 		loginBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -84,13 +88,11 @@ public class Login extends JFrame {
 				loginDlg.setVisible(false);
 			}
 		});
-		this.getRootPane().setDefaultButton(loginBtn);
-		
 		this.setResizable(false);
 	}
 
 	public void wrongParam() {
 		loginDlg.setVisible(true);
 	}
-	
 }
+
