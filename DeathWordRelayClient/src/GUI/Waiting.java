@@ -16,8 +16,13 @@ public class Waiting extends JFrame {
 	private Client clnt;
 	private JPanel chatPanel = new JPanel();
 
-	private JLabel ranklbl = new JLabel("Top 10");
-	private JLabel roomlbl = new JLabel("Available Rooms");
+	private ImageIcon waiting = new ImageIcon("watingBg.png");
+	private ImageIcon rank = new ImageIcon("rankList.png");
+	private ImageIcon room = new ImageIcon("roomList.png");
+	
+	private JLabel waitBg = new JLabel(waiting);
+	private JLabel ranklbl = new JLabel(rank);
+	private JLabel roomlbl = new JLabel(room);
 
 	private List roomList = new List(10, false);
 	private List rankList = new List(10, false);
@@ -57,32 +62,38 @@ public class Waiting extends JFrame {
 		cont.add(roomlbl);
 		cont.add(rankList);
 		cont.add(ranklbl);
-
 		cont.add(chatPanel);
+		cont.add(waitBg);
+		
+		RefreshBtn.setBounds(225, 400, 113, 32);
+		MakeRoomBtn.setBounds(350, 400, 113, 32);
+		EnterBtn.setBounds(475, 400, 113, 32);
+		
 
-		RefreshBtn.setBounds(284, 324, 113, 32);
-		EnterBtn.setBounds(534, 324, 113, 32);
-		MakeRoomBtn.setBounds(409, 324, 113, 32);
+		roomScrlPane.setBounds(15, 121, 588, 277);
+		rankList.setBounds(630, 121, 150, 319);
+		
+		roomlbl.setBounds(220, 5, room.getIconWidth(), room.getIconHeight());
+		//roomlbl.setHorizontalAlignment(SwingConstants.CENTER);
+		//roomlbl.setFont(new Font("±¼¸²", Font.BOLD, 16));
 
-		roomScrlPane.setBounds(10, 41, 637, 277);
-		rankList.setBounds(653, 41, 113, 319);
+		ranklbl.setBounds(620, 40, rank.getIconWidth() , rank.getIconHeight());
+		//ranklbl.setHorizontalAlignment(SwingConstants.CENTER);
+		//ranklbl.setFont(new Font("±¼¸²", Font.BOLD, 16));
 
-		ranklbl.setBounds(659, 21, 100, 15);
-		ranklbl.setHorizontalAlignment(SwingConstants.CENTER);
-		ranklbl.setFont(new Font("ï¿½ï¿½ï¿½ï¿½", Font.BOLD, 16));
-
-		roomlbl.setBounds(248, 21, 151, 15);
-		roomlbl.setHorizontalAlignment(SwingConstants.CENTER);
-		roomlbl.setFont(new Font("ï¿½ï¿½ï¿½ï¿½", Font.BOLD, 16));
-
-		msgScrlPane.setBounds(0, 10, 529, 334);
-		msgTxt.setBounds(0, 354, 529, 21);
+		
+		msgScrlPane.setBounds(0, 10, 583, 255);
+		msgTxt.setBounds(0,270, 583, 21);
 		msgArea.setEditable(false);
 
-		chatPanel.setBounds(10, 366, 534, 385);
+		
+		chatPanel.setBounds(15, 450,  588, 295);
 		chatPanel.add(msgScrlPane);
 		chatPanel.add(msgTxt);
-
+		
+		waitBg.setBounds(0,0,waiting.getIconWidth(),waiting.getIconHeight());
+		
+		
 		msgTxt.addActionListener(new ActionListener() {
 			/**
 			 * Responds to pressing the enter key in the textfield by sending
@@ -96,27 +107,27 @@ public class Waiting extends JFrame {
 
 				if (msg.equalsIgnoreCase("/clear")) {
 					msgArea.setText("");
-				} else {
-					try {
-						clnt.sendMessage(msg);
-					} catch (IOException e1) {
-						e1.printStackTrace();
-					}
+				}
+				try {
+					clnt.sendMessage(msg);
+				} catch (IOException e1) {
+					e1.printStackTrace();
 				}
 				msgTxt.setText("");
 			}
 		});
 
 		MakeRoomBtn.addActionListener(new ActionListener() {
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (Client.makeNewRoom() == 1) {
-					dispose();
-				}
+				Client.makeNewRoom();
+				dispose();
 			}
 		});
 
 		RefreshBtn.addActionListener(new ActionListener() {
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -126,8 +137,8 @@ public class Waiting extends JFrame {
 				}
 			}
 		});
-
-		EnterBtn.addActionListener(new ActionListener() {
+		
+		EnterBtn.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -136,33 +147,28 @@ public class Waiting extends JFrame {
 					e1.printStackTrace();
 				}
 			}
+			
 		});
 
 		roomList.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent evt) {
-
+				
 			}
 		});
 
 		this.setResizable(false);
 	}
-
+	
 	/**
-	 * When user press "Make Room" Button, this function will take title value
-	 * and return it.
-	 * 
+	 * When user press "Make Room" Button, this function
+	 * will take title value and return it.
 	 * @return
 	 */
 	public String getRoomName() {
 		return JOptionPane.showInputDialog(this, "Enter the Room Name", "Make new room", JOptionPane.QUESTION_MESSAGE);
 	}
-
 	private void noRoomAlert() {
 		JOptionPane.showMessageDialog(this, "No way! Room was vanished!");
-	}
-
-	private void fullRoomAlert() {
-		JOptionPane.showMessageDialog(this, "Uh-oh! The room was fulled!");
 	}
 
 	public void gotMessage(String msg) {
@@ -170,10 +176,9 @@ public class Waiting extends JFrame {
 
 		msgArea.append(msg + "\n");
 
-		/*
-		 * After get a message, because user can feel uncomfortable, reload a
-		 * scroll bar to bottom of Area. Plus, after reload a scroll bar, make a
-		 * focus on textField.
+		/* After get a message, because user can feel uncomfortable,
+		 * reload a scroll bar to bottom of Area.
+		 * Plus, after reload a scroll bar, make a focus on textField.
 		 */
 		pos = msgArea.getText().length();
 		msgArea.setCaretPosition(pos);
@@ -181,26 +186,23 @@ public class Waiting extends JFrame {
 		msgTxt.requestFocus();
 	}
 
-	private void enterToRoom() throws ClassNotFoundException, IOException {
+	private void enterToRoom() throws ClassNotFoundException, IOException{
 		String[] elemStr = roomList.getSelectedItems();
-		if (elemStr.length != 0) {
+		if(elemStr.length != 0){
 			StringTokenizer toks = new StringTokenizer(elemStr[0].substring(0), " ");
 			String roomNoStr = toks.nextToken();
-
+			
 			int roomNo = Integer.parseInt(roomNoStr);
-			if (Client.getInfoForRoom(roomNo).getNo() == -1) {
+			if(Client.getInfoForRoom(roomNo) == null){
 				noRoomAlert();
 				reloadRoomList();
-			} else if (Client.getInfoForRoom(roomNo).getNo() == -2) {
-				fullRoomAlert();
-				reloadRoomList();
-			} else {
+			}else{
 				Client.enterToCurrentRoom();
 				dispose();
 			}
 		}
 	}
-
+	
 	public void reloadRoomList() throws ClassNotFoundException, IOException {
 		newRoomList = Client.getNewRoomList();
 		rooms.removeAllElements();

@@ -10,12 +10,16 @@ import RoomClient.*;
 
 public class Login extends JFrame {
 	private Client clnt;
-
-	private JLabel IDlbl = new JLabel("ID :");
-	private JLabel PWlbl = new JLabel("PW :");
+	private ImageIcon idImg = new ImageIcon("idLb.png");
+	private ImageIcon pwImg = new ImageIcon("pwLb.png");
+	private ImageIcon goImg = new ImageIcon("goBt.png");
+	
+	private JLabel IDlbl = new JLabel(idImg);
+	private JLabel PWlbl = new JLabel(pwImg);
 	private JTextField IDtxt = new JTextField();
 	private JTextField PWtxt = new JTextField();
-	private JButton loginBtn = new JButton("Login");
+	private JButton loginBtn = new JButton(goImg);
+	
 	private JButton regBtn = new JButton("Register");
 
 	private JDialog loginDlg = new JDialog(this, "Notice");
@@ -34,6 +38,11 @@ public class Login extends JFrame {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 
+		loginBtn.setBackground(Color.red);
+		loginBtn.setBorderPainted(false);
+		loginBtn.setFocusPainted(false);
+		loginBtn.setContentAreaFilled(false);
+		
 		cont = this.getContentPane();
 
 		cont.add(IDlbl);
@@ -43,11 +52,11 @@ public class Login extends JFrame {
 		cont.add(loginBtn);
 		cont.add(regBtn);
 
-		IDlbl.setBounds(12, 15, 30, 21);
-		PWlbl.setBounds(12, 46, 30, 21);
-		IDtxt.setBounds(54, 15, 100, 21);
-		PWtxt.setBounds(54, 46, 100, 21);
-		loginBtn.setBounds(166, 10, 70, 70);
+		IDlbl.setBounds(12, 17, idImg.getIconWidth(), idImg.getIconHeight());
+		PWlbl.setBounds(10, 52, pwImg.getIconWidth(), pwImg.getIconHeight());
+		IDtxt.setBounds(54, 17, 100, 23);
+		PWtxt.setBounds(55, 52, 100, 23);
+		loginBtn.setBounds(166, 10, goImg.getIconWidth(), goImg.getIconHeight());
 		regBtn.setBounds(250, 10, 70, 70);
 
 		loginBtn.addActionListener(new ActionListener() {
