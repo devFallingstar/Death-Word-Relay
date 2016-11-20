@@ -43,6 +43,9 @@ public class Room implements Serializable {
 	public void setNo(Integer no) {
 		No = no;
 	}
+	public int getRoomMemberNum(){
+		return roomV.size();
+	}
 
 	public void setRoomV(Vector<User> roomV) {
 		this.roomV = roomV;

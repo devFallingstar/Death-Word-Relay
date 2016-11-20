@@ -83,4 +83,5 @@ public class Login extends JFrame {
 	public void wrongParam() {
 		loginDlg.setVisible(true);
 	}
+	
 }

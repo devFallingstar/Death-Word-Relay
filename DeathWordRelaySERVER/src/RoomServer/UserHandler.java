@@ -135,6 +135,9 @@ public class UserHandler extends Thread {
 					if (curRoom == null){
 						roomInfo[0] = "-1";
 						roomInfo[1] = "WTF no room!";
+					}else if(curRoom.getRoomMemberNum() >= 2){
+						roomInfo[0] = "-2";
+						roomInfo[1] = "Full!";
 					}else{
 						roomInfo[0] = curRoom.getNo()+"";
 						roomInfo[1] = curRoom.getName();
@@ -163,6 +166,10 @@ public class UserHandler extends Thread {
 				} else if (input.startsWith("MESSAGE ")){
 					broadCast(name + ": " + input.substring(8));
 					System.out.println("LOG : "+ input +" (By. "+name+" With room number "+myUser.getrNo()+")");
+				} else if (input.startsWith("READY")){
+					
+				} else if (input.startsWith("UNREADY")){
+					
 				}
 			}
 
@@ -173,8 +180,15 @@ public class UserHandler extends Thread {
 				broadCast("User [" + name + "] is disconnected.");
 				System.out.println("LOG : User [" + name + "] disconnected.");
 				names.remove(name);
-				Server.removeUserFromRoom(myUser);
-				Server.removeUser(myUser);
+				if(myUser.getrNo() == -1){
+					Server.removeUser(myUser);
+				}else{
+					Server.removeUserFromRoom(myUser);
+					
+					// TODO If they exit while playing a game, put it to the black list.
+				}
+				
+				
 			}
 			try {
 				socket.close();

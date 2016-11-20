@@ -16,6 +16,7 @@ import Data.User;
 import RoomClient.*;
 
 public class GameRoom extends JFrame {
+	private boolean isReady;
 	private Client clnt;
 	private User myUser;
 //	private User oppUser; <- Not implemented yet. DO NOT ERASE.
@@ -34,6 +35,7 @@ public class GameRoom extends JFrame {
 		super(rNo + ". " + title);
 		clnt = new Client();
 		this.myUser = Client.curUser;
+		isReady = false;
 
 		this.getContentPane().setLayout(null);
 		this.setBounds(0, 0, 800, 800);
@@ -84,12 +86,20 @@ public class GameRoom extends JFrame {
 		exitBtn.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				Client.exitCurrentRoom();
 				dispose();
 			}
 		});
 		this.setResizable(false);
+		
+		readyBtn.addActionListener(new ActionListener (){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
 	}
 	public void gotMessage(String msg) {
 		msgArea.append(msg + "\n");

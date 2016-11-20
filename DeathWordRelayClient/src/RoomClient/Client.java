@@ -203,14 +203,18 @@ public class Client extends JFrame {
 	 * This will send a protocol message to the server,
 	 * and server response whether room made or not.
 	 */
-	public static void makeNewRoom() {
+	public static int makeNewRoom() {
 		try{
-		String roomName = myWaitGUI.getRoomName();
+			String roomName = myWaitGUI.getRoomName();
 			if(!roomName.isEmpty()){
 				out.println("MAKEROOM " + roomName);
+				return 1;
+			}else{
+				return -1;
 			}
 		}catch(Exception e){
 		}
+		return -1;
 	}
 
 	/**
@@ -230,13 +234,13 @@ public class Client extends JFrame {
 		out.println("REQROOMINFO " + rNo);
 		
 		roomInfo = (String[]) objIn.readObject();
-		if (roomInfo[0].equals("-1")){
-			return null;
-		}else{
+//		if (roomInfo[0].equals("-1")){
+//			return null;
+//		}else{
 			curRoom = new Room(Integer.parseInt(roomInfo[0]), roomInfo[1]);
 			
 			return curRoom;
-		}	
+//		}	
 	}
 
 	/**
@@ -294,5 +298,14 @@ public class Client extends JFrame {
 		} else {
 			return 0;
 		}
+	}
+	
+	public void AreYouReady(boolean isReady){
+		if (isReady){
+			out.println("READY");
+		}else{
+			out.println("UNREADY");
+		}
+		
 	}
 }

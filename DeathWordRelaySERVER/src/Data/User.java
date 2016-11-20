@@ -10,6 +10,7 @@ public class User implements Serializable {
 	private BufferedReader in;
 	private PrintWriter out;
 	private int rNo;
+	private boolean isReady;
 	
 	public User(){
 		//Make blank user.
@@ -24,6 +25,8 @@ public class User implements Serializable {
 		this.in = _in;
 		this.out = _out;
 		this.rNo = -1;
+		isReady = false;
+		
 	}
 	
 	public int getrNo() {
@@ -60,5 +63,13 @@ public class User implements Serializable {
 	
 	public void sendMsg(String msg){
 		this.out.println(msg);
+	}
+	
+	public void setReady(){
+		if(isReady){
+			isReady = false;
+		}else{
+			isReady = true;
+		}
 	}
 }

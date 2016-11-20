@@ -69,11 +69,11 @@ public class Waiting extends JFrame {
 
 		ranklbl.setBounds(659, 21, 100, 15);
 		ranklbl.setHorizontalAlignment(SwingConstants.CENTER);
-		ranklbl.setFont(new Font("±¼¸²", Font.BOLD, 16));
+		ranklbl.setFont(new Font("ï¿½ï¿½ï¿½ï¿½", Font.BOLD, 16));
 
 		roomlbl.setBounds(248, 21, 151, 15);
 		roomlbl.setHorizontalAlignment(SwingConstants.CENTER);
-		roomlbl.setFont(new Font("±¼¸²", Font.BOLD, 16));
+		roomlbl.setFont(new Font("ï¿½ï¿½ï¿½ï¿½", Font.BOLD, 16));
 
 		msgScrlPane.setBounds(0, 10, 529, 334);
 		msgTxt.setBounds(0, 354, 529, 21);
@@ -96,27 +96,27 @@ public class Waiting extends JFrame {
 
 				if (msg.equalsIgnoreCase("/clear")) {
 					msgArea.setText("");
-				}
-				try {
-					clnt.sendMessage(msg);
-				} catch (IOException e1) {
-					e1.printStackTrace();
+				} else {
+					try {
+						clnt.sendMessage(msg);
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
 				}
 				msgTxt.setText("");
 			}
 		});
 
 		MakeRoomBtn.addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Client.makeNewRoom();
-				dispose();
+				if (Client.makeNewRoom() == 1) {
+					dispose();
+				}
 			}
 		});
 
 		RefreshBtn.addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -126,8 +126,8 @@ public class Waiting extends JFrame {
 				}
 			}
 		});
-		
-		EnterBtn.addActionListener(new ActionListener(){
+
+		EnterBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -136,28 +136,33 @@ public class Waiting extends JFrame {
 					e1.printStackTrace();
 				}
 			}
-			
 		});
 
 		roomList.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent evt) {
-				
+
 			}
 		});
 
 		this.setResizable(false);
 	}
-	
+
 	/**
-	 * When user press "Make Room" Button, this function
-	 * will take title value and return it.
+	 * When user press "Make Room" Button, this function will take title value
+	 * and return it.
+	 * 
 	 * @return
 	 */
 	public String getRoomName() {
 		return JOptionPane.showInputDialog(this, "Enter the Room Name", "Make new room", JOptionPane.QUESTION_MESSAGE);
 	}
+
 	private void noRoomAlert() {
 		JOptionPane.showMessageDialog(this, "No way! Room was vanished!");
+	}
+
+	private void fullRoomAlert() {
+		JOptionPane.showMessageDialog(this, "Uh-oh! The room was fulled!");
 	}
 
 	public void gotMessage(String msg) {
@@ -165,9 +170,10 @@ public class Waiting extends JFrame {
 
 		msgArea.append(msg + "\n");
 
-		/* After get a message, because user can feel uncomfortable,
-		 * reload a scroll bar to bottom of Area.
-		 * Plus, after reload a scroll bar, make a focus on textField.
+		/*
+		 * After get a message, because user can feel uncomfortable, reload a
+		 * scroll bar to bottom of Area. Plus, after reload a scroll bar, make a
+		 * focus on textField.
 		 */
 		pos = msgArea.getText().length();
 		msgArea.setCaretPosition(pos);
@@ -175,23 +181,26 @@ public class Waiting extends JFrame {
 		msgTxt.requestFocus();
 	}
 
-	private void enterToRoom() throws ClassNotFoundException, IOException{
+	private void enterToRoom() throws ClassNotFoundException, IOException {
 		String[] elemStr = roomList.getSelectedItems();
-		if(elemStr.length != 0){
+		if (elemStr.length != 0) {
 			StringTokenizer toks = new StringTokenizer(elemStr[0].substring(0), " ");
 			String roomNoStr = toks.nextToken();
-			
+
 			int roomNo = Integer.parseInt(roomNoStr);
-			if(Client.getInfoForRoom(roomNo) == null){
+			if (Client.getInfoForRoom(roomNo).getNo() == -1) {
 				noRoomAlert();
 				reloadRoomList();
-			}else{
+			} else if (Client.getInfoForRoom(roomNo).getNo() == -2) {
+				fullRoomAlert();
+				reloadRoomList();
+			} else {
 				Client.enterToCurrentRoom();
 				dispose();
 			}
 		}
 	}
-	
+
 	public void reloadRoomList() throws ClassNotFoundException, IOException {
 		newRoomList = Client.getNewRoomList();
 		rooms.removeAllElements();
