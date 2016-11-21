@@ -113,4 +113,25 @@ public class Server {
     	
     	return newRoomList;
     }
+    
+    public static User getOppUser(User me){
+    	User oppUser = null;
+    	RoomManager currentRoom = roomMap.get(me.getrNo());
+    	Vector<User> userList = currentRoom.getUserList();
+    	
+    	for (User u : userList){
+    		if(!u.getName().equals(me.getName())){
+    			oppUser = u;
+    			break;
+    		}
+    	}
+    	return oppUser;
+    }
+    
+    public static void setStartOfRoom(int rNo){
+    	RoomManager currentRoom = roomMap.get(rNo);
+    	Random rand = new Random(System.currentTimeMillis());
+    	System.out.println(Math.abs(rand.nextInt()));
+    	currentRoom.setStarter(Math.abs(rand.nextInt()) % 2);
+    }
 }
