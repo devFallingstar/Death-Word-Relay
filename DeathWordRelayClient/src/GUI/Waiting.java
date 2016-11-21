@@ -16,27 +16,26 @@ public class Waiting extends JFrame {
 	private Client clnt;
 	private JPanel chatPanel = new JPanel();
 
-	private ImageIcon waiting = new ImageIcon("waitingBg3.png");
-	private ImageIcon rank = new ImageIcon("rankList1.png");
-	private ImageIcon room = new ImageIcon("roomList.png");
-	private ImageIcon mkr = new ImageIcon("mkrBt.png");
-	private ImageIcon ent = new ImageIcon("entBt.png");
-	private ImageIcon rf = new ImageIcon("rfBt.png");
-	
+	private ImageIcon waiting = new ImageIcon("resources/waitingBg3.png");
+	private ImageIcon rank = new ImageIcon("resources/rankList1.png");
+	private ImageIcon room = new ImageIcon("resources/roomList.png");
+	private ImageIcon mkr = new ImageIcon("resources/mkrBt.png");
+	private ImageIcon ent = new ImageIcon("resources/entBt.png");
+	private ImageIcon rf = new ImageIcon("resources/rfBt.png");
 	
 	private JLabel waitBg = new JLabel(waiting);
 	private JLabel ranklbl = new JLabel(rank);
 	private JLabel roomlbl = new JLabel(room);
 
-	private List roomList = new List(10, false);
+	private static List roomList = new List(10, false);
 	private List rankList = new List(10, false);
 
 	private JButton MakeRoomBtn = new JButton(mkr);
 	private JButton EnterBtn = new JButton(ent);
 	private JButton RefreshBtn = new JButton(rf);
 
-	private JTextField msgTxt = new JTextField(41);
-	private JTextArea msgArea = new JTextArea(9, 65);
+	private static JTextField msgTxt = new JTextField(41);
+	private static JTextArea msgArea = new JTextArea(9, 65);
 	private JScrollPane msgScrlPane = new JScrollPane(msgArea);
 	private JScrollPane roomScrlPane = new JScrollPane(roomList);
 
@@ -137,7 +136,7 @@ public class Waiting extends JFrame {
 					msgArea.setText("");
 				}
 				try {
-					clnt.sendMessage(msg);
+					Client.sendMessage(msg);
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
@@ -149,8 +148,9 @@ public class Waiting extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Client.makeNewRoom();
-				dispose();
+				if (Client.makeNewRoom() == 1) {
+					dispose();
+				}
 			}
 		});
 
@@ -199,7 +199,7 @@ public class Waiting extends JFrame {
 		JOptionPane.showMessageDialog(this, "No way! Room was vanished!");
 	}
 
-	public void gotMessage(String msg) {
+	public static void gotMessage(String msg) {
 		int pos;
 
 		msgArea.append(msg + "\n");
@@ -231,7 +231,7 @@ public class Waiting extends JFrame {
 		}
 	}
 	
-	public void reloadRoomList() throws ClassNotFoundException, IOException {
+	public static void reloadRoomList() throws ClassNotFoundException, IOException {
 		newRoomList = Client.getNewRoomList();
 		rooms.removeAllElements();
 		for (Integer rNo : newRoomList.keySet()) {

@@ -5,11 +5,19 @@ import java.awt.Container;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+
+import RoomClient.Client;
+
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JButton;
 
 public class Register extends JFrame {
+	Client clnt;
 	Login myLogin;
+	
 	
 	private Container cont;
 	private JTextField IDtxt = new JTextField();
@@ -30,6 +38,7 @@ public class Register extends JFrame {
 	
 	public Register(){
 		super("Register");
+		clnt = new Client();
 		
 		this.getContentPane().setLayout(null);
 		this.setBounds(0, 0, 350, 290);
@@ -68,5 +77,24 @@ public class Register extends JFrame {
 		cont.add(IDCautionlbl2);
 		cont.add(PWCautionlbl);
 		cont.add(NickNameCautionlbl);
+		
+		SubmitBtn.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
+		
+		CancelBtn.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				dispose();
+			}
+			
+		});
+		
 	}
 }
