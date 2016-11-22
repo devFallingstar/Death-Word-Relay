@@ -24,7 +24,7 @@ public class SearchNaverDic {
 		
 		// Check if the word is noun or not.
 		for (Element e : means) {
-			if (e.text().startsWith("[Έν»η]")) {
+			if (e.text().startsWith("[λª…")) {
 				return true;
 			}
 		}
