@@ -24,7 +24,7 @@ public class SearchNaverDic {
 		
 		// Check if the word is noun or not.
 		for (Element e : means) {
-			if (e.text().startsWith("[명")) {
+			if (e.text().startsWith("[명사]")) {
 				return true;
 			}
 		}
