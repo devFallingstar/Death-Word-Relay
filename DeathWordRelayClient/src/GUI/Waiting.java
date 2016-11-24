@@ -15,7 +15,6 @@ import RoomClient.*;
 public class Waiting extends JFrame {
 	private Client clnt;
 
-<<<<<<< HEAD
 	private ImageIcon waiting = new ImageIcon("Img/waitingBg3.png");
 	private ImageIcon rank = new ImageIcon("Img/rankList1.png");
 	private ImageIcon room = new ImageIcon("Img/roomList.png");
@@ -33,26 +32,15 @@ public class Waiting extends JFrame {
 			   }
 	};
 	
-=======
-	private ImageIcon waiting = new ImageIcon("resources/waitingBg3.png");
-	private ImageIcon rank = new ImageIcon("resources/rankList1.png");
-	private ImageIcon room = new ImageIcon("resources/roomList.png");
-	private ImageIcon mkr = new ImageIcon("resources/mkrBt.png");
-	private ImageIcon ent = new ImageIcon("resources/entBt.png");
-	private ImageIcon rf = new ImageIcon("resources/rfBt.png");
->>>>>>> branch 'master' of https://github.com/stardung86/Death-Word-Relay.git
 	
 	private JLabel waitBg = new JLabel(waiting);
 	private JLabel ranklbl = new JLabel(rank);
 	private JLabel roomlbl = new JLabel(room);
-<<<<<<< HEAD
+
 	private JLabel chatlbl = new JLabel(chat);
 	
-	private List roomList = new List(10, false);
-=======
 
 	private static List roomList = new List(10, false);
->>>>>>> branch 'master' of https://github.com/stardung86/Death-Word-Relay.git
 	private List rankList = new List(10, false);
 
 	private JButton MakeRoomBtn = new JButton(mkr);
