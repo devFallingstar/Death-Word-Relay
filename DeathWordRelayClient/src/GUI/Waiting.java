@@ -22,6 +22,7 @@ public class Waiting extends JFrame {
 	private ImageIcon ent = new ImageIcon("Img/entBt.png");
 	private ImageIcon rf = new ImageIcon("Img/rfBt.png");
 	private ImageIcon chat = new ImageIcon("Img/chatBg.png");
+	private ImageIcon userImg = new ImageIcon("Img/userInform.png");
 	
 	private JPanel chatPanel = new JPanel(){
 		
@@ -36,7 +37,10 @@ public class Waiting extends JFrame {
 	private JLabel waitBg = new JLabel(waiting);
 	private JLabel ranklbl = new JLabel(rank);
 	private JLabel roomlbl = new JLabel(room);
+	private JLabel userInfo = new JLabel(userImg);
+	
 
+	
 	private JLabel chatlbl = new JLabel(chat);
 	
 
@@ -79,6 +83,7 @@ public class Waiting extends JFrame {
 		cont.add(rankList);
 		cont.add(ranklbl);
 		cont.add(chatPanel);
+		cont.add(userInfo);
 		cont.add(waitBg);
 		cont.add(chatlbl);
 		
@@ -112,6 +117,8 @@ public class Waiting extends JFrame {
 		//ranklbl.setHorizontalAlignment(SwingConstants.CENTER);
 		//ranklbl.setFont(new Font("����", Font.BOLD, 16));
 		//chatlbl.setBounds(15,450,588,295);
+		
+		userInfo.setBounds(610,450,userImg.getIconWidth(),userImg.getIconHeight());
 		
 		msgScrlPane.setBounds(0, 10, 583, 255);
 		msgScrlPane.setOpaque(false);
