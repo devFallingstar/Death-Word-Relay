@@ -1,12 +1,16 @@
 package GUI;
 
+import java.awt.Color;
 import java.awt.Container;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -21,15 +25,30 @@ public class GameRoom extends JFrame {
 	private static boolean isReady;
 	private static User myUser;
 	// private User oppUser; <- Not implemented yet. DO NOT ERASE.
-	private JPanel chatPanel = new JPanel();
+	
+	private static ImageIcon bgImg = new ImageIcon("Img/gameRoomBg.png");
+	private ImageIcon chat = new ImageIcon("Img/chatBg.png");
+	private static ImageIcon readyImg = new ImageIcon("Img/readyBt.png");
+	private static ImageIcon exitImg = new ImageIcon("Img/exitBt.png");
+	
+	private JPanel chatPanel = new JPanel(){
+		
+		 public void paintComponent(Graphics g) {
+			    g.drawImage(chat.getImage(), 0, 0, null);
+			    setOpaque(false);
+			    super.paintComponent(g);
+			   }
+		
+	};
 
+	private static JLabel background = new JLabel(bgImg);
 	private static JTextField msgTxt = new JTextField(41);
 	private static JTextField answerTxt = new JTextField(41);
 	private static JTextArea msgArea = new JTextArea(9, 65);
 	private JScrollPane msgScrlPane = new JScrollPane(msgArea);
-
-	private static JButton exitBtn = new JButton("Exit");
-	private static JButton readyBtn = new JButton("Ready");
+	
+	private static JButton exitBtn = new JButton(exitImg);
+	private static JButton readyBtn = new JButton(readyImg);
 
 	private Container cont;
 
@@ -40,7 +59,7 @@ public class GameRoom extends JFrame {
 		this.myUser = Client.curUser;
 
 		this.getContentPane().setLayout(null);
-		this.setBounds(0, 0, 800, 800);
+		this.setBounds(0, 0, 960, 560);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		chatPanel.setLayout(null);
 		this.setLocationRelativeTo(null);
@@ -51,14 +70,41 @@ public class GameRoom extends JFrame {
 		cont.add(chatPanel);
 		cont.add(readyBtn);
 		cont.add(exitBtn);
+		cont.add(background);
 
-		msgScrlPane.setBounds(0, 10, 529, 690);
-		msgTxt.setBounds(0, 710, 529, 21);
-		answerTxt.setBounds(0, 710, 529, 21);
-		chatPanel.setBounds(10, 10, 534, 741);
-		readyBtn.setBounds(679, 460, 93, 49);
-		exitBtn.setBounds(556, 460, 93, 49);
-
+		msgScrlPane.setBounds(10,20 ,529, 400);
+		msgScrlPane.setOpaque(false);
+		msgScrlPane.getViewport().setOpaque(false);
+		
+		msgTxt.setBounds(10, 440, 529, 21);
+		msgTxt.setOpaque(false);
+		msgTxt.setForeground(Color.white);
+		
+		msgArea.setOpaque(false);
+		msgArea.setEditable(false);
+		msgArea.setForeground(Color.white);
+		
+		answerTxt.setBounds(10, 440, 529, 21);
+		
+		chatPanel.setBounds(10, 20, 540, 540);
+		
+		readyBtn.setBounds(650, 245, readyImg.getIconWidth(), readyImg.getIconHeight());
+		exitBtn.setBounds(800, 460, exitImg.getIconWidth(), exitImg.getIconHeight());
+	
+		readyBtn.setBackground(Color.red);
+		readyBtn.setBorderPainted(false);
+		readyBtn.setFocusPainted(false);
+		readyBtn.setContentAreaFilled(false);		
+	
+		exitBtn.setBackground(Color.red);
+		exitBtn.setBorderPainted(false);
+		exitBtn.setFocusPainted(false);
+		exitBtn.setContentAreaFilled(false);		
+	
+		
+		
+		background.setBounds(0,0,bgImg.getIconWidth(),bgImg.getIconHeight());
+		
 		answerTxt.setEnabled(false);
 		answerTxt.setVisible(false);
 		msgArea.setEditable(false);

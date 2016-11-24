@@ -80,14 +80,7 @@ public class Login extends JFrame {
 		regBtn.setBounds(275, 682, regImg2.getIconWidth(), regImg2.getIconHeight());
 
 		
-		main.setBounds(0,0,mainImg.getIconWidth(),mainImg.getIconHeight());
-		IDlbl.setBounds(85, 601, idImg.getIconWidth(), idImg.getIconHeight());
-		PWlbl.setBounds(85, 636, pwImg.getIconWidth(), pwImg.getIconHeight());
-		IDtxt.setBounds(140, 601, 100, 23);
-		PWtxt.setBounds(140, 636, 100, 23);
-		regBtn.setBounds(340, 594, 70, 70);
-		loginBtn.setBounds(260, 594, goImg.getIconWidth(), goImg.getIconHeight());
-		
+	
 		loginBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
