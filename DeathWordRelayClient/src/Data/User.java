@@ -4,11 +4,14 @@ import java.io.BufferedReader;
 import java.io.PrintWriter;
 import java.io.Serializable;
 
+
 public class User implements Serializable {
 	private String name;
 	private BufferedReader in;
 	private PrintWriter out;
 	private int rNo;
+	private boolean isReady;
+	private boolean isPlaying;
 	
 	public User(){
 		//Make blank user.
@@ -16,7 +19,6 @@ public class User implements Serializable {
 	
 	public User(String _name){
 		this.name = _name;
-		this.rNo = -1;
 	}
 	
 	public User(String _name, BufferedReader _in, PrintWriter _out){
@@ -24,6 +26,8 @@ public class User implements Serializable {
 		this.in = _in;
 		this.out = _out;
 		this.rNo = -1;
+		isReady = false;
+		isPlaying = false;
 	}
 	
 	public int getrNo() {
@@ -62,5 +66,27 @@ public class User implements Serializable {
 		this.out.println(msg);
 	}
 	
+	public void setReady(){
+		if(isReady){
+			isReady = false;
+		}else{
+			isReady = true;
+		}
+	}
+	public boolean getReady(){
+		return isReady;
+		
+	}
 	
+	public void setPlaying(){
+		isPlaying = true;
+	}
+	public boolean getPlaying(){
+		return isPlaying;
+	}
+	
+	public void gameFinInit(){
+		isReady = false;
+		isPlaying = false;
+	}
 }

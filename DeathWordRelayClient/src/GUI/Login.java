@@ -10,6 +10,7 @@ import RoomClient.*;
 
 public class Login extends JFrame {
 	private Client clnt;
+
 	private Register register;
 	private ImageIcon idImg = new ImageIcon("Img/idLb.png");
 	private ImageIcon pwImg = new ImageIcon("Img/pwLb.png");
@@ -18,15 +19,19 @@ public class Login extends JFrame {
 	private ImageIcon regImg1 = new ImageIcon("Img/regLb.png");
 	private ImageIcon regImg2 = new ImageIcon("Img/regBt.png");
 
+	private Register myReg;
+	
 	private JLabel main = new JLabel(mainImg);
 	private JLabel IDlbl = new JLabel(idImg);
 	private JLabel PWlbl = new JLabel(pwImg);
 	private JTextField IDtxt = new JTextField();
 	private JTextField PWtxt = new JTextField();
 	private JButton loginBtn = new JButton(goImg);
+
 	private JLabel REGlbl = new JLabel(regImg1);
 	private JButton regBtn = new JButton(regImg2);
 
+	
 	private JDialog loginDlg = new JDialog(this, "Notice");
 	private JLabel loginWronglbl = new JLabel("Wrong ID or Password!");
 	private JButton loginWrongBtn = new JButton("Okay");
@@ -74,16 +79,26 @@ public class Login extends JFrame {
 		REGlbl.setBounds(87, 680, regImg1.getIconWidth(), regImg1.getIconHeight());
 		regBtn.setBounds(275, 682, regImg2.getIconWidth(), regImg2.getIconHeight());
 
+		
+		main.setBounds(0,0,mainImg.getIconWidth(),mainImg.getIconHeight());
+		IDlbl.setBounds(85, 601, idImg.getIconWidth(), idImg.getIconHeight());
+		PWlbl.setBounds(85, 636, pwImg.getIconWidth(), pwImg.getIconHeight());
+		IDtxt.setBounds(140, 601, 100, 23);
+		PWtxt.setBounds(140, 636, 100, 23);
+		regBtn.setBounds(340, 594, 70, 70);
+		loginBtn.setBounds(260, 594, goImg.getIconWidth(), goImg.getIconHeight());
+		
 		loginBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					clnt.sendLoginRequest(IDtxt.getText(), PWtxt.getText());
+					Client.sendLoginRequest(IDtxt.getText(), PWtxt.getText());
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
 			}
 		});
+
 
 		
 		regBtn.addActionListener(new ActionListener() {
@@ -94,8 +109,18 @@ public class Login extends JFrame {
 
 			}
 		});
-		
 
+		regBtn.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				myReg = new Register();
+				dispose();
+			}
+			
+		});
+		
 		loginWronglbl.setVerticalAlignment(SwingConstants.CENTER);
 		loginDlg.setSize(200, 100);
 		loginDlg.setVisible(false);

@@ -11,6 +11,9 @@ public class User implements Serializable {
 	private PrintWriter out;
 	private int rNo;
 	private boolean isReady;
+	private boolean isPlaying;
+	private int win, lose;
+	private int round;
 	
 	public User(){
 		//Make blank user.
@@ -26,7 +29,9 @@ public class User implements Serializable {
 		this.out = _out;
 		this.rNo = -1;
 		isReady = false;
-		
+		this.win = 0;
+		this.lose = 0;
+		this.round = 0;
 	}
 	
 	public int getrNo() {
@@ -66,10 +71,43 @@ public class User implements Serializable {
 	}
 	
 	public void setReady(){
-		if(isReady){
-			isReady = false;
-		}else{
-			isReady = true;
+		isReady = true;
+	}
+	public void setUnReady(){
+		isReady = false;
+	}
+	public boolean getReady(){
+		return isReady;
+	}
+	
+	public void InitRoundScore(){
+		lose = 0;
+		win = 0;
+		round = 0;
+	}
+	
+	public void Lose(){
+		round++;
+		lose++;
+	}
+	public void Win(){
+		round++;
+		win++;
+	}
+	public boolean isFin(){
+		if(lose == 3 || win == 3){
+			return true;
 		}
+		return false;
+	}
+	
+	public void setPlaying(){
+		isPlaying = true;
+	}
+	public void setUnPlaying(){
+		isPlaying = false;
+	}
+	public boolean getPlaying(){
+		return isPlaying;
 	}
 }

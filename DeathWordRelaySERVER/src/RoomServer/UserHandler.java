@@ -5,6 +5,7 @@ import java.io.*;
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.StringTokenizer;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -21,6 +22,10 @@ public class UserHandler extends Thread {
 	private ObjectInputStream objIn;
 	private ObjectOutputStream objOut;
 	private User myUser;
+	private User myOppUser;
+	
+	private String currentAnswer;
+	
 	
 	/*
 	 * HashSet for users that joining.
@@ -69,7 +74,7 @@ public class UserHandler extends Thread {
 						names.add(name);
 						break;
 					}else{
-						//TODO name이 중복됨에 따라 NAMEACCEPTED를 보내면 안되는 코드 구현
+						//TODO name�씠 以묐났�맖�뿉 �뵲�씪 NAMEACCEPTED瑜� 蹂대궡硫� �븞�릺�뒗 肄붾뱶 援ы쁽
 					}
 				}
 			}
@@ -163,14 +168,61 @@ public class UserHandler extends Thread {
 					Server.broadCast(name + ": " + input.substring(9), roomNo);
 				} else if (input.startsWith("COMESUCC")){
 					Server.addUserToRoom(this.myUser);
+				} else if (input.startsWith("READY")){
+					User oppUser = Server.getOppUser(myUser);
+					myOppUser = oppUser;
+					myUser.setReady();
+					try{
+						if(oppUser.getReady()){
+							out.println("PLAYGAME");
+							oppUser.getOut().println("PLAYGAME");
+							myUser.setPlaying();
+							myOppUser.setPlaying();
+						}
+						setStart();
+					}catch(NullPointerException e){
+					}
+				} else if (input.startsWith("UNREADY")){
+					myUser.setUnReady();
+				} else if (input.startsWith("REQRESUME")){
+					RoomManager currentRoomM = Server.getRoomWithNumber(myUser.getrNo());
+					
+					if(!currentRoomM.isNotDup(currentAnswer)){
+						out.println("DUPWORD");
+					}else{
+						currentRoomM.addPrevWord(currentAnswer);
+						setResume();
+					}
+				} else if (input.startsWith("ROOMANS ")){
+					StringTokenizer toks = new StringTokenizer(input.substring(8), " ");
+					String roomNoStr = toks.nextToken();
+					int roomNo = Integer.parseInt(roomNoStr);
+					
+					currentAnswer = input.substring(9);
+					Server.broadCast(name + ": " + input.substring(9), roomNo);
+					
+				} else if (input.startsWith("ILOSEROUND")){
+					WhenLose();
+					if(FinGame()){
+						out.println("GAMEFIN");
+						myOppUser.getOut().println("GAMEFIN");
+						
+						myUser.InitRoundScore();
+						myOppUser.InitRoundScore();
+						myUser.setUnPlaying();
+						myUser.setUnReady();
+						myOppUser.setUnPlaying();
+						myOppUser.setUnReady();
+					}else{
+						setStart();
+					}
+				} else if (input.startsWith("GAMERESULT")){
+					
 				} else if (input.startsWith("MESSAGE ")){
 					broadCast(name + ": " + input.substring(8));
 					System.out.println("LOG : "+ input +" (By. "+name+" With room number "+myUser.getrNo()+")");
-				} else if (input.startsWith("READY")){
-					
-				} else if (input.startsWith("UNREADY")){
-					
 				}
+					
 			}
 
 		} catch (Exception e) {
@@ -187,8 +239,6 @@ public class UserHandler extends Thread {
 					
 					// TODO If they exit while playing a game, put it to the black list.
 				}
-				
-				
 			}
 			try {
 				socket.close();
@@ -218,5 +268,43 @@ public class UserHandler extends Thread {
 
 	public void broadCast(String msg) {
 		Server.broadCast(msg, myUser.getrNo());
+	}
+	
+	public void setStart(){
+		myUser.getOut().println("");
+		Server.setStartOfRoom(myUser.getrNo());
+		
+		Timer gameStartTimer = new Timer();
+		TimerTask gameStartTask = new TimerTask(){
+			@Override
+			public void run() {
+				Server.getRoomWithNumber(myUser.getrNo()).startGame();
+			}
+		};
+		gameStartTimer.schedule(gameStartTask, 5000);
+	}
+	public void setResume(){
+		Server.getRoomWithNumber(myUser.getrNo()).resumeGame();
+	}
+	public void WhenLose(){
+		User loseUser = myUser;
+		User winUser = myOppUser;
+		
+		loseUser.Lose();
+		winUser.Win();
+		
+		loseUser.getOut().println("ILOSEROUND");
+		winUser.getOut().println("IWINROUND");
+		
+		loseUser.getOut().println("SETNEWROUND");
+		winUser.getOut().println("SETNEWROUND");
+	}
+	public boolean FinGame(){
+		boolean isFinished = myUser.isFin();
+		
+		return isFinished;
+	}
+	public void sendResultToDB(){
+		
 	}
 }
