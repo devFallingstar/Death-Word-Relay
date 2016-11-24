@@ -14,20 +14,30 @@ import RoomClient.*;
 
 public class Waiting extends JFrame {
 	private Client clnt;
-	private JPanel chatPanel = new JPanel();
 
-	private ImageIcon waiting = new ImageIcon("waitingBg3.png");
-	private ImageIcon rank = new ImageIcon("rankList1.png");
-	private ImageIcon room = new ImageIcon("roomList.png");
-	private ImageIcon mkr = new ImageIcon("mkrBt.png");
-	private ImageIcon ent = new ImageIcon("entBt.png");
-	private ImageIcon rf = new ImageIcon("rfBt.png");
+	private ImageIcon waiting = new ImageIcon("Img/waitingBg3.png");
+	private ImageIcon rank = new ImageIcon("Img/rankList1.png");
+	private ImageIcon room = new ImageIcon("Img/roomList.png");
+	private ImageIcon mkr = new ImageIcon("Img/mkrBt.png");
+	private ImageIcon ent = new ImageIcon("Img/entBt.png");
+	private ImageIcon rf = new ImageIcon("Img/rfBt.png");
+	private ImageIcon chat = new ImageIcon("Img/chatBg.png");
+	
+	private JPanel chatPanel = new JPanel(){
+		
+		 public void paintComponent(Graphics g) {
+			    g.drawImage(chat.getImage(), 0, 0, null);
+			    setOpaque(false);
+			    super.paintComponent(g);
+			   }
+	};
 	
 	
 	private JLabel waitBg = new JLabel(waiting);
 	private JLabel ranklbl = new JLabel(rank);
 	private JLabel roomlbl = new JLabel(room);
-
+	private JLabel chatlbl = new JLabel(chat);
+	
 	private List roomList = new List(10, false);
 	private List rankList = new List(10, false);
 
@@ -68,20 +78,21 @@ public class Waiting extends JFrame {
 		cont.add(ranklbl);
 		cont.add(chatPanel);
 		cont.add(waitBg);
+		cont.add(chatlbl);
 		
-		MakeRoomBtn.setBounds(70, 30, mkr.getIconWidth(), mkr.getIconHeight());
+		MakeRoomBtn.setBounds(45, 30, mkr.getIconWidth(), mkr.getIconHeight());
 		MakeRoomBtn.setBackground(Color.red);
 		MakeRoomBtn.setBorderPainted(false);
 		MakeRoomBtn.setFocusPainted(false);
 		MakeRoomBtn.setContentAreaFilled(false);
 		
-		EnterBtn.setBounds(390, 30, ent.getIconWidth(), ent.getIconHeight());
+		EnterBtn.setBounds(405, 30, ent.getIconWidth(), ent.getIconHeight());
 		EnterBtn.setBackground(Color.red);
 		EnterBtn.setBorderPainted(false);
 		EnterBtn.setFocusPainted(false);
 		EnterBtn.setContentAreaFilled(false);
 		
-		RefreshBtn.setBounds(510, 30, rf.getIconWidth(), rf.getIconHeight());
+		RefreshBtn.setBounds(515, 30, rf.getIconWidth(), rf.getIconHeight());
 		RefreshBtn.setBackground(Color.red);
 		RefreshBtn.setBorderPainted(false);
 		RefreshBtn.setFocusPainted(false);
@@ -91,14 +102,14 @@ public class Waiting extends JFrame {
 		roomScrlPane.setBounds(15, 121, 588, 277);
 		rankList.setBounds(630, 121, 150, 277);
 		
-		roomlbl.setBounds(210, 5, room.getIconWidth(), room.getIconHeight());
+		roomlbl.setBounds(205, 3, room.getIconWidth(), room.getIconHeight());
 		//roomlbl.setHorizontalAlignment(SwingConstants.CENTER);
 		//roomlbl.setFont(new Font("����", Font.BOLD, 16));
 
-		ranklbl.setBounds(620, 40, rank.getIconWidth() , rank.getIconHeight());
+		ranklbl.setBounds(630, 40, rank.getIconWidth() , rank.getIconHeight());
 		//ranklbl.setHorizontalAlignment(SwingConstants.CENTER);
 		//ranklbl.setFont(new Font("����", Font.BOLD, 16));
-
+		//chatlbl.setBounds(15,450,588,295);
 		
 		msgScrlPane.setBounds(0, 10, 583, 255);
 		msgScrlPane.setOpaque(false);
@@ -113,9 +124,12 @@ public class Waiting extends JFrame {
 		
 		
 		chatPanel.setBounds(15, 450,  588, 295);
-		chatPanel.setOpaque(false);
+		//chatPanel.setOpaque(false);
+	
 		chatPanel.add(msgScrlPane);
 		chatPanel.add(msgTxt);
+		chatPanel.add(chatlbl);
+		
 		
 		
 		
