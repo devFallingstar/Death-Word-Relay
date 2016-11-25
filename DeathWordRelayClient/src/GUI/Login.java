@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import javax.swing.*;
 
+import Data.User;
 import RoomClient.*;
 
 public class Login extends JFrame {
@@ -86,6 +87,8 @@ public class Login extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					Client.sendLoginRequest(IDtxt.getText(), PWtxt.getText());
+				
+					
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}

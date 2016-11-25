@@ -10,11 +10,13 @@ import java.util.Vector;
 import javax.swing.*;
 
 import Data.Room;
+import Data.User;
 import RoomClient.*;
 
 public class Waiting extends JFrame {
 	private Client clnt;
 
+	
 	private ImageIcon waiting = new ImageIcon("Img/waitingBg3.png");
 	private ImageIcon rank = new ImageIcon("Img/rankList1.png");
 	private ImageIcon room = new ImageIcon("Img/roomList.png");
@@ -34,10 +36,14 @@ public class Waiting extends JFrame {
 	};
 	
 	
+	
 	private JLabel waitBg = new JLabel(waiting);
 	private JLabel ranklbl = new JLabel(rank);
 	private JLabel roomlbl = new JLabel(room);
+
 	private JLabel userInfo = new JLabel(userImg);
+	private JLabel userId= new JLabel();
+	private JLabel userRate= new JLabel();
 	
 
 	
@@ -84,6 +90,8 @@ public class Waiting extends JFrame {
 		cont.add(ranklbl);
 		cont.add(chatPanel);
 		cont.add(userInfo);
+		cont.add(userId);
+		cont.add(userRate);
 		cont.add(waitBg);
 		cont.add(chatlbl);
 		

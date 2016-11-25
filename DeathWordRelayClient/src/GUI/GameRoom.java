@@ -31,7 +31,8 @@ public class GameRoom extends JFrame {
 	private static ImageIcon readyImg = new ImageIcon("Img/readyBt.png");
 	private static ImageIcon unreadyImg = new ImageIcon("Img/unreadyBt.png");
 	private static ImageIcon exitImg = new ImageIcon("Img/exitBt.png");
-	
+	private static ImageIcon cptImg = new ImageIcon("Img/userImg.png");
+			
 	private JPanel chatPanel = new JPanel(){
 		
 		 public void paintComponent(Graphics g) {
@@ -43,6 +44,8 @@ public class GameRoom extends JFrame {
 	};
 
 	private static JLabel background = new JLabel(bgImg);
+	private static JLabel competitor = new JLabel(cptImg);
+
 	private static JTextField msgTxt = new JTextField(41);
 	private static JTextField answerTxt = new JTextField(41);
 	private static JTextArea msgArea = new JTextArea(9, 65);
@@ -50,7 +53,6 @@ public class GameRoom extends JFrame {
 	
 	private static JButton exitBtn = new JButton(exitImg);
 	private static JButton readyBtn = new JButton(readyImg);
-	private static JButton unreadyBtn = new JButton(unreadyImg);
 
 	private Container cont;
 
@@ -72,13 +74,14 @@ public class GameRoom extends JFrame {
 		cont.add(chatPanel);
 		cont.add(readyBtn);
 		cont.add(exitBtn);
+		cont.add(competitor);
 		cont.add(background);
 
-		msgScrlPane.setBounds(20,30 ,529, 430);
+		msgScrlPane.setBounds(23,30 ,529, 430);
 		msgScrlPane.setOpaque(false);
 		msgScrlPane.getViewport().setOpaque(false);
 		
-		msgTxt.setBounds(20, 490, 529, 31);
+		msgTxt.setBounds(23, 490, 529, 31);
 		msgTxt.setOpaque(false);
 		msgTxt.setForeground(Color.white);
 		
@@ -86,11 +89,12 @@ public class GameRoom extends JFrame {
 		msgArea.setEditable(false);
 		msgArea.setForeground(Color.white);
 		
-		answerTxt.setBounds(20, 490, 529, 31);
+		answerTxt.setBounds(23, 490, 529, 31);
 		
-		chatPanel.setBounds(20, 30, 550, 540);
+		chatPanel.setBounds(23, 30, 555, 540);
 		
-		readyBtn.setBounds(740, 255, readyImg.getIconWidth(), readyImg.getIconHeight());
+		//readyBtn.setPressedIcon(unreadyImg);
+		readyBtn.setBounds(670, 345, readyImg.getIconWidth(), readyImg.getIconHeight());
 		readyBtn.setBackground(Color.red);
 		readyBtn.setBorderPainted(false);
 		readyBtn.setFocusPainted(false);
@@ -103,7 +107,7 @@ public class GameRoom extends JFrame {
 		exitBtn.setFocusPainted(false);
 		exitBtn.setContentAreaFilled(false);		
 	
-		
+		competitor.setBounds(640,40,cptImg.getIconWidth(),cptImg.getIconHeight());
 		
 		background.setBounds(0,0,bgImg.getIconWidth(),bgImg.getIconHeight());
 		
@@ -154,10 +158,10 @@ public class GameRoom extends JFrame {
 				if (isReady) {
 					
 					
-					
 					msgArea.append("Waiting for other player...\n");
+					readyBtn.setIcon(unreadyImg);
 				} else {
-					readyBtn.setText("Ready");
+					readyBtn.setIcon(readyImg);
 					msgArea.append("Press Ready button when your ready to play!\n");
 				}
 			}
