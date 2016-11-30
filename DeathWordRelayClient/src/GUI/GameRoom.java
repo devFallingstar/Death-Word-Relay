@@ -156,13 +156,13 @@ public class GameRoom extends JFrame {
 				isReady = !isReady;
 				Client.AreYouReady(isReady);
 				if (isReady) {
-					
-					
 					msgArea.append("Waiting for other player...\n");
 					readyBtn.setIcon(unreadyImg);
+					exitBtn.setEnabled(false);
 				} else {
-					readyBtn.setIcon(readyImg);
 					msgArea.append("Press Ready button when your ready to play!\n");
+					readyBtn.setIcon(readyImg);
+					exitBtn.setEnabled(true);
 				}
 			}
 		});
@@ -295,9 +295,6 @@ public class GameRoom extends JFrame {
 		Client.sendResult();
 		myUser.gameFinInit();
 		isReady = false;
-	}
-	public static void startNextRound(){
-		
-		
+		readyBtn.setIcon(readyImg);
 	}
 }
