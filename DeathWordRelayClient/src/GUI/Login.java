@@ -74,6 +74,7 @@ public class Login extends JFrame {
 		IDlbl.setBounds(127, 601, idImg.getIconWidth(), idImg.getIconHeight());
 		PWlbl.setBounds(125, 636, pwImg.getIconWidth(), pwImg.getIconHeight());
 		IDtxt.setBounds(185, 601, 100, 23);
+		
 		PWtxt.setBounds(186, 636, 100, 23);
 		loginBtn.setBounds(306, 594, goImg.getIconWidth(), goImg.getIconHeight());
 		REGlbl.setBounds(87, 680, regImg1.getIconWidth(), regImg1.getIconHeight());

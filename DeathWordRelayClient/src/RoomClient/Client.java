@@ -358,4 +358,9 @@ public class Client extends JFrame {
 	public static void setNICK(String _NICK) {
 		NICK = _NICK;
 	}
+	public static String getNICK() {
+	return NICK;	
+	}
+	
+	
 }

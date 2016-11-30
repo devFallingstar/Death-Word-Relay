@@ -39,7 +39,7 @@ public class Waiting extends JFrame {
 	private JLabel roomlbl = new JLabel(room);
 
 	private JLabel userInfo = new JLabel(userImg);
-	private JLabel userId = new JLabel();
+	private JLabel userId;
 	private JLabel userRate = new JLabel();
 	private JLabel chatlbl = new JLabel(chat);
 
@@ -82,9 +82,9 @@ public class Waiting extends JFrame {
 		cont.add(rankList);
 		cont.add(ranklbl);
 		cont.add(chatPanel);
-		cont.add(userInfo);
 		cont.add(userId);
 		cont.add(userRate);
+		cont.add(userInfo);
 		cont.add(waitBg);
 		cont.add(chatlbl);
 
@@ -114,7 +114,13 @@ public class Waiting extends JFrame {
 		ranklbl.setBounds(630, 40, rank.getIconWidth(), rank.getIconHeight());
 
 		userInfo.setBounds(610, 450, userImg.getIconWidth(), userImg.getIconHeight());
-
+		userId.setBounds(700,630,70,25);
+		userId.setFont(new Font("chiller",Font.BOLD,25));
+		userId.setForeground(Color.white);
+		userId = new JLabel(Client.getNICK());
+		
+		
+		
 		msgScrlPane.setBounds(0, 10, 583, 255);
 		msgScrlPane.setOpaque(false);
 		msgScrlPane.getViewport().setOpaque(false);
@@ -125,6 +131,8 @@ public class Waiting extends JFrame {
 		msgArea.setEditable(false);
 		msgArea.setForeground(Color.white);
 		msgArea.setSize(583, 255);
+		msgArea.setFont(new Font("Arial",Font.PLAIN,15));
+
 
 		chatPanel.setBounds(15, 450, 588, 295);
 
