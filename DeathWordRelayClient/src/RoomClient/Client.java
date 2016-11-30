@@ -65,7 +65,6 @@ public class Client extends JFrame {
 			/*
 			 * Make connection and initialize streams
 			 */
-
 			String serverAddress = "127.0.0.1";
 			serverAddress = getServerAddress();
 
@@ -170,9 +169,8 @@ public class Client extends JFrame {
 	 * 
 	 * @return
 	 */
-	@SuppressWarnings("unused")
 	private String getServerAddress() {
-		return JOptionPane.showInputDialog(this, "Enter IP Address of the Server:", "Welcome to the Chatter",
+		return JOptionPane.showInputDialog(this, "Enter IP Address of the Server:", "Enter server address(test)",
 				JOptionPane.QUESTION_MESSAGE);
 	}
 
@@ -193,17 +191,23 @@ public class Client extends JFrame {
 	 */
 	public static boolean sendLoginRequest(String _ID, String _PW) throws IOException {
 
-		if (!MemberProc.loginChecker(_ID, _PW)) {
-			myLoginGUI.wrongParam();
+		// if (!MemberProc.loginChecker(_ID, _PW)) {
+		// myLoginGUI.wrongParam();
+		//
+		// return false;
+		// } else {
+		// System.out.print(NICK);
+		// out.println(NICK);
+		// myLoginGUI.setVisible(false);
+		//
+		// return true;
+		// }
 
-			return false;
-		} else {
-			System.out.print(NICK);
-			out.println(NICK);
-			myLoginGUI.setVisible(false);
+		out.println((int) (Math.random() * 100) + "");
+		myLoginGUI.setVisible(false);
 
-			return true;
-		}
+		return true;
+
 	}
 
 	/**
