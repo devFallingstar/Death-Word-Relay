@@ -4,9 +4,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
-import com.mysql.jdbc.Statement;
-//import java.util.Vector;
 
 import RoomClient.Client;
 
@@ -58,8 +57,8 @@ public class MemberProc {
 			ResultSet rs = executeSQL(sql, 1);
 			if (rs != null) {
 				rs.next();
-				System.out.println("ASD "+rs.getString(3));
 				Client.setNICK(rs.getString(3));
+				
 				return true;
 			} else {
 				return false;

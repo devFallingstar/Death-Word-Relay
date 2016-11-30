@@ -26,7 +26,7 @@ public class Login extends JFrame {
 	private JLabel IDlbl = new JLabel(idImg);
 	private JLabel PWlbl = new JLabel(pwImg);
 	private JTextField IDtxt = new JTextField();
-	private JTextField PWtxt = new JTextField();
+	private JPasswordField PWtxt = new JPasswordField();
 	private JButton loginBtn = new JButton(goImg);
 
 	private JLabel REGlbl = new JLabel(regImg1);

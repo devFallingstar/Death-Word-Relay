@@ -35,21 +35,15 @@ public class Waiting extends JFrame {
 			   }
 	};
 	
-	
-	
 	private JLabel waitBg = new JLabel(waiting);
 	private JLabel ranklbl = new JLabel(rank);
 	private JLabel roomlbl = new JLabel(room);
 
 	private JLabel userInfo = new JLabel(userImg);
-	private JLabel userId= new JLabel();
-	private JLabel userRate= new JLabel();
-	
-
-	
+	private JLabel userId = new JLabel();
+	private JLabel userRate = new JLabel();
 	private JLabel chatlbl = new JLabel(chat);
 	
-
 	private static List roomList = new List(10, false);
 	private List rankList = new List(10, false);
 
@@ -112,19 +106,13 @@ public class Waiting extends JFrame {
 		RefreshBtn.setBorderPainted(false);
 		RefreshBtn.setFocusPainted(false);
 		RefreshBtn.setContentAreaFilled(false);
-		
 
 		roomScrlPane.setBounds(15, 121, 588, 277);
 		rankList.setBounds(630, 121, 150, 277);
 		
 		roomlbl.setBounds(205, 3, room.getIconWidth(), room.getIconHeight());
-		//roomlbl.setHorizontalAlignment(SwingConstants.CENTER);
-		//roomlbl.setFont(new Font("����", Font.BOLD, 16));
 
 		ranklbl.setBounds(630, 40, rank.getIconWidth() , rank.getIconHeight());
-		//ranklbl.setHorizontalAlignment(SwingConstants.CENTER);
-		//ranklbl.setFont(new Font("����", Font.BOLD, 16));
-		//chatlbl.setBounds(15,450,588,295);
 		
 		userInfo.setBounds(610,450,userImg.getIconWidth(),userImg.getIconHeight());
 		
@@ -133,25 +121,19 @@ public class Waiting extends JFrame {
 		msgScrlPane.getViewport().setOpaque(false);
 		msgTxt.setBounds(0,270, 583, 21);
 		msgTxt.setOpaque(false);
-		msgTxt.setForeground(Color.white);
+		msgTxt.setForeground(Color.GRAY);
 		msgArea.setOpaque(false);
 		msgArea.setEditable(false);
 		msgArea.setForeground(Color.white);
-		
-		
+		msgArea.setSize(583, 255);
 		
 		chatPanel.setBounds(15, 450,  588, 295);
-		//chatPanel.setOpaque(false);
 	
 		chatPanel.add(msgScrlPane);
 		chatPanel.add(msgTxt);
 		chatPanel.add(chatlbl);
 		
-		
-		
-		
 		waitBg.setBounds(0,0,waiting.getIconWidth(),waiting.getIconHeight());
-		
 		
 		msgTxt.addActionListener(new ActionListener() {
 			/**

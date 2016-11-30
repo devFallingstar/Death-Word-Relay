@@ -77,8 +77,8 @@ public class UserHandler extends Thread {
 						names.add(name);
 						break;
 					} else {
-						//TODO response have to add.
-						//out.println("WRONGINFO")
+						// TODO response have to add.
+						// out.println("WRONGINFO")
 						continue;
 					}
 				}
@@ -98,7 +98,7 @@ public class UserHandler extends Thread {
 			} else {
 				myUser = new User(name, in, out);
 			}
-			System.out.println("LOG : User "+myUser.getName()+" connected.");
+			System.out.println("LOG : User " + myUser.getName() + " connected.");
 			System.out.println("LOG : The number of current users : " + users.size());
 
 			Server.addUser(myUser);
@@ -227,13 +227,14 @@ public class UserHandler extends Thread {
 				} else if (input.startsWith("GAMERESULT")) {
 
 				} else if (input.startsWith("MESSAGE ")) {
-					broadCast(name + ": " + input.substring(8));
-					System.out
-							.println("LOG : " + input + " (By. " + name + " With room number " + myUser.getrNo() + ")");
+					if (!(input.substring(8).isEmpty() || input.substring(8).startsWith("\n"))) {
+						broadCast(name + ": " + input.substring(8));
+						System.out.println(
+								"LOG : " + input + " (By. " + name + " With room number " + myUser.getrNo() + ")");
+
+					}
 				}
-
 			}
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

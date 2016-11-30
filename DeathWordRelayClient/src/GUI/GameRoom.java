@@ -40,7 +40,6 @@ public class GameRoom extends JFrame {
 			    setOpaque(false);
 			    super.paintComponent(g);
 			   }
-		
 	};
 
 	private static JLabel background = new JLabel(bgImg);
@@ -83,8 +82,9 @@ public class GameRoom extends JFrame {
 		
 		msgTxt.setBounds(23, 490, 529, 31);
 		msgTxt.setOpaque(false);
-		msgTxt.setForeground(Color.white);
+		msgTxt.setForeground(Color.GRAY);
 		
+		msgArea.setSize(529, 430);
 		msgArea.setOpaque(false);
 		msgArea.setEditable(false);
 		msgArea.setForeground(Color.white);

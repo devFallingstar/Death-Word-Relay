@@ -192,6 +192,7 @@ public class Client extends JFrame {
 		if (!MemberProc.loginChecker(_ID, _PW)){
 			myLoginGUI.wrongParam();
 		}else{
+			System.out.print(NICK);
 			out.println(NICK);
 			myLoginGUI.setVisible(false);
 		}
