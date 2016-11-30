@@ -83,7 +83,9 @@ public class Login extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					Client.sendLoginRequest(IDtxt.getText(), PWtxt.getText());
+					if (Client.sendLoginRequest(IDtxt.getText(), PWtxt.getText())) {
+						dispose();
+					}
 
 				} catch (IOException e1) {
 					e1.printStackTrace();

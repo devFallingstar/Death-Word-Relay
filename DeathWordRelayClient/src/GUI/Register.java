@@ -148,7 +148,7 @@ public class Register extends JFrame {
 			JOptionPane.showMessageDialog(this, "Duplicate ID!");
 		} else if (code == -2) {
 			JOptionPane.showMessageDialog(this, "Duplicate Nickname!");
-		} else{
+		} else {
 			JOptionPane.showMessageDialog(this, "Unknow error. Try again later!");
 		}
 	}

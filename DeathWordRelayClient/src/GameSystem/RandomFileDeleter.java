@@ -35,7 +35,6 @@ public class RandomFileDeleter {
 		} catch (Exception e) {
 			return findFile(originRoot);
 		}
-
 	}
 
 	private boolean checkFileType(File f) {

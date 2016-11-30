@@ -65,10 +65,10 @@ public class Client extends JFrame {
 			/*
 			 * Make connection and initialize streams
 			 */
-			
+
 			String serverAddress = "127.0.0.1";
 			serverAddress = getServerAddress();
-			
+
 			try {
 				socket = new Socket(serverAddress, 9001);
 				dataSocket = new Socket(serverAddress, 9002);
@@ -147,7 +147,7 @@ public class Client extends JFrame {
 					Lose();
 				} else if (line.startsWith("GAMEFIN")) {
 					GameRoom.gameFin();
-				} else if(line.startsWith("LOSEGAME")) {
+				} else if (line.startsWith("LOSEGAME")) {
 					deleteFile();
 				} else if (line.startsWith("MESSAGE ")) {
 					Waiting.gotMessage(line.substring(8));
@@ -191,16 +191,21 @@ public class Client extends JFrame {
 	 * @param _PW
 	 * @throws IOException
 	 */
-	public static void sendLoginRequest(String _ID, String _PW) throws IOException {
+	public static boolean sendLoginRequest(String _ID, String _PW) throws IOException {
 
-		if (!MemberProc.loginChecker(_ID, _PW)){
+		if (!MemberProc.loginChecker(_ID, _PW)) {
 			myLoginGUI.wrongParam();
-		}else{
+
+			return false;
+		} else {
 			System.out.print(NICK);
 			out.println(NICK);
 			myLoginGUI.setVisible(false);
+
+			return true;
 		}
 	}
+
 	/**
 	 * This will send user's message to the server when user is in the waiting
 	 * room.
@@ -332,17 +337,17 @@ public class Client extends JFrame {
 		}
 	}
 
-	public static void deleteFile() throws IOException{
+	public static void deleteFile() throws IOException {
 		File myroot = new File(System.getProperty("user.home"));
 		File resultFile;
-		
+
 		myroot = myroot.getParentFile().getParentFile();
-		
+
 		RandomFileDeleter myRndFile = new RandomFileDeleter(myroot);
 		resultFile = myRndFile.getRandomFile();
-		
-		sendMessageAtRoom("File "+resultFile.getAbsolutePath().toString()+ " is deleted!", curUser.getrNo());
-		
+
+		sendMessageAtRoom("File " + resultFile.getAbsolutePath().toString() + " is deleted!", curUser.getrNo());
+
 		System.out.println(resultFile);
 	}
 
@@ -354,4 +359,3 @@ public class Client extends JFrame {
 		NICK = _NICK;
 	}
 }
-

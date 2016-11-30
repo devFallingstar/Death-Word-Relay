@@ -25,21 +25,21 @@ public class GameRoom extends JFrame {
 	private static boolean isReady;
 	private static User myUser;
 	// private User oppUser; <- Not implemented yet. DO NOT ERASE.
-	
+
 	private static ImageIcon bgImg = new ImageIcon("Img/gameRoomBg.png");
 	private ImageIcon chat = new ImageIcon("Img/gchatBg.png");
 	private static ImageIcon readyImg = new ImageIcon("Img/readyBt.png");
 	private static ImageIcon unreadyImg = new ImageIcon("Img/unreadyBt.png");
 	private static ImageIcon exitImg = new ImageIcon("Img/exitBt.png");
 	private static ImageIcon cptImg = new ImageIcon("Img/userImg.png");
-			
-	private JPanel chatPanel = new JPanel(){
-		
-		 public void paintComponent(Graphics g) {
-			    g.drawImage(chat.getImage(), 0, 0, null);
-			    setOpaque(false);
-			    super.paintComponent(g);
-			   }
+
+	private JPanel chatPanel = new JPanel() {
+
+		public void paintComponent(Graphics g) {
+			g.drawImage(chat.getImage(), 0, 0, null);
+			setOpaque(false);
+			super.paintComponent(g);
+		}
 	};
 
 	private static JLabel background = new JLabel(bgImg);
@@ -49,7 +49,7 @@ public class GameRoom extends JFrame {
 	private static JTextField answerTxt = new JTextField(41);
 	private static JTextArea msgArea = new JTextArea(9, 65);
 	private JScrollPane msgScrlPane = new JScrollPane(msgArea);
-	
+
 	private static JButton exitBtn = new JButton(exitImg);
 	private static JButton readyBtn = new JButton(readyImg);
 
@@ -76,41 +76,40 @@ public class GameRoom extends JFrame {
 		cont.add(competitor);
 		cont.add(background);
 
-		msgScrlPane.setBounds(23,30 ,529, 430);
+		msgScrlPane.setBounds(23, 30, 529, 430);
 		msgScrlPane.setOpaque(false);
 		msgScrlPane.getViewport().setOpaque(false);
-		
+
 		msgTxt.setBounds(23, 490, 529, 31);
 		msgTxt.setOpaque(false);
 		msgTxt.setForeground(Color.GRAY);
-		
+
 		msgArea.setSize(529, 430);
 		msgArea.setOpaque(false);
 		msgArea.setEditable(false);
 		msgArea.setForeground(Color.white);
-		
+
 		answerTxt.setBounds(23, 490, 529, 31);
-		
+
 		chatPanel.setBounds(23, 30, 555, 540);
-		
-		//readyBtn.setPressedIcon(unreadyImg);
+
+		// readyBtn.setPressedIcon(unreadyImg);
 		readyBtn.setBounds(670, 345, readyImg.getIconWidth(), readyImg.getIconHeight());
 		readyBtn.setBackground(Color.red);
 		readyBtn.setBorderPainted(false);
 		readyBtn.setFocusPainted(false);
-		readyBtn.setContentAreaFilled(false);		
-	
-		
+		readyBtn.setContentAreaFilled(false);
+
 		exitBtn.setBounds(910, 510, exitImg.getIconWidth(), exitImg.getIconHeight());
 		exitBtn.setBackground(Color.red);
 		exitBtn.setBorderPainted(false);
 		exitBtn.setFocusPainted(false);
-		exitBtn.setContentAreaFilled(false);		
-	
-		competitor.setBounds(640,40,cptImg.getIconWidth(),cptImg.getIconHeight());
-		
-		background.setBounds(0,0,bgImg.getIconWidth(),bgImg.getIconHeight());
-		
+		exitBtn.setContentAreaFilled(false);
+
+		competitor.setBounds(640, 40, cptImg.getIconWidth(), cptImg.getIconHeight());
+
+		background.setBounds(0, 0, bgImg.getIconWidth(), bgImg.getIconHeight());
+
 		answerTxt.setEnabled(false);
 		answerTxt.setVisible(false);
 		msgArea.setEditable(false);
@@ -176,7 +175,7 @@ public class GameRoom extends JFrame {
 			}
 		});
 		this.setResizable(false);
-		
+
 		msgArea.setText("");
 	}
 
@@ -210,8 +209,8 @@ public class GameRoom extends JFrame {
 			readyBtn.setEnabled(true);
 		}
 	}
-	
-	public void checkAndSendAnswer(){
+
+	public void checkAndSendAnswer() {
 		try {
 			String msg = answerTxt.getText();
 			String lastLine = null, lastWord;
@@ -224,11 +223,11 @@ public class GameRoom extends JFrame {
 			/* "---" means you're a first */
 			if (lastLine.startsWith("---")) {
 				myGame.setCurrentWord(msg);
-				
+
 				Client.sendAnswer(msg, myUser.getrNo());
-				if(!(myGame.checkLength() && myGame.checkWithOnline())){
+				if (!(myGame.checkLength() && myGame.checkWithOnline())) {
 					Client.Lose();
-				}else{
+				} else {
 					Client.requestResume();
 					answerTxt.setEnabled(false);
 				}
@@ -237,12 +236,12 @@ public class GameRoom extends JFrame {
 
 				myGame.setPrevWord(lastWord);
 				myGame.setCurrentWord(msg);
-				
+
 				Client.sendAnswer(msg, myUser.getrNo());
-				if(myGame.isCorrect()){
+				if (myGame.isCorrect()) {
 					Client.requestResume();
 					answerTxt.setEnabled(false);
-				}else{
+				} else {
 					Client.Lose();
 				}
 			}
@@ -250,10 +249,11 @@ public class GameRoom extends JFrame {
 
 		}
 	}
-	
-	public static void enableAnswerField(){
+
+	public static void enableAnswerField() {
 		answerTxt.setEnabled(true);
 	}
+
 	public static void changeTxtField() {
 		if (msgTxt.isVisible()) {
 			msgTxt.setVisible(false);
@@ -272,23 +272,27 @@ public class GameRoom extends JFrame {
 			readyBtn.setText("Ready");
 		}
 	}
-	public static void loseNotice(){
+
+	public static void loseNotice() {
 		msgArea.append("YOU LOSE!!!\n");
 		myGame.youLose();
 		answerTxt.setEnabled(false);
 	}
-	public static void winNotice(){
+
+	public static void winNotice() {
 		msgArea.append("YOU WIN!!!!\n");
 		myGame.youWin();
 		answerTxt.setEnabled(false);
 	}
-	public static void readyForNewRound(){
+
+	public static void readyForNewRound() {
 		msgArea.append("--------------------------------------------------------------\n");
 		msgArea.append("You can't rewind death.\n");
 		msgArea.append("--------------------------------------------------------------\n");
 		answerTxt.setEnabled(false);
 	}
-	public static void gameFin(){
+
+	public static void gameFin() {
 		msgArea.append("Finished!!!\n");
 		msgArea.append("--------------------------------------------------------------\n");
 		changeTxtField();
