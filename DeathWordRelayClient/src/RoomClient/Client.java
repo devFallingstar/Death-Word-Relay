@@ -65,9 +65,10 @@ public class Client extends JFrame {
 			/*
 			 * Make connection and initialize streams
 			 */
-			// String serverAddress = getServerAddress();
+			
 			String serverAddress = "127.0.0.1";
-
+			serverAddress = getServerAddress();
+			
 			try {
 				socket = new Socket(serverAddress, 9001);
 				dataSocket = new Socket(serverAddress, 9002);
@@ -314,20 +315,6 @@ public class Client extends JFrame {
 		newRoomList = (HashMap<Integer, String>) objIn.readObject();
 
 		return newRoomList;
-	}
-
-	/**
-	 * Check is there any special character in ID, a.k.a non-english.
-	 * 
-	 * @param str
-	 * @return 0 when there's no special character
-	 */
-	private static int checkStringPattern(String str) {
-		if (!str.matches("[0-9|a-z|A-Z]*")) {
-			return -1;
-		} else {
-			return 0;
-		}
 	}
 
 	public static int submitReg(String ID, String PW, String Nick) {
