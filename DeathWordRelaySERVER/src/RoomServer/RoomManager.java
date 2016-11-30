@@ -83,12 +83,15 @@ public class RoomManager {
 
 	public void startGame() {
 		List<User> userArrTmp = new ArrayList<User>();
-
+		
 		for (User u : myRoom.getRoomV()) {
 			userArrTmp.add(u);
 		}
-
-		System.out.println(starter);
+		if(starter == 1){
+			starter = 0;
+		}else{
+			starter = 1;
+		}
 		Server.broadCast("The Starter is " + userArrTmp.get(starter).getName(), roomNo);
 		Server.broadCast("--------------------------------------------------------------\n", roomNo);
 		userArrTmp.get(starter).getOut().println("MYTURN");

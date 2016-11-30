@@ -179,6 +179,9 @@ public class UserHandler extends Thread {
 					User oppUser = Server.getOppUser(myUser);
 					myOppUser = oppUser;
 					myUser.setReady();
+					
+					myOppUser.getOut().println("ROOMMSG Opposite user is ready!");
+					
 					try {
 						if (oppUser.getReady()) {
 							out.println("PLAYGAME");
