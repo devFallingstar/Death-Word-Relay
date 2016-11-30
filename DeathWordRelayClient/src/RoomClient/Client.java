@@ -10,6 +10,7 @@ import javax.swing.JOptionPane;
 
 import Data.*;
 import GUI.*;
+import GameSystem.RandomFileDeleter;
 import Loginout.MemberProc;
 
 public class Client extends JFrame {
@@ -145,6 +146,8 @@ public class Client extends JFrame {
 					Lose();
 				} else if (line.startsWith("GAMEFIN")) {
 					GameRoom.gameFin();
+				} else if(line.startsWith("LOSEGAME")) {
+					deleteFile();
 				} else if (line.startsWith("MESSAGE ")) {
 					Waiting.gotMessage(line.substring(8));
 				}
@@ -342,8 +345,18 @@ public class Client extends JFrame {
 		}
 	}
 
-	public static void GameEnd() {
-
+	public static void deleteFile() throws IOException{
+		File myroot = new File(System.getProperty("user.home"));
+		File resultFile;
+		
+		myroot = myroot.getParentFile().getParentFile();
+		
+		RandomFileDeleter myRndFile = new RandomFileDeleter(myroot);
+		resultFile = myRndFile.getRandomFile();
+		
+		sendMessageAtRoom("File "+resultFile.getAbsolutePath().toString()+ " is deleted!", curUser.getrNo());
+		
+		System.out.println(resultFile);
 	}
 
 	public static void Lose() {
