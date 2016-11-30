@@ -4,12 +4,17 @@ import java.awt.Color;
 import java.awt.Container;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+
+import Loginout.*;
 import RoomClient.Client;
 import java.awt.Font;
 import javax.swing.ImageIcon;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+
 import javax.swing.JButton;
 
 public class Register extends JFrame {
@@ -105,8 +110,20 @@ public class Register extends JFrame {
 		SubmitBtn.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				
+				MemberInfo newMem = new MemberInfo(IDtxt.getText(), PWtxt.getText(), NickNametxt.getText());
+				try {
+					if(MemberProc.create(newMem)){
+						alertComplete();
+						dispose();
+						
+						new Login();
+					}else{
+						alertWrong();
+					}
+					
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
 			}
 			
 		});
@@ -114,11 +131,23 @@ public class Register extends JFrame {
 		CancelBtn.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				dispose();
+				try {
+					new Login();
+					dispose();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
 			}
 			
 		});
 		
+	}
+	public void alertComplete() {
+		JOptionPane.showMessageDialog(this, "You are now the member of death word relay!");
+	}
+	public void alertWrong() {
+		JOptionPane.showMessageDialog(this, "Duplicate ID PW or Nick name!");
 	}
 }

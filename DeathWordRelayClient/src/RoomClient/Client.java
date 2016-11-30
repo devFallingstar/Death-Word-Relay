@@ -10,6 +10,7 @@ import javax.swing.JOptionPane;
 
 import Data.*;
 import GUI.*;
+import Loginout.MemberProc;
 
 public class Client extends JFrame {
 	/**
@@ -27,6 +28,7 @@ public class Client extends JFrame {
 	 */
 	private static String ID;
 	private static String PW;
+	private static String NICK;
 
 	/**
 	 * User() and current joining Room() of player
@@ -139,9 +141,9 @@ public class Client extends JFrame {
 					GameRoom.myGame.youLose();
 				} else if (line.startsWith("SETNEWROUND")) {
 					GameRoom.readyForNewRound();
-				} else if (line.startsWith("DUPWORD")){
+				} else if (line.startsWith("DUPWORD")) {
 					Lose();
-				} else if (line.startsWith("GAMEFIN")){
+				} else if (line.startsWith("GAMEFIN")) {
 					GameRoom.gameFin();
 				} else if (line.startsWith("MESSAGE ")) {
 					Waiting.gotMessage(line.substring(8));
@@ -149,13 +151,14 @@ public class Client extends JFrame {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
-			try {
-				socket.close();
-				dataSocket.close();
-			} catch (IOException e) {
-			}
 		}
+		// finally {
+		// try {
+		// socket.close();
+		// dataSocket.close();
+		// } catch (IOException e) {
+		// }
+		// }
 	}
 
 	/**
@@ -185,17 +188,14 @@ public class Client extends JFrame {
 	 * @throws IOException
 	 */
 	public static void sendLoginRequest(String _ID, String _PW) throws IOException {
-		ID = _ID;
-		PW = _PW;
 
-		if (ID.isEmpty() || PW.isEmpty() || (checkStringPattern(ID) == -1)) {
+		if (!MemberProc.loginChecker(_ID, _PW)){
 			myLoginGUI.wrongParam();
-		} else {
-			out.println(ID + "|" + PW);
+		}else{
+			out.println(NICK);
 			myLoginGUI.setVisible(false);
 		}
 	}
-
 	/**
 	 * This will send user's message to the server when user is in the waiting
 	 * room.
@@ -348,4 +348,9 @@ public class Client extends JFrame {
 	public static void Lose() {
 		out.println("ILOSEROUND");
 	}
+
+	public static void setNICK(String _NICK) {
+		NICK = _NICK;
+	}
 }
+

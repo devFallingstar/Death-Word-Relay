@@ -21,7 +21,7 @@ public class Login extends JFrame {
 	private ImageIcon regImg2 = new ImageIcon("Img/regBt.png");
 
 	private Register myReg;
-	
+
 	private JLabel main = new JLabel(mainImg);
 	private JLabel IDlbl = new JLabel(idImg);
 	private JLabel PWlbl = new JLabel(pwImg);
@@ -32,7 +32,6 @@ public class Login extends JFrame {
 	private JLabel REGlbl = new JLabel(regImg1);
 	private JButton regBtn = new JButton(regImg2);
 
-	
 	private JDialog loginDlg = new JDialog(this, "Notice");
 	private JLabel loginWronglbl = new JLabel("Wrong ID or Password!");
 	private JButton loginWrongBtn = new JButton("Okay");
@@ -42,7 +41,7 @@ public class Login extends JFrame {
 	public Login() throws IOException {
 		super("Login");
 		clnt = new Client();
-		
+
 		this.getContentPane().setLayout(null);
 		this.setBounds(0, 0, 500, 780);
 		this.setVisible(true);
@@ -80,33 +79,19 @@ public class Login extends JFrame {
 		REGlbl.setBounds(87, 680, regImg1.getIconWidth(), regImg1.getIconHeight());
 		regBtn.setBounds(275, 682, regImg2.getIconWidth(), regImg2.getIconHeight());
 
-		
-	
 		loginBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
 					Client.sendLoginRequest(IDtxt.getText(), PWtxt.getText());
-				
-					
+
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
 			}
 		});
 
-
-		
 		regBtn.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-			
-				register = new Register();
-
-			}
-		});
-
-		regBtn.addActionListener(new ActionListener(){
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -114,9 +99,9 @@ public class Login extends JFrame {
 				myReg = new Register();
 				dispose();
 			}
-			
+
 		});
-		
+
 		loginWronglbl.setVerticalAlignment(SwingConstants.CENTER);
 		loginDlg.setSize(200, 100);
 		loginDlg.setVisible(false);

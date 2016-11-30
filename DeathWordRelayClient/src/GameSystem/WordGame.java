@@ -54,8 +54,8 @@ public class WordGame {
 	public boolean checkLength(){
 		if(curWord.length() > 4 || curWord.length() < 2){
 			return false;
-		}
-		if(!curWord.matches("[°¡-Èþ]*")){
+		}		
+		if(!curWord.matches("[ê°€-íž£]*")){
 			return false;
 		}
 		return true;
@@ -72,248 +72,248 @@ public class WordGame {
 			return true;
 		}else{
 			String lastWord = prevWord.substring(lastWordIdx);
-			if(lastWord.equals("³à") && curWord.startsWith("¿©"))
+			if(lastWord.equals("ë…€") && curWord.startsWith("ì—¬"))
 				return true;
-			if(lastWord.equals("³å") && curWord.startsWith("¿±"))
+			if(lastWord.equals("ë…‘") && curWord.startsWith("ì—½"))
 				return true;
-			if(lastWord.equals("³á") && curWord.startsWith("¿ª"))
+			if(lastWord.equals("ë…") && curWord.startsWith("ì—­"))
 				return true;
-			if(lastWord.equals("†Ç") && curWord.startsWith("¿³"))
+			if(lastWord.equals("Â†") && curWord.startsWith("ì—¿"))
 				return true;
-			if(lastWord.equals("³ä") && curWord.startsWith("¿°"))
+			if(lastWord.equals("ë…") && curWord.startsWith("ì—¼"))
 				return true;
-			if(lastWord.equals("³â") && curWord.startsWith("¿¬"))
+			if(lastWord.equals("ë…„") && curWord.startsWith("ì—°"))
 				return true;
-			if(lastWord.equals("³ç") && curWord.startsWith("¿µ"))
+			if(lastWord.equals("ë…•") && curWord.startsWith("ì˜"))
 				return true;
-			if(lastWord.equals("³ã") && curWord.startsWith("¿­"))
-				return true;
-			
-			if(lastWord.equals("´¢") && curWord.startsWith("¿ä"))
-				return true;
-			if(lastWord.equals("´¦") && curWord.startsWith("¿é"))
-				return true;
-			if(lastWord.equals("´£") && curWord.startsWith("¿å"))
-				return true;
-			if(lastWord.equals("´§") && curWord.startsWith("¿ê"))
-				return true;
-			if(lastWord.equals("‡œ") && curWord.startsWith("¿è"))
-				return true;
-			if(lastWord.equals("´¤") && curWord.startsWith("¿æ"))
-				return true;
-			if(lastWord.equals("´¨") && curWord.startsWith("¿ë"))
-				return true;
-			if(lastWord.equals("´¥") && curWord.startsWith("¿ç"))
+			if(lastWord.equals("ë…ˆ") && curWord.startsWith("ì—´"))
 				return true;
 			
-			if(lastWord.equals("´º") && curWord.startsWith("À¯"))
+			if(lastWord.equals("ë‡¨") && curWord.startsWith("ìš”"))
 				return true;
-			if(lastWord.equals("´¾") && curWord.startsWith("À´"))
+			if(lastWord.equals("ë‡¹") && curWord.startsWith("ìš¥"))
 				return true;
-			if(lastWord.equals("´»") && curWord.startsWith("À°"))
+			if(lastWord.equals("ë‡©") && curWord.startsWith("ìš•"))
 				return true;
-			if(lastWord.equals("ˆT") && curWord.startsWith("Àµ"))
+			if(lastWord.equals("ë‡»") && curWord.startsWith("ìš§"))
 				return true;
-			if(lastWord.equals("´½") && curWord.startsWith("À³"))
+			if(lastWord.equals("Â‡Âœ") && curWord.startsWith("ìš¤"))
 				return true;
-			if(lastWord.equals("ˆH") && curWord.startsWith("À±"))
+			if(lastWord.equals("ë‡¬") && curWord.startsWith("ìš˜"))
 				return true;
-			if(lastWord.equals("´¿") && curWord.startsWith("À¶"))
+			if(lastWord.equals("ë‡½") && curWord.startsWith("ìš©"))
 				return true;
-			if(lastWord.equals("´¼") && curWord.startsWith("À²"))
-				return true;
-			
-			if(lastWord.equals("´Ï") && curWord.startsWith("ÀÌ"))
-				return true;
-			if(lastWord.equals("´Õ") && curWord.startsWith("ÀÔ"))
-				return true;
-			if(lastWord.equals("´Ö") && curWord.startsWith("ÀÕ"))
-				return true;
-			if(lastWord.equals("´Ô") && curWord.startsWith("ÀÓ"))
-				return true;
-			if(lastWord.equals("´Ñ") && curWord.startsWith("ÀÎ"))
-				return true;
-			if(lastWord.equals("´×") && curWord.startsWith("À×"))
-				return true;
-			if(lastWord.equals("´Ò") && curWord.startsWith("ÀÏ"))
-				return true;
-			if(lastWord.equals("´Ð") && curWord.startsWith("ÀÍ"))
+			if(lastWord.equals("ë‡°") && curWord.startsWith("ìšœ"))
 				return true;
 			
-			if(lastWord.equals("·ª") && curWord.startsWith("¾ß"))
+			if(lastWord.equals("ë‰´") && curWord.startsWith("ìœ "))
 				return true;
-			if(lastWord.equals("Žd") && curWord.startsWith("¾å"))
+			if(lastWord.equals("ëŠ…") && curWord.startsWith("ìœ±"))
 				return true;
-			if(lastWord.equals("·«") && curWord.startsWith("¾à"))
+			if(lastWord.equals("ë‰µ") && curWord.startsWith("ìœ¡"))
 				return true;
-			if(lastWord.equals("·­") && curWord.startsWith("¾æ"))
+			if(lastWord.equals("ÂˆT") && curWord.startsWith("ìœ³"))
 				return true;
-			if(lastWord.equals("Žc") && curWord.startsWith("¾ä"))
+			if(lastWord.equals("ëŠ„") && curWord.startsWith("ìœ°"))
 				return true;
-			if(lastWord.equals("·¬") && curWord.startsWith("¾á"))
+			if(lastWord.equals("ÂˆH") && curWord.startsWith("ìœ¤"))
 				return true;
-			if(lastWord.equals("·®") && curWord.startsWith("¾ç"))
+			if(lastWord.equals("ëŠ‰") && curWord.startsWith("ìœµ"))
 				return true;
-			if(lastWord.equals("ŽU") && curWord.startsWith("¾â"))
-				return true;
-			
-			if(lastWord.equals("·Á") && curWord.startsWith("¿©"))
-				return true;
-			if(lastWord.equals("·É") && curWord.startsWith("¿µ"))
-				return true;
-			if(lastWord.equals("·Ã") && curWord.startsWith("¿¬"))
-				return true;
-			if(lastWord.equals("·Æ") && curWord.startsWith("¿±"))
-				return true;
-			if(lastWord.equals("·Â") && curWord.startsWith("¿ª"))
-				return true;
-			if(lastWord.equals("·Ç") && curWord.startsWith("¿³"))
-				return true;
-			if(lastWord.equals("·Å") && curWord.startsWith("¿°"))
-				return true;
-			if(lastWord.equals("·Ä") && curWord.startsWith("¿­"))
-				return true;
-			if(lastWord.equals("ŽÆ") && curWord.startsWith("¿·"))
+			if(lastWord.equals("ë‰¼") && curWord.startsWith("ìœ¨"))
 				return true;
 			
-			if(lastWord.equals("·Ê") && curWord.startsWith("¿¹"))
+			if(lastWord.equals("ë‹ˆ") && curWord.startsWith("ì´"))
 				return true;
-			if(lastWord.equals("ŽÖ") && curWord.startsWith("¿¼"))
+			if(lastWord.equals("ë‹™") && curWord.startsWith("ìž…"))
 				return true;
-			if(lastWord.equals("·Ë") && curWord.startsWith("¿º"))
+			if(lastWord.equals("ë‹›") && curWord.startsWith("ìž‡"))
 				return true;
-			if(lastWord.equals("ŽÙ") && curWord.startsWith("žŸ"))
+			if(lastWord.equals("ë‹˜") && curWord.startsWith("ìž„"))
 				return true;
-			if(lastWord.equals("ŽÎ") && curWord.startsWith("¿»"))
+			if(lastWord.equals("ë‹Œ") && curWord.startsWith("ì¸"))
 				return true;
-			
-			if(lastWord.equals("·á") && curWord.startsWith("¿ä"))
+			if(lastWord.equals("ë‹") && curWord.startsWith("ìž‰"))
 				return true;
-			if(lastWord.equals("·ä") && curWord.startsWith("¿é"))
+			if(lastWord.equals("ë‹") && curWord.startsWith("ì¼"))
 				return true;
-			if(lastWord.equals("‹") && curWord.startsWith("¿å"))
-				return true;
-			if(lastWord.equals("·å") && curWord.startsWith("¿ê"))
-				return true;
-			if(lastWord.equals("˜") && curWord.startsWith("¿è"))
-				return true;
-			if(lastWord.equals("·â") && curWord.startsWith("¿æ"))
-				return true;
-			if(lastWord.equals("·æ") && curWord.startsWith("¿ë"))
-				return true;
-			if(lastWord.equals("·ã") && curWord.startsWith("¿ç"))
+			if(lastWord.equals("ë‹‰") && curWord.startsWith("ìµ"))
 				return true;
 			
-			if(lastWord.equals("·ù") && curWord.startsWith("À¯"))
+			if(lastWord.equals("ëž´") && curWord.startsWith("ì•¼"))
 				return true;
-			if(lastWord.equals("·ü") && curWord.startsWith("À²"))
+			if(lastWord.equals("d") && curWord.startsWith("ì–"))
 				return true;
-			if(lastWord.equals("·ú") && curWord.startsWith("À°"))
+			if(lastWord.equals("ëžµ") && curWord.startsWith("ì•½"))
 				return true;
-			if(lastWord.equals("·ý") && curWord.startsWith("À³"))
+			if(lastWord.equals("ëŸ‡") && curWord.startsWith("ì–"))
 				return true;
-			if(lastWord.equals("·û") && curWord.startsWith("À±"))
+			if(lastWord.equals("c") && curWord.startsWith("ì–Œ"))
 				return true;
-			if(lastWord.equals("¸¢") && curWord.startsWith("À¶"))
+			if(lastWord.equals("ëž¸") && curWord.startsWith("ì–€"))
 				return true;
-			if(lastWord.equals("¸®") && curWord.startsWith("ÀÌ"))
+			if(lastWord.equals("ëŸ‰") && curWord.startsWith("ì–‘"))
 				return true;
-			if(lastWord.equals("¸³") && curWord.startsWith("ÀÔ"))
-				return true;
-			if(lastWord.equals("¸¯") && curWord.startsWith("ÀÍ"))
-				return true;
-			if(lastWord.equals("¸²") && curWord.startsWith("ÀÓ"))
-				return true;
-			if(lastWord.equals("¸°") && curWord.startsWith("ÀÎ"))
-				return true;
-			if(lastWord.equals("¸µ") && curWord.startsWith("À×"))
-				return true;
-			if(lastWord.equals("¸±") && curWord.startsWith("ÀÏ"))
+			if(lastWord.equals("U") && curWord.startsWith("ì–„"))
 				return true;
 			
-			if(lastWord.equals("¶ó") && curWord.startsWith("¾Æ"))
+			if(lastWord.equals("ë ¤") && curWord.startsWith("ì—¬"))
 				return true;
-			if(lastWord.equals("¶ø") && curWord.startsWith("¾Ð"))
+			if(lastWord.equals("ë ¹") && curWord.startsWith("ì˜"))
 				return true;
-			if(lastWord.equals("¶ô") && curWord.startsWith("¾Ç"))
+			if(lastWord.equals("ë ¨") && curWord.startsWith("ì—°"))
 				return true;
-			if(lastWord.equals("¶÷") && curWord.startsWith("¾Ï"))
+			if(lastWord.equals("ë µ") && curWord.startsWith("ì—½"))
 				return true;
-			if(lastWord.equals("¶õ") && curWord.startsWith("¾È"))
+			if(lastWord.equals("ë ¥") && curWord.startsWith("ì—­"))
 				return true;
-			if(lastWord.equals("¶û") && curWord.startsWith("¾Ó"))
+			if(lastWord.equals("ë ·") && curWord.startsWith("ì—¿"))
 				return true;
-			if(lastWord.equals("¶ö") && curWord.startsWith("¾Ë"))
+			if(lastWord.equals("ë ´") && curWord.startsWith("ì—¼"))
 				return true;
-			
-			if(lastWord.equals("·¡") && curWord.startsWith("¾Ö"))
+			if(lastWord.equals("ë ¬") && curWord.startsWith("ì—´"))
 				return true;
-			if(lastWord.equals("·¦") && curWord.startsWith("¾Û"))
-				return true;
-			if(lastWord.equals("·¢") && curWord.startsWith("¾×"))
-				return true;
-			if(lastWord.equals("·§") && curWord.startsWith("·§"))
-				return true;
-			if(lastWord.equals("·¥") && curWord.startsWith("¾Ú"))
-				return true;
-			if(lastWord.equals("·£") && curWord.startsWith("¾Ø"))
-				return true;
-			if(lastWord.equals("·©") && curWord.startsWith("¾Þ"))
-				return true;
-			if(lastWord.equals("·¤") && curWord.startsWith("¾Ù"))
+			if(lastWord.equals("") && curWord.startsWith("ì˜†"))
 				return true;
 			
-			if(lastWord.equals("·Î") && curWord.startsWith("¿À"))
+			if(lastWord.equals("ë¡€") && curWord.startsWith("ì˜ˆ"))
 				return true;
-			if(lastWord.equals("·Ó") && curWord.startsWith("¿É"))
+			if(lastWord.equals("") && curWord.startsWith("ì˜˜"))
 				return true;
-			if(lastWord.equals("·Ï") && curWord.startsWith("¿Á"))
+			if(lastWord.equals("ë¡„") && curWord.startsWith("ì˜Œ"))
 				return true;
-			if(lastWord.equals("·Ô") && curWord.startsWith("¿Ê"))
+			if(lastWord.equals("") && curWord.startsWith("ÂžÂŸ"))
 				return true;
-			if(lastWord.equals("·Ò") && curWord.startsWith("¿È"))
-				return true;
-			if(lastWord.equals("·Õ") && curWord.startsWith("¿Ë"))
-				return true;
-			if(lastWord.equals("·Ð") && curWord.startsWith("¿Â"))
-				return true;
-			if(lastWord.equals("·Ñ") && curWord.startsWith("¿Ã"))
-				return true;
-			if(lastWord.equals("·Ú") && curWord.startsWith("¿Ü"))
+			if(lastWord.equals("") && curWord.startsWith("ì˜"))
 				return true;
 			
-			if(lastWord.equals("·ç") && curWord.startsWith("¿ì"))
+			if(lastWord.equals("ë£Œ") && curWord.startsWith("ìš”"))
 				return true;
-			if(lastWord.equals("·ì") && curWord.startsWith("¿ó"))
+			if(lastWord.equals("ë£") && curWord.startsWith("ìš¥"))
 				return true;
-			if(lastWord.equals("·è") && curWord.startsWith("¿í"))
+			if(lastWord.equals("Â‹") && curWord.startsWith("ìš•"))
 				return true;
-			if(lastWord.equals("·í") && curWord.startsWith("¿ô"))
+			if(lastWord.equals("ë£Ÿ") && curWord.startsWith("ìš§"))
 				return true;
-			if(lastWord.equals("·ë") && curWord.startsWith("¿ò"))
+			if(lastWord.equals("Â˜") && curWord.startsWith("ìš¤"))
 				return true;
-			if(lastWord.equals("·é") && curWord.startsWith("¿î"))
+			if(lastWord.equals("ë£") && curWord.startsWith("ìš˜"))
 				return true;
-			if(lastWord.equals("·î") && curWord.startsWith("¿õ"))
+			if(lastWord.equals("ë£¡") && curWord.startsWith("ìš©"))
 				return true;
-			if(lastWord.equals("·ê") && curWord.startsWith("¿ï"))
+			if(lastWord.equals("ë£”") && curWord.startsWith("ìšœ"))
 				return true;
 			
-			if(lastWord.equals("¸£") && curWord.startsWith("À¸"))
+			if(lastWord.equals("ë¥˜") && curWord.startsWith("ìœ "))
 				return true;
-			if(lastWord.equals("¸¨") && curWord.startsWith("À¾"))
+			if(lastWord.equals("ë¥ ") && curWord.startsWith("ìœ¨"))
 				return true;
-			if(lastWord.equals("¸¤") && curWord.startsWith("À¹"))
+			if(lastWord.equals("ë¥™") && curWord.startsWith("ìœ¡"))
 				return true;
-			if(lastWord.equals("¸©") && curWord.startsWith("À¿"))
+			if(lastWord.equals("ë¥¨") && curWord.startsWith("ìœ°"))
 				return true;
-			if(lastWord.equals("¸§") && curWord.startsWith("À½"))
+			if(lastWord.equals("ë¥œ") && curWord.startsWith("ìœ¤"))
 				return true;
-			if(lastWord.equals("¸¥") && curWord.startsWith("Àº"))
+			if(lastWord.equals("ë¥­") && curWord.startsWith("ìœµ"))
 				return true;
-			if(lastWord.equals("¸ª") && curWord.startsWith("ÀÀ"))
+			if(lastWord.equals("ë¦¬") && curWord.startsWith("ì´"))
 				return true;
-			if(lastWord.equals("¸¦") && curWord.startsWith("À»"))
+			if(lastWord.equals("ë¦½") && curWord.startsWith("ìž…"))
+				return true;
+			if(lastWord.equals("ë¦­") && curWord.startsWith("ìµ"))
+				return true;
+			if(lastWord.equals("ë¦¼") && curWord.startsWith("ìž„"))
+				return true;
+			if(lastWord.equals("ë¦°") && curWord.startsWith("ì¸"))
+				return true;
+			if(lastWord.equals("ë§") && curWord.startsWith("ìž‰"))
+				return true;
+			if(lastWord.equals("ë¦´") && curWord.startsWith("ì¼"))
+				return true;
+			
+			if(lastWord.equals("ë¼") && curWord.startsWith("ì•„"))
+				return true;
+			if(lastWord.equals("ëž") && curWord.startsWith("ì••"))
+				return true;
+			if(lastWord.equals("ë½") && curWord.startsWith("ì•…"))
+				return true;
+			if(lastWord.equals("ëžŒ") && curWord.startsWith("ì•”"))
+				return true;
+			if(lastWord.equals("ëž€") && curWord.startsWith("ì•ˆ"))
+				return true;
+			if(lastWord.equals("ëž‘") && curWord.startsWith("ì•™"))
+				return true;
+			if(lastWord.equals("ëž„") && curWord.startsWith("ì•Œ"))
+				return true;
+			
+			if(lastWord.equals("ëž˜") && curWord.startsWith("ì• "))
+				return true;
+			if(lastWord.equals("ëž©") && curWord.startsWith("ì•±"))
+				return true;
+			if(lastWord.equals("ëž™") && curWord.startsWith("ì•¡"))
+				return true;
+			if(lastWord.equals("ëž«") && curWord.startsWith("ëž«"))
+				return true;
+			if(lastWord.equals("ëž¨") && curWord.startsWith("ì•°"))
+				return true;
+			if(lastWord.equals("ëžœ") && curWord.startsWith("ì•¤"))
+				return true;
+			if(lastWord.equals("ëž­") && curWord.startsWith("ì•µ"))
+				return true;
+			if(lastWord.equals("ëž ") && curWord.startsWith("ì•¨"))
+				return true;
+			
+			if(lastWord.equals("ë¡œ") && curWord.startsWith("ì˜¤"))
+				return true;
+			if(lastWord.equals("ë¡­") && curWord.startsWith("ì˜µ"))
+				return true;
+			if(lastWord.equals("ë¡") && curWord.startsWith("ì˜¥"))
+				return true;
+			if(lastWord.equals("ë¡¯") && curWord.startsWith("ì˜·"))
+				return true;
+			if(lastWord.equals("ë¡¬") && curWord.startsWith("ì˜´"))
+				return true;
+			if(lastWord.equals("ë¡±") && curWord.startsWith("ì˜¹"))
+				return true;
+			if(lastWord.equals("ë¡ ") && curWord.startsWith("ì˜¨"))
+				return true;
+			if(lastWord.equals("ë¡¤") && curWord.startsWith("ì˜¬"))
+				return true;
+			if(lastWord.equals("ë¢°") && curWord.startsWith("ì™¸"))
+				return true;
+			
+			if(lastWord.equals("ë£¨") && curWord.startsWith("ìš°"))
+				return true;
+			if(lastWord.equals("ë£¹") && curWord.startsWith("ì›"))
+				return true;
+			if(lastWord.equals("ë£©") && curWord.startsWith("ìš±"))
+				return true;
+			if(lastWord.equals("ë£»") && curWord.startsWith("ì›ƒ"))
+				return true;
+			if(lastWord.equals("ë£¸") && curWord.startsWith("ì›€"))
+				return true;
+			if(lastWord.equals("ë£¬") && curWord.startsWith("ìš´"))
+				return true;
+			if(lastWord.equals("ë£½") && curWord.startsWith("ì›…"))
+				return true;
+			if(lastWord.equals("ë£°") && curWord.startsWith("ìš¸"))
+				return true;
+			
+			if(lastWord.equals("ë¥´") && curWord.startsWith("ìœ¼"))
+				return true;
+			if(lastWord.equals("ë¦…") && curWord.startsWith("ì"))
+				return true;
+			if(lastWord.equals("ë¥µ") && curWord.startsWith("ìœ½"))
+				return true;
+			if(lastWord.equals("ë¦‡") && curWord.startsWith("ì"))
+				return true;
+			if(lastWord.equals("ë¦„") && curWord.startsWith("ìŒ"))
+				return true;
+			if(lastWord.equals("ë¥¸") && curWord.startsWith("ì€"))
+				return true;
+			if(lastWord.equals("ë¦‰") && curWord.startsWith("ì‘"))
+				return true;
+			if(lastWord.equals("ë¥¼") && curWord.startsWith("ì„"))
 				return true;
 		}
 		

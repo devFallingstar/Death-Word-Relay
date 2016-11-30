@@ -12,39 +12,39 @@ public class RoomManager {
 	private Room myRoom;
 	private Integer roomNo;
 	private String roomName;
-	
+
 	private int starter;
 	private int nextUser;
 	private boolean isStart;
 	private List<String> wordList;
 	Random rand;
-	
-	public RoomManager(int _rNo, String _roomName){
+
+	public RoomManager(int _rNo, String _roomName) {
 		this.roomNo = _rNo;
 		this.roomName = _roomName;
 		this.starter = 0;
 		this.isStart = false;
 		myRoom = new Room(roomNo, roomName);
 	}
-	
-	public void broadCastRoom(String msg){
-		for (User u : myRoom.roomV){
+
+	public void broadCastRoom(String msg) {
+		for (User u : myRoom.roomV) {
 			u.getOut().println(msg);
 		}
 	}
-	
-	public void addUserToRoom(User u){
+
+	public void addUserToRoom(User u) {
 		myRoom.addUser(u);
 	}
-	
-	public void removeUserFromRoom(User u){
+
+	public void removeUserFromRoom(User u) {
 		myRoom.removeUser(u);
 	}
-	
-	public int playerOfRoom(){
+
+	public int playerOfRoom() {
 		return myRoom.roomUsers.size();
 	}
-	
+
 	public Room getMyRoom() {
 		return myRoom;
 	}
@@ -68,59 +68,63 @@ public class RoomManager {
 	public void setRoomName(String roomName) {
 		this.roomName = roomName;
 	}
-	
-	public Vector<User> getUserList(){
+
+	public Vector<User> getUserList() {
 		return this.myRoom.getRoomV();
 	}
-	
-	public void setStarter(int startNo){
-		if(!isStart){
+
+	public void setStarter(int startNo) {
+		if (!isStart) {
 			starter = startNo;
-			
+
 			isStart = true;
 		}
 	}
-	public void startGame(){
+
+	public void startGame() {
 		List<User> userArrTmp = new ArrayList<User>();
-		
-		for (User u : myRoom.getRoomV()){
+
+		for (User u : myRoom.getRoomV()) {
 			userArrTmp.add(u);
 		}
-		
+
 		System.out.println(starter);
+		Server.broadCast("The Starter is " + userArrTmp.get(starter).getName(), roomNo);
+		Server.broadCast("--------------------------------------------------------------\n", roomNo);
 		userArrTmp.get(starter).getOut().println("MYTURN");
-		if(starter == 1){
+		if (starter == 1) {
 			nextUser = 0;
-		}else{
+		} else {
 			nextUser = 1;
 		}
 		wordList = new ArrayList<String>();
 	}
-	
-	public void resumeGame(){
+
+	public void resumeGame() {
 		List<User> userArrTmp = new ArrayList<User>();
-		
-		for (User u : myRoom.getRoomV()){
+
+		for (User u : myRoom.getRoomV()) {
 			userArrTmp.add(u);
 		}
-		
+
 		userArrTmp.get(nextUser).getOut().println("MYTURN");
-		if(nextUser == 1){
+		if (nextUser == 1) {
 			nextUser = 0;
-		}else{
+		} else {
 			nextUser = 1;
 		}
 	}
-	public void addPrevWord(String _word){
+
+	public void addPrevWord(String _word) {
 		wordList.add(_word);
 	}
-	public boolean isNotDup(String _word){
-		for (String prevWord : wordList){
-			if(_word.equals(prevWord)){
+
+	public boolean isNotDup(String _word) {
+		for (String prevWord : wordList) {
+			if (_word.equals(prevWord)) {
 				return false;
 			}
 		}
 		return true;
 	}
 }
-

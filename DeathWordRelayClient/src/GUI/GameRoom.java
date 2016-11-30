@@ -176,6 +176,8 @@ public class GameRoom extends JFrame {
 			}
 		});
 		this.setResizable(false);
+		
+		msgArea.setText("");
 	}
 
 	public void gotMessage(String msg) {
