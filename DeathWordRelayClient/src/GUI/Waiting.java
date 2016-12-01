@@ -221,7 +221,10 @@ public class Waiting extends JFrame {
 	}
 
 	private void noRoomAlert() {
-		JOptionPane.showMessageDialog(this, "No way! Room was vanished!");
+		JOptionPane.showMessageDialog(this, "No way! Room is vanished!");
+	}
+	private void fullRoomAlert() {
+		JOptionPane.showMessageDialog(this, "No way! Room is full!");
 	}
 
 	public static void gotMessage(String msg) {
@@ -245,12 +248,16 @@ public class Waiting extends JFrame {
 		if (elemStr.length != 0) {
 			StringTokenizer toks = new StringTokenizer(elemStr[0].substring(0), " ");
 			String roomNoStr = toks.nextToken();
-
 			int roomNo = Integer.parseInt(roomNoStr);
-			if (Client.getInfoForRoom(roomNo) == null) {
+			Room destRoom = (Room) Client.getInfoForRoom(roomNo);
+
+			if (destRoom.getNo() == -1) {
 				noRoomAlert();
 				reloadRoomList();
-			} else {
+			} else if (destRoom.getNo() == -2) {
+				fullRoomAlert();
+				reloadRoomList();
+			}else{
 				Client.enterToCurrentRoom();
 				dispose();
 			}

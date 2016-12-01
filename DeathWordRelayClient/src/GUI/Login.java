@@ -85,6 +85,7 @@ public class Login extends JFrame {
 		loginBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				Client.playSound("music/SE/DoorOpen.wav", false);
 				try {
 					if (Client.sendLoginRequest(IDtxt.getText(), PWtxt.getText())) {
 						dispose();

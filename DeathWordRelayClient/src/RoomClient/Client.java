@@ -5,6 +5,9 @@ import java.net.Socket;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -76,7 +79,7 @@ public class Client extends JFrame {
 				serverDownAlert();
 				System.exit(-1);
 			}
-
+			
 			/*
 			 * Streams that send/receive Strings or Objects
 			 */
@@ -104,6 +107,7 @@ public class Client extends JFrame {
 				if (line.startsWith("SUBMITNAME")) {
 					myLoginGUI = new Login();
 					myLoginGUI.setVisible(true);
+					playSound("music/BGM/MainBGM2.wav", true);
 				} else if (line.startsWith("NAMEACCEPTED")) {
 					curUser = new User(ID, in, out);
 
@@ -133,6 +137,7 @@ public class Client extends JFrame {
 					} catch (NullPointerException e) {
 					}
 				} else if (line.startsWith("PLAYGAME")) {
+					playSound("music/SE/prepare.wav", false);
 					curUser.setPlaying();
 					GameRoom.playGame(curUser.getPlaying());
 				} else if (line.startsWith("MYTURN")) {
@@ -285,7 +290,6 @@ public class Client extends JFrame {
 		curRoom = new Room(Integer.parseInt(roomInfo[0]), roomInfo[1]);
 
 		return curRoom;
-
 	}
 
 	/**
@@ -365,5 +369,23 @@ public class Client extends JFrame {
 
 	public static void setNICK(String _NICK) {
 		NICK = _NICK;
+	}
+	
+	public static void playSound(String uri, boolean loop){
+		Clip clip;
+		try{
+			File bgmFile = new File(uri);
+			AudioInputStream ais = AudioSystem.getAudioInputStream(
+					new BufferedInputStream(new FileInputStream(bgmFile)));
+			clip = AudioSystem.getClip();
+			clip.open(ais);
+			clip.start();
+			if(loop){
+				clip.loop(-1);
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			
+		}
 	}
 }
