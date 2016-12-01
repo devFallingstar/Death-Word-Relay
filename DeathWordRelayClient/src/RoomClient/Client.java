@@ -97,7 +97,10 @@ public class Client extends JFrame {
 			 */
 			while (true) {
 				String line = in.readLine();
-
+				if(line == null){
+					continue;
+				}
+				
 				if (line.startsWith("SUBMITNAME")) {
 					myLoginGUI = new Login();
 					myLoginGUI.setVisible(true);
@@ -151,6 +154,7 @@ public class Client extends JFrame {
 				} else if (line.startsWith("MESSAGE ")) {
 					Waiting.gotMessage(line.substring(8));
 				}
+
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -191,23 +195,23 @@ public class Client extends JFrame {
 	 */
 	public static boolean sendLoginRequest(String _ID, String _PW) throws IOException {
 
-		// if (!MemberProc.loginChecker(_ID, _PW)) {
-		// myLoginGUI.wrongParam();
-		//
-		// return false;
-		// } else {
-		// System.out.print(NICK);
-		// out.println(NICK);
+		if (!MemberProc.loginChecker(_ID, _PW)) {
+			myLoginGUI.wrongParam();
+
+			return false;
+		} else {
+			System.out.print(NICK);
+			out.println(NICK);
+			myLoginGUI.setVisible(false);
+
+			return true;
+		}
+
+		/* You can active below codes when DB server is down */
+		// out.println((int) (Math.random() * 100) + "");
 		// myLoginGUI.setVisible(false);
 		//
 		// return true;
-		// }
-
-		out.println((int) (Math.random() * 100) + "");
-		myLoginGUI.setVisible(false);
-
-		return true;
-
 	}
 
 	/**

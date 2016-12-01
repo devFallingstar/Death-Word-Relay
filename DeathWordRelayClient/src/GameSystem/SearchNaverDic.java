@@ -15,11 +15,19 @@ public class SearchNaverDic {
 
 		Document doc = Jsoup.connect("http://krdic.naver.com/search.nhn?query=" + encoded).get();
 		Elements means = doc.select("li p");
-		Elements names = doc.select("div a.fnt15 strong");
+		Elements names = doc.select("div a.fnt15");
 
 		// Check if there's words that same with _word
 		if (names.size() == 0) {
 			return false;
+		}
+		
+		for (Element e : names) {
+			if(!e.text().contains(_word)){
+				return false;
+			}else{
+				break;
+			}
 		}
 
 		// Check if the word is noun or not.
