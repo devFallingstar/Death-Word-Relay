@@ -3,6 +3,7 @@ package RoomServer;
 
 import java.io.*;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
@@ -57,8 +58,8 @@ public class UserHandler extends Thread {
 	public void run() {
 		try {
 			// Create streams for the socket.
-			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			out = new PrintWriter(socket.getOutputStream(), true);
+			out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8), true);
+			in = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
 			objOut = new ObjectOutputStream(dataSocket.getOutputStream());
 			objIn = new ObjectInputStream(dataSocket.getInputStream());
 
@@ -69,6 +70,7 @@ public class UserHandler extends Thread {
 			while (true) {
 				out.println("SUBMITNAME");
 				name = in.readLine();
+				
 				if (name == null) {
 					this.interrupt();
 				}
@@ -98,13 +100,12 @@ public class UserHandler extends Thread {
 			} else {
 				myUser = new User(name, in, out);
 			}
-			System.out.println("LOG : User " + myUser.getName() + " connected.");
+			System.out.println("LOG : User [" + myUser.getName() + "] is connected.");
 			System.out.println("LOG : The number of current users : " + users.size());
 
 			Server.addUser(myUser);
 
 			broadCast("[SYSTEM] User [" + name + "] is connected.");
-			System.out.println("LOG : User [" + name + "] connected.");
 
 			/*
 			 * wait for the message from client and send it to others. If User
@@ -342,7 +343,7 @@ public class UserHandler extends Thread {
 
 		return isFinished;
 	}
-
+	
 	public void sendResultToDB() {
 
 	}

@@ -2,6 +2,7 @@ package RoomClient;
 
 import java.io.*;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 
@@ -84,11 +85,10 @@ public class Client extends JFrame {
 			 * Streams that send/receive Strings or Objects
 			 */
 			try {
-				out = new PrintWriter(socket.getOutputStream(), true);
-				in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+				out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8), true);
+				in = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
 
 				objOut = new ObjectOutputStream(dataSocket.getOutputStream());
-				objOut.writeInt(0);
 				objOut.flush();
 				objIn = new ObjectInputStream(dataSocket.getInputStream());
 			} catch (Exception e) {
