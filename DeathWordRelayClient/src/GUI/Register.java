@@ -58,6 +58,9 @@ public class Register extends JFrame {
 
 		cont = this.getContentPane();
 
+		// Press enter to submit
+		this.getRootPane().setDefaultButton(SubmitBtn);
+
 		SubmitBtn.setBounds(60, 230, submitImg.getIconWidth(), submitImg.getIconHeight());
 		SubmitBtn.setBackground(Color.red);
 		SubmitBtn.setBorderPainted(false);

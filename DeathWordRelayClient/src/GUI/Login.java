@@ -70,6 +70,9 @@ public class Login extends JFrame {
 		cont.add(regBtn);
 		cont.setBackground(Color.white);
 
+		// Press enter to login
+		this.getRootPane().setDefaultButton(loginBtn);
+
 		main.setBounds(0, 0, mainImg.getIconWidth(), mainImg.getIconHeight());
 		IDlbl.setBounds(127, 601, idImg.getIconWidth(), idImg.getIconHeight());
 		PWlbl.setBounds(125, 636, pwImg.getIconWidth(), pwImg.getIconHeight());
@@ -83,6 +86,7 @@ public class Login extends JFrame {
 		loginBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				Client.playSound("music/SE/DoorOpen.wav", false);
 				try {
 					if (Client.sendLoginRequest(IDtxt.getText(), PWtxt.getText())) {
 						dispose();

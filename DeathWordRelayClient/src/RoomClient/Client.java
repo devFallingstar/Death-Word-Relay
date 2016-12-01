@@ -2,9 +2,13 @@ package RoomClient;
 
 import java.io.*;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -65,7 +69,6 @@ public class Client extends JFrame {
 			/*
 			 * Make connection and initialize streams
 			 */
-
 			String serverAddress = "127.0.0.1";
 			serverAddress = getServerAddress();
 
@@ -77,16 +80,15 @@ public class Client extends JFrame {
 				serverDownAlert();
 				System.exit(-1);
 			}
-
+			
 			/*
 			 * Streams that send/receive Strings or Objects
 			 */
 			try {
-				out = new PrintWriter(socket.getOutputStream(), true);
-				in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+				out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8), true);
+				in = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
 
 				objOut = new ObjectOutputStream(dataSocket.getOutputStream());
-				objOut.writeInt(0);
 				objOut.flush();
 				objIn = new ObjectInputStream(dataSocket.getInputStream());
 			} catch (Exception e) {
@@ -98,10 +100,14 @@ public class Client extends JFrame {
 			 */
 			while (true) {
 				String line = in.readLine();
-
+				if(line == null){
+					continue;
+				}
+				
 				if (line.startsWith("SUBMITNAME")) {
 					myLoginGUI = new Login();
 					myLoginGUI.setVisible(true);
+					playSound("music/BGM/MainBGM2.wav", true);
 				} else if (line.startsWith("NAMEACCEPTED")) {
 					curUser = new User(ID, in, out);
 
@@ -131,6 +137,7 @@ public class Client extends JFrame {
 					} catch (NullPointerException e) {
 					}
 				} else if (line.startsWith("PLAYGAME")) {
+					playSound("music/SE/prepare.wav", false);
 					curUser.setPlaying();
 					GameRoom.playGame(curUser.getPlaying());
 				} else if (line.startsWith("MYTURN")) {
@@ -152,6 +159,7 @@ public class Client extends JFrame {
 				} else if (line.startsWith("MESSAGE ")) {
 					Waiting.gotMessage(line.substring(8));
 				}
+
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -170,9 +178,8 @@ public class Client extends JFrame {
 	 * 
 	 * @return
 	 */
-	@SuppressWarnings("unused")
 	private String getServerAddress() {
-		return JOptionPane.showInputDialog(this, "Enter IP Address of the Server:", "Welcome to the Chatter",
+		return JOptionPane.showInputDialog(this, "Enter IP Address of the Server:", "Enter server address(test)",
 				JOptionPane.QUESTION_MESSAGE);
 	}
 
@@ -204,6 +211,12 @@ public class Client extends JFrame {
 
 			return true;
 		}
+
+		/* You can active below codes when DB server is down */
+		// out.println((int) (Math.random() * 100) + "");
+		// myLoginGUI.setVisible(false);
+		//
+		// return true;
 	}
 
 	/**
@@ -277,7 +290,6 @@ public class Client extends JFrame {
 		curRoom = new Room(Integer.parseInt(roomInfo[0]), roomInfo[1]);
 
 		return curRoom;
-
 	}
 
 	/**
@@ -359,8 +371,25 @@ public class Client extends JFrame {
 		NICK = _NICK;
 	}
 	public static String getNICK() {
-	return NICK;	
+		return NICK;
 	}
 	
-	
+	public static void playSound(String uri, boolean loop){
+		Clip clip;
+		try{
+			File bgmFile = new File(uri);
+			AudioInputStream ais = AudioSystem.getAudioInputStream(
+					new BufferedInputStream(new FileInputStream(bgmFile)));
+			clip = AudioSystem.getClip();
+			clip.open(ais);
+			clip.start();
+			if(loop){
+				clip.loop(-1);
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			
+		}
+	}
 }
+

@@ -162,7 +162,9 @@ public class UserHandler extends Thread {
 					this.myUser.setrNo(roomNo);
 				} else if (input.equals("REQROOMLIST")) {
 					HashMap<Integer, String> newRoomList = Server.getRoomList();
-
+					
+//					for(Room)
+					
 					objOut.reset();
 					objOut.writeObject(newRoomList);
 					objOut.flush();
@@ -179,6 +181,11 @@ public class UserHandler extends Thread {
 					User oppUser = Server.getOppUser(myUser);
 					myOppUser = oppUser;
 					myUser.setReady();
+					
+					if(myOppUser != null){
+						myOppUser.getOut().println("ROOMMSG Opposite user is ready!");
+					}
+					
 					try {
 						if (oppUser.getReady()) {
 							out.println("PLAYGAME");

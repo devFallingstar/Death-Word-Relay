@@ -100,7 +100,7 @@ public class WordGame {
 				return true;
 			if (lastWord.equals("뇻") && curWord.startsWith("욧"))
 				return true;
-			if (lastWord.equals("") && curWord.startsWith("욤"))
+			if (lastWord.equals("뇸") && curWord.startsWith("욤"))
 				return true;
 			if (lastWord.equals("뇬") && curWord.startsWith("욘"))
 				return true;

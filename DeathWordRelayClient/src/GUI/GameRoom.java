@@ -74,7 +74,7 @@ public class GameRoom extends JFrame {
 
 		this.getContentPane().setLayout(null);
 		this.setBounds(0, 0, 1080, 628);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		chatPanel.setLayout(null);
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);

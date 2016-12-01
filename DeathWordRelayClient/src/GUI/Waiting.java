@@ -39,7 +39,7 @@ public class Waiting extends JFrame {
 	private JLabel roomlbl = new JLabel(room);
 
 	private JLabel userInfo = new JLabel(userImg);
-	private JLabel userId;
+	private JLabel userId= new JLabel();
 	private JLabel userRate = new JLabel();
 	private JLabel chatlbl = new JLabel(chat);
 
@@ -82,9 +82,9 @@ public class Waiting extends JFrame {
 		cont.add(rankList);
 		cont.add(ranklbl);
 		cont.add(chatPanel);
+		cont.add(userInfo);
 		cont.add(userId);
 		cont.add(userRate);
-		cont.add(userInfo);
 		cont.add(waitBg);
 		cont.add(chatlbl);
 
@@ -201,7 +201,17 @@ public class Waiting extends JFrame {
 
 		roomList.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent evt) {
-
+				if (evt.getClickCount() == 2) {
+					try {
+						enterToRoom();
+					} catch (ClassNotFoundException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
 			}
 		});
 
@@ -219,7 +229,10 @@ public class Waiting extends JFrame {
 	}
 
 	private void noRoomAlert() {
-		JOptionPane.showMessageDialog(this, "No way! Room was vanished!");
+		JOptionPane.showMessageDialog(this, "No way! Room is vanished!");
+	}
+	private void fullRoomAlert() {
+		JOptionPane.showMessageDialog(this, "No way! Room is full!");
 	}
 
 	public static void gotMessage(String msg) {
@@ -243,12 +256,16 @@ public class Waiting extends JFrame {
 		if (elemStr.length != 0) {
 			StringTokenizer toks = new StringTokenizer(elemStr[0].substring(0), " ");
 			String roomNoStr = toks.nextToken();
-
 			int roomNo = Integer.parseInt(roomNoStr);
-			if (Client.getInfoForRoom(roomNo) == null) {
+			Room destRoom = (Room) Client.getInfoForRoom(roomNo);
+
+			if (destRoom.getNo() == -1) {
 				noRoomAlert();
 				reloadRoomList();
-			} else {
+			} else if (destRoom.getNo() == -2) {
+				fullRoomAlert();
+				reloadRoomList();
+			}else{
 				Client.enterToCurrentRoom();
 				dispose();
 			}
