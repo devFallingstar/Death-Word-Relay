@@ -5,7 +5,6 @@ import java.io.*;
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Random;
 import java.util.StringTokenizer;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -28,7 +27,7 @@ public class UserHandler extends Thread {
 	TimerTask gameCounterTask;
 	Timer gameStartTimer;
 	TimerTask gameStartTask;
-	int timerInt = 5;
+	int timerInt = 6;
 
 	private String currentAnswer;
 
@@ -162,7 +161,7 @@ public class UserHandler extends Thread {
 					this.myUser.setrNo(roomNo);
 				} else if (input.equals("REQROOMLIST")) {
 					HashMap<Integer, String> newRoomList = Server.getRoomList();
-					
+
 					objOut.reset();
 					objOut.writeObject(newRoomList);
 					objOut.flush();
@@ -171,8 +170,8 @@ public class UserHandler extends Thread {
 					StringTokenizer toks = new StringTokenizer(input.substring(8), " ");
 					String roomNoStr = toks.nextToken();
 					int roomNo = Integer.parseInt(roomNoStr);
-					
-					if(!input.substring(9).startsWith("\n")){
+
+					if (!input.substring(9).startsWith("\n")) {
 						Server.broadCast(name + ": " + input.substring(9), roomNo);
 					}
 				} else if (input.startsWith("COMESUCC")) {
@@ -181,11 +180,11 @@ public class UserHandler extends Thread {
 					User oppUser = Server.getOppUser(myUser);
 					myOppUser = oppUser;
 					myUser.setReady();
-					
-					if(myOppUser != null){
+
+					if (myOppUser != null) {
 						myOppUser.getOut().println("ROOMMSG Opposite user is ready!");
 					}
-					
+
 					try {
 						if (oppUser.getReady()) {
 							out.println("PLAYGAME");
@@ -223,7 +222,7 @@ public class UserHandler extends Thread {
 						myOppUser.getOut().println("GAMEFIN");
 
 						myUser.getOut().println("LOSEGAME");
-						
+
 						myUser.InitRoundScore();
 						myOppUser.InitRoundScore();
 						myUser.setUnPlaying();
@@ -233,8 +232,8 @@ public class UserHandler extends Thread {
 					} else {
 						setStart();
 					}
-				} else if (input.startsWith("GAMERESULT")) {
-
+				} else if (input.startsWith("TIMEEND")) {
+					out.println("MYTIMEEND");
 				} else if (input.startsWith("MESSAGE ")) {
 					if (!(input.substring(8).isEmpty() || input.substring(8).startsWith("\n"))) {
 						broadCast(name + ": " + input.substring(8));
@@ -306,13 +305,15 @@ public class UserHandler extends Thread {
 		gameCounterTask = new TimerTask() {
 			@Override
 			public void run() {
-				Server.broadCast("Start in " + timerInt + " seconds...", myUser.getrNo());
 				timerInt -= 1;
 				if (timerInt == 1) {
 					Server.broadCast("Start in " + timerInt + " seconds...", myUser.getrNo());
-					timerInt = 5;
+					timerInt = 6;
 					gameCounterTimer.cancel();
+				} else {
+					Server.broadCast("Start in " + timerInt + " seconds...", myUser.getrNo());
 				}
+
 			}
 		};
 		gameCounterTimer.schedule(gameCounterTask, 0, 1000);

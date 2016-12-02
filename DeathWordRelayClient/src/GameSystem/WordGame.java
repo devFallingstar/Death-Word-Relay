@@ -322,5 +322,4 @@ public class WordGame {
 
 		return false;
 	}
-
 }

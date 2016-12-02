@@ -24,7 +24,7 @@ public class RoomManager {
 	private boolean isStart;
 	private List<String> wordList;
 	Random rand;
-	
+
 	private BufferedReader fIn;
 	private List<String> startWordList;
 
@@ -94,20 +94,20 @@ public class RoomManager {
 			isStart = true;
 		}
 	}
-	
-	public void initRandomWordArr() throws IOException{
+
+	public void initRandomWordArr() throws IOException {
 		fIn = new BufferedReader(new FileReader("resources/word.txt"));
 		String tmp;
 		startWordList = new ArrayList<String>();
-		
-		while ((tmp = fIn.readLine()) != null){
+
+		while ((tmp = fIn.readLine()) != null) {
 			startWordList.add(tmp);
 		}
 	}
-	
-	public String getRandomWord(){
-		int i = (int) ((Math.random()*100) % 50);
-		
+
+	public String getRandomWord() {
+		int i = (int) ((Math.random() * 100) % 50);
+
 		return startWordList.get(i);
 	}
 
@@ -117,14 +117,14 @@ public class RoomManager {
 		for (User u : myRoom.getRoomV()) {
 			userArrTmp.add(u);
 		}
-		if(starter == 1){
+		if (starter == 1) {
 			starter = 0;
-		}else{
+		} else {
 			starter = 1;
 		}
 		Server.broadCast("The Starter is " + userArrTmp.get(starter).getName(), roomNo);
 		Server.broadCast("--------------------------------------------------------------\n", roomNo);
-		Server.broadCast("First Word : "+initWord+"\n", roomNo);
+		Server.broadCast("First Word : " + initWord + "\n", roomNo);
 		userArrTmp.get(starter).getOut().println("MYTURN");
 		if (starter == 1) {
 			nextUser = 0;

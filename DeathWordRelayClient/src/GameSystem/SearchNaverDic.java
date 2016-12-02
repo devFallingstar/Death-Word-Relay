@@ -21,11 +21,11 @@ public class SearchNaverDic {
 		if (names.size() == 0) {
 			return false;
 		}
-		
+
 		for (Element e : names) {
-			if(!e.text().contains(_word)){
+			if (!e.text().contains(_word)) {
 				return false;
-			}else{
+			} else {
 				break;
 			}
 		}

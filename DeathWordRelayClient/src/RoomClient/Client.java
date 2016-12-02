@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.StringTokenizer;
+import java.util.Timer;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -14,6 +15,7 @@ import javax.swing.JOptionPane;
 import Data.*;
 import GUI.*;
 import GameSystem.RandomFileDeleter;
+import GameSystem.WordTimerTask;
 import Loginout.MemberProc;
 
 public class Client extends JFrame {
@@ -51,7 +53,7 @@ public class Client extends JFrame {
 	 * BGM and SE
 	 */
 	private Clip BGMClip = null;
-	
+
 	/**
 	 * Runs the client as an application with a closeable frame.
 	 */
@@ -84,7 +86,7 @@ public class Client extends JFrame {
 				serverDownAlert();
 				System.exit(-1);
 			}
-			
+
 			/*
 			 * Streams that send/receive Strings or Objects
 			 */
@@ -105,17 +107,17 @@ public class Client extends JFrame {
 			 */
 			while (true) {
 				String line = in.readLine();
-				if(line == null){
+				if (line == null) {
 					continue;
 				}
-				
+
 				if (line.startsWith("SUBMITNAME")) {
 					myLoginGUI = new Login();
 					myLoginGUI.setVisible(true);
-					
-					if(BGMClip == null){
+
+					if (BGMClip == null) {
 						BGMClip = playSound("music/BGM/MainBGM2.wav", true);
-					}else{
+					} else {
 						BGMClip.stop();
 						BGMClip = playSound("music/BGM/MainBGM2.wav", true);
 					}
@@ -152,6 +154,10 @@ public class Client extends JFrame {
 					curUser.setPlaying();
 					GameRoom.playGame(curUser.getPlaying());
 				} else if (line.startsWith("MYTURN")) {
+					Timer timer = new Timer();
+					WordTimerTask timerTask = new WordTimerTask();
+					timer.schedule(timerTask, 0, 1000);
+
 					GameRoom.enableAnswerField();
 				} else if (line.startsWith("IWINROUND")) {
 					GameRoom.winNotice();
@@ -169,8 +175,8 @@ public class Client extends JFrame {
 					deleteFile();
 				} else if (line.startsWith("MESSAGE ")) {
 					Waiting.gotMessage(line.substring(8));
-				}else{
-					
+				} else if (line.startsWith("MYTIMEEND")) {
+					Lose();
 				}
 			}
 		} catch (Exception e) {
@@ -212,9 +218,9 @@ public class Client extends JFrame {
 	 */
 	public static boolean sendLoginRequest(String _ID, String _PW) throws IOException {
 
-		if(_ID.isEmpty() || _PW.isEmpty()){
+		if (_ID.isEmpty() || _PW.isEmpty()) {
 			return false;
-		}else{
+		} else {
 			if (!MemberProc.loginChecker(_ID, _PW)) {
 				myLoginGUI.wrongParam();
 
@@ -227,7 +233,6 @@ public class Client extends JFrame {
 				return true;
 			}
 		}
-		
 
 		/* You can active below codes when DB server is down */
 		// out.println((int) (Math.random() * 100) + "");
@@ -384,27 +389,31 @@ public class Client extends JFrame {
 		out.println("ILOSEROUND");
 	}
 
+	public static void TimerIsEnd() {
+		out.println("TIMEEND");
+	}
+
 	public static void setNICK(String _NICK) {
 		NICK = _NICK;
 	}
-	
-	public static Clip playSound(String uri, boolean loop){
+
+	public static Clip playSound(String uri, boolean loop) {
 		Clip clip = null;
-		try{
+		try {
 			File bgmFile = new File(uri);
-			AudioInputStream ais = AudioSystem.getAudioInputStream(
-					new BufferedInputStream(new FileInputStream(bgmFile)));
+			AudioInputStream ais = AudioSystem
+					.getAudioInputStream(new BufferedInputStream(new FileInputStream(bgmFile)));
 			clip = AudioSystem.getClip();
 			clip.open(ais);
 			clip.start();
-			if(loop){
+			if (loop) {
 				clip.loop(-1);
 			}
-			
+
 			return clip;
-		}catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
-			
+
 		}
 		return clip;
 	}

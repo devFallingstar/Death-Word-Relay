@@ -223,6 +223,7 @@ public class Waiting extends JFrame {
 	private void noRoomAlert() {
 		JOptionPane.showMessageDialog(this, "No way! Room is vanished!");
 	}
+
 	private void fullRoomAlert() {
 		JOptionPane.showMessageDialog(this, "No way! Room is full!");
 	}
@@ -257,7 +258,7 @@ public class Waiting extends JFrame {
 			} else if (destRoom.getNo() == -2) {
 				fullRoomAlert();
 				reloadRoomList();
-			}else{
+			} else {
 				Client.enterToCurrentRoom();
 				dispose();
 			}
