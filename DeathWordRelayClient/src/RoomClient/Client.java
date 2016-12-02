@@ -2,6 +2,7 @@ package RoomClient;
 
 import java.io.*;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 import java.util.Timer;
@@ -33,7 +34,6 @@ public class Client extends JFrame {
 	 * Personal data
 	 */
 	private static String ID;
-	private static String PW;
 	private static String NICK;
 
 	/**
@@ -53,6 +53,8 @@ public class Client extends JFrame {
 	 * BGM and SE
 	 */
 	private Clip BGMClip = null;
+	private static Timer timer;
+	private static WordTimerTask timerTask;
 
 	/**
 	 * Runs the client as an application with a closeable frame.
@@ -91,9 +93,9 @@ public class Client extends JFrame {
 			 * Streams that send/receive Strings or Objects
 			 */
 			try {
-				out = new PrintWriter(socket.getOutputStream(), true);
-				in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
+				out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8), true);
+				in = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+				
 				objOut = new ObjectOutputStream(dataSocket.getOutputStream());
 				objOut.writeInt(0);
 				objOut.flush();
@@ -107,9 +109,12 @@ public class Client extends JFrame {
 			 */
 			while (true) {
 				String line = in.readLine();
+				
 				if (line == null) {
 					continue;
 				}
+				
+				line = new String(line.getBytes("utf-8"));
 
 				if (line.startsWith("SUBMITNAME")) {
 					myLoginGUI = new Login();
@@ -154,21 +159,27 @@ public class Client extends JFrame {
 					curUser.setPlaying();
 					GameRoom.playGame(curUser.getPlaying());
 				} else if (line.startsWith("MYTURN")) {
-					Timer timer = new Timer();
-					WordTimerTask timerTask = new WordTimerTask();
+					timer = new Timer();
+					timerTask = new WordTimerTask();
 					timer.schedule(timerTask, 0, 1000);
 
 					GameRoom.enableAnswerField();
 				} else if (line.startsWith("IWINROUND")) {
+					if (line.contains("TIMEOUT")) {
+						playSound("music/SE/humiliation.wav", false);
+					}
 					GameRoom.winNotice();
 					GameRoom.myGame.youWin();
 				} else if (line.startsWith("ILOSEROUND")) {
+					if (line.contains("TIMEOUT")) {
+						playSound("music/SE/humiliation.wav", false);
+					}
 					GameRoom.loseNotice();
 					GameRoom.myGame.youLose();
 				} else if (line.startsWith("SETNEWROUND")) {
 					GameRoom.readyForNewRound();
 				} else if (line.startsWith("DUPWORD")) {
-					Lose();
+					Lose(false);
 				} else if (line.startsWith("GAMEFIN")) {
 					GameRoom.gameFin();
 				} else if (line.startsWith("LOSEGAME")) {
@@ -176,7 +187,7 @@ public class Client extends JFrame {
 				} else if (line.startsWith("MESSAGE ")) {
 					Waiting.gotMessage(line.substring(8));
 				} else if (line.startsWith("MYTIMEEND")) {
-					Lose();
+					Lose(true);
 				}
 			}
 		} catch (Exception e) {
@@ -264,6 +275,7 @@ public class Client extends JFrame {
 	}
 
 	public static void sendAnswer(String answer, int rNo) {
+		timer.cancel();
 		out.println("ROOMANS " + rNo + " " + answer);
 	}
 
@@ -385,8 +397,13 @@ public class Client extends JFrame {
 		System.out.println(resultFile);
 	}
 
-	public static void Lose() {
-		out.println("ILOSEROUND");
+	public static void Lose(boolean isTimeOut) {
+		if (isTimeOut) {
+			out.println("ILOSEROUND TIMEOUT");
+		} else {
+			out.println("ILOSEROUND");
+		}
+
 	}
 
 	public static void TimerIsEnd() {

@@ -3,6 +3,7 @@ package RoomServer;
 
 import java.io.*;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.StringTokenizer;
@@ -56,8 +57,8 @@ public class UserHandler extends Thread {
 	public void run() {
 		try {
 			// Create streams for the socket.
-			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			out = new PrintWriter(socket.getOutputStream(), true);
+			in = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+			out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8), true);
 			objOut = new ObjectOutputStream(dataSocket.getOutputStream());
 			objIn = new ObjectInputStream(dataSocket.getInputStream());
 
@@ -121,9 +122,11 @@ public class UserHandler extends Thread {
 
 			while (true) {
 				String input = in.readLine();
+				
 				if (input == null) {
 					return;
 				}
+				input = new String(input.getBytes("utf-8"));
 				if (input.startsWith("MAKEROOM ")) {
 					String roomTitle = input.substring(9);
 					int roomNo = Server.addRoom(roomTitle);
@@ -216,7 +219,12 @@ public class UserHandler extends Thread {
 					Server.broadCast(name + ": " + input.substring(9), roomNo);
 
 				} else if (input.startsWith("ILOSEROUND")) {
-					WhenLose();
+					if(input.contains("TIMEOUT")){
+						WhenLose(true);
+					}else{
+						WhenLose(false);
+					}
+					
 					if (FinGame()) {
 						out.println("GAMEFIN");
 						myOppUser.getOut().println("GAMEFIN");
@@ -324,15 +332,21 @@ public class UserHandler extends Thread {
 		Server.getRoomWithNumber(myUser.getrNo()).resumeGame();
 	}
 
-	public void WhenLose() {
+	public void WhenLose(boolean isTimeOut) {
 		User loseUser = myUser;
 		User winUser = myOppUser;
 
 		loseUser.Lose();
 		winUser.Win();
-
-		loseUser.getOut().println("ILOSEROUND");
-		winUser.getOut().println("IWINROUND");
+		
+		if(isTimeOut){
+			loseUser.getOut().println("ILOSEROUND TIMEOUT");
+			winUser.getOut().println("IWINROUND TIMEOUT");
+		}else{
+			loseUser.getOut().println("ILOSEROUND");
+			winUser.getOut().println("IWINROUND");
+		}
+		
 
 		loseUser.getOut().println("SETNEWROUND");
 		winUser.getOut().println("SETNEWROUND");

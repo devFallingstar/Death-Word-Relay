@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -129,6 +130,11 @@ public class GameRoom extends JFrame {
 			 */
 			public void actionPerformed(ActionEvent e) {
 				String msg = msgTxt.getText();
+				try {
+					msg = new String(msg.getBytes("UTF-8"));
+				} catch (UnsupportedEncodingException e2) {
+					e2.printStackTrace();
+				}
 
 				if (msg.equalsIgnoreCase("/clear")) {
 					msgArea.setText("");
@@ -215,6 +221,11 @@ public class GameRoom extends JFrame {
 	public void checkAndSendAnswer() {
 		try {
 			String msg = answerTxt.getText();
+			try {
+				msg = new String(msg.getBytes("UTF-8"));
+			} catch (UnsupportedEncodingException e2) {
+				e2.printStackTrace();
+			}
 			String lastLine = null, lastWord;
 
 			/* Get last line of msgArea */
@@ -228,7 +239,7 @@ public class GameRoom extends JFrame {
 
 				Client.sendAnswer(msg, myUser.getrNo());
 				if (!(myGame.checkLength() && myGame.checkWithOnline())) {
-					Client.Lose();
+					Client.Lose(false);
 				} else {
 					Client.requestResume();
 					answerTxt.setEnabled(false);
@@ -244,7 +255,7 @@ public class GameRoom extends JFrame {
 					Client.requestResume();
 					answerTxt.setEnabled(false);
 				} else {
-					Client.Lose();
+					Client.Lose(false);
 				}
 			}
 		} catch (Exception e1) {

@@ -17,7 +17,6 @@ public class MemberProc {
 	static String id, pwd, nickname;
 	static String memberTable = "Users";
 
-	@SuppressWarnings("unused")
 	public static int create(MemberInfo dto) throws Exception {
 		id = dto.getID();
 		pwd = dto.getpwd();
@@ -72,7 +71,6 @@ public class MemberProc {
 			} else {
 				return false;
 			}
-
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;

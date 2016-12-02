@@ -104,6 +104,7 @@ public class Register extends JFrame {
 		cont.setBackground(Color.white);
 
 		SubmitBtn.addActionListener(new ActionListener() {
+			@SuppressWarnings("deprecation")
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				MemberInfo newMem = new MemberInfo(IDtxt.getText(), PWtxt.getText(), NickNametxt.getText());
