@@ -78,7 +78,7 @@ public class UserHandler extends Thread {
 						break;
 					} else {
 						// TODO response have to add.
-						// out.println("WRONGINFO")
+						out.println("DUPID ");
 						continue;
 					}
 				}
@@ -163,8 +163,6 @@ public class UserHandler extends Thread {
 				} else if (input.equals("REQROOMLIST")) {
 					HashMap<Integer, String> newRoomList = Server.getRoomList();
 					
-//					for(Room)
-					
 					objOut.reset();
 					objOut.writeObject(newRoomList);
 					objOut.flush();
@@ -173,8 +171,10 @@ public class UserHandler extends Thread {
 					StringTokenizer toks = new StringTokenizer(input.substring(8), " ");
 					String roomNoStr = toks.nextToken();
 					int roomNo = Integer.parseInt(roomNoStr);
-
-					Server.broadCast(name + ": " + input.substring(9), roomNo);
+					
+					if(!input.substring(9).startsWith("\n")){
+						Server.broadCast(name + ": " + input.substring(9), roomNo);
+					}
 				} else if (input.startsWith("COMESUCC")) {
 					Server.addUserToRoom(this.myUser);
 				} else if (input.startsWith("READY")) {

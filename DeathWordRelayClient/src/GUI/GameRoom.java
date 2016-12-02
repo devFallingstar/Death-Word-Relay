@@ -19,6 +19,7 @@ import javax.swing.JTextField;
 import Data.User;
 import GameSystem.WordGame;
 import RoomClient.*;
+import SubClass.WindowHandler;
 
 public class GameRoom extends JFrame {
 	public static WordGame myGame;
@@ -59,11 +60,12 @@ public class GameRoom extends JFrame {
 		super(rNo + ". " + title);
 
 		isReady = false;
-		this.myUser = Client.curUser;
+		GameRoom.myUser = Client.curUser;
+		addWindowListener(new WindowHandler(this));
 
 		this.getContentPane().setLayout(null);
 		this.setBounds(0, 0, 1080, 628);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		chatPanel.setLayout(null);
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);

@@ -128,4 +128,8 @@ public class Login extends JFrame {
 	public void wrongParam() {
 		loginDlg.setVisible(true);
 	}
+	
+	public void DupLoginAlert() {
+		JOptionPane.showMessageDialog(this, "Login blocked - duplicates login");
+	}
 }

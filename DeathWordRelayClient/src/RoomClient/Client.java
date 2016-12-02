@@ -48,6 +48,11 @@ public class Client extends JFrame {
 	private static GameRoom myRoomGUI;
 
 	/**
+	 * BGM and SE
+	 */
+	private Clip BGMClip = null;
+	
+	/**
 	 * Runs the client as an application with a closeable frame.
 	 */
 	public static void main(String[] args) throws Exception {
@@ -107,14 +112,20 @@ public class Client extends JFrame {
 				if (line.startsWith("SUBMITNAME")) {
 					myLoginGUI = new Login();
 					myLoginGUI.setVisible(true);
-					playSound("music/BGM/MainBGM2.wav", true);
+					
+					if(BGMClip == null){
+						BGMClip = playSound("music/BGM/MainBGM2.wav", true);
+					}else{
+						BGMClip.stop();
+						BGMClip = playSound("music/BGM/MainBGM2.wav", true);
+					}
 				} else if (line.startsWith("NAMEACCEPTED")) {
 					curUser = new User(ID, in, out);
 
 					myWaitGUI = new Waiting();
 					myWaitGUI.setVisible(true);
-				} else if (line.startsWith("NEWROOMLIST ")) {
-
+				} else if (line.startsWith("DUPID ")) {
+					myLoginGUI.DupLoginAlert();
 				} else if (line.startsWith("COMEINTO ")) {
 
 					Client.enterToCurrentRoom();
@@ -158,8 +169,9 @@ public class Client extends JFrame {
 					deleteFile();
 				} else if (line.startsWith("MESSAGE ")) {
 					Waiting.gotMessage(line.substring(8));
+				}else{
+					
 				}
-
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -200,17 +212,22 @@ public class Client extends JFrame {
 	 */
 	public static boolean sendLoginRequest(String _ID, String _PW) throws IOException {
 
-		if (!MemberProc.loginChecker(_ID, _PW)) {
-			myLoginGUI.wrongParam();
-
+		if(_ID.isEmpty() || _PW.isEmpty()){
 			return false;
-		} else {
-			System.out.print(NICK);
-			out.println(NICK);
-			myLoginGUI.setVisible(false);
+		}else{
+			if (!MemberProc.loginChecker(_ID, _PW)) {
+				myLoginGUI.wrongParam();
 
-			return true;
+				return false;
+			} else {
+				System.out.print(NICK);
+				out.println(NICK);
+				myLoginGUI.setVisible(false);
+
+				return true;
+			}
 		}
+		
 
 		/* You can active below codes when DB server is down */
 		// out.println((int) (Math.random() * 100) + "");
@@ -371,8 +388,8 @@ public class Client extends JFrame {
 		NICK = _NICK;
 	}
 	
-	public static void playSound(String uri, boolean loop){
-		Clip clip;
+	public static Clip playSound(String uri, boolean loop){
+		Clip clip = null;
 		try{
 			File bgmFile = new File(uri);
 			AudioInputStream ais = AudioSystem.getAudioInputStream(
@@ -383,9 +400,12 @@ public class Client extends JFrame {
 			if(loop){
 				clip.loop(-1);
 			}
+			
+			return clip;
 		}catch(Exception e){
 			e.printStackTrace();
 			
 		}
+		return clip;
 	}
 }

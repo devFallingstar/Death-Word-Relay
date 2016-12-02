@@ -38,5 +38,4 @@ public class SearchNaverDic {
 		}
 		return false;
 	}
-
 }
