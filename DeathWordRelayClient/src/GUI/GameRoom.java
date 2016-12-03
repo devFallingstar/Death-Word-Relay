@@ -7,6 +7,7 @@ import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -20,6 +21,7 @@ import javax.swing.JTextField;
 import Data.User;
 import GameSystem.WordGame;
 import RoomClient.*;
+import SubClass.WindowHandler;
 
 public class GameRoom extends JFrame {
 	public static WordGame myGame;
@@ -70,7 +72,8 @@ public class GameRoom extends JFrame {
 		super(rNo + ". " + title);
 
 		isReady = false;
-		this.myUser = Client.curUser;
+		GameRoom.myUser = Client.curUser;
+		addWindowListener(new WindowHandler(this));
 
 		this.getContentPane().setLayout(null);
 		this.setBounds(0, 0, 1080, 628);
@@ -145,6 +148,11 @@ public class GameRoom extends JFrame {
 			 */
 			public void actionPerformed(ActionEvent e) {
 				String msg = msgTxt.getText();
+				try {
+					msg = new String(msg.getBytes("UTF-8"));
+				} catch (UnsupportedEncodingException e2) {
+					e2.printStackTrace();
+				}
 
 				if (msg.equalsIgnoreCase("/clear")) {
 					msgArea.setText("");
@@ -231,6 +239,11 @@ public class GameRoom extends JFrame {
 	public void checkAndSendAnswer() {
 		try {
 			String msg = answerTxt.getText();
+			try {
+				msg = new String(msg.getBytes("UTF-8"));
+			} catch (UnsupportedEncodingException e2) {
+				e2.printStackTrace();
+			}
 			String lastLine = null, lastWord;
 
 			/* Get last line of msgArea */
@@ -244,7 +257,7 @@ public class GameRoom extends JFrame {
 
 				Client.sendAnswer(msg, myUser.getrNo());
 				if (!(myGame.checkLength() && myGame.checkWithOnline())) {
-					Client.Lose();
+					Client.Lose(false);
 				} else {
 					Client.requestResume();
 					answerTxt.setEnabled(false);
@@ -260,7 +273,7 @@ public class GameRoom extends JFrame {
 					Client.requestResume();
 					answerTxt.setEnabled(false);
 				} else {
-					Client.Lose();
+					Client.Lose(false);
 				}
 			}
 		} catch (Exception e1) {

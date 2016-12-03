@@ -101,9 +101,10 @@ public class Register extends JFrame {
 		cont.add(IDCautionlbl2);
 		cont.add(PWCautionlbl);
 		cont.add(NickNameCautionlbl);
-		cont.setBackground(Color.white);
+		cont.setBackground(Color.black);
 
 		SubmitBtn.addActionListener(new ActionListener() {
+			@SuppressWarnings("deprecation")
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				MemberInfo newMem = new MemberInfo(IDtxt.getText(), PWtxt.getText(), NickNametxt.getText());
@@ -156,3 +157,4 @@ public class Register extends JFrame {
 		}
 	}
 }
+
