@@ -5,6 +5,7 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.StringTokenizer;
+import java.util.Timer;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -15,6 +16,7 @@ import javax.swing.JOptionPane;
 import Data.*;
 import GUI.*;
 import GameSystem.RandomFileDeleter;
+import GameSystem.WordTimerTask;
 import Loginout.MemberProc;
 
 public class Client extends JFrame {
@@ -32,7 +34,6 @@ public class Client extends JFrame {
 	 * Personal data
 	 */
 	private static String ID;
-	private static String PW;
 	private static String NICK;
 
 	/**
@@ -47,6 +48,13 @@ public class Client extends JFrame {
 	private static Login myLoginGUI;
 	private static Waiting myWaitGUI;
 	private static GameRoom myRoomGUI;
+
+	/**
+	 * BGM and SE
+	 */
+	private Clip BGMClip = null;
+	private static Timer timer;
+	private static WordTimerTask timerTask;
 
 	/**
 	 * Runs the client as an application with a closeable frame.
@@ -80,14 +88,14 @@ public class Client extends JFrame {
 				serverDownAlert();
 				System.exit(-1);
 			}
-			
+
 			/*
 			 * Streams that send/receive Strings or Objects
 			 */
 			try {
 				out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8), true);
-				in = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
-
+				in = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+	
 				objOut = new ObjectOutputStream(dataSocket.getOutputStream());
 				objOut.flush();
 				objIn = new ObjectInputStream(dataSocket.getInputStream());
@@ -100,21 +108,30 @@ public class Client extends JFrame {
 			 */
 			while (true) {
 				String line = in.readLine();
-				if(line == null){
+				
+				if (line == null) {
 					continue;
 				}
 				
+				line = new String(line.getBytes("utf-8"));
+
 				if (line.startsWith("SUBMITNAME")) {
 					myLoginGUI = new Login();
 					myLoginGUI.setVisible(true);
-					playSound("music/BGM/MainBGM2.wav", true);
+
+					if (BGMClip == null) {
+						BGMClip = playSound("music/BGM/MainBGM2.wav", true);
+					} else {
+						BGMClip.stop();
+						BGMClip = playSound("music/BGM/MainBGM2.wav", true);
+					}
 				} else if (line.startsWith("NAMEACCEPTED")) {
 					curUser = new User(ID, in, out);
 
 					myWaitGUI = new Waiting();
 					myWaitGUI.setVisible(true);
-				} else if (line.startsWith("NEWROOMLIST ")) {
-
+				} else if (line.startsWith("DUPID ")) {
+					myLoginGUI.DupLoginAlert();
 				} else if (line.startsWith("COMEINTO ")) {
 
 					Client.enterToCurrentRoom();
@@ -141,25 +158,36 @@ public class Client extends JFrame {
 					curUser.setPlaying();
 					GameRoom.playGame(curUser.getPlaying());
 				} else if (line.startsWith("MYTURN")) {
+					timer = new Timer();
+					timerTask = new WordTimerTask();
+					timer.schedule(timerTask, 0, 1000);
+
 					GameRoom.enableAnswerField();
 				} else if (line.startsWith("IWINROUND")) {
+					if (line.contains("TIMEOUT")) {
+						playSound("music/SE/humiliation.wav", false);
+					}
 					GameRoom.winNotice();
 					GameRoom.myGame.youWin();
 				} else if (line.startsWith("ILOSEROUND")) {
+					if (line.contains("TIMEOUT")) {
+						playSound("music/SE/humiliation.wav", false);
+					}
 					GameRoom.loseNotice();
 					GameRoom.myGame.youLose();
 				} else if (line.startsWith("SETNEWROUND")) {
 					GameRoom.readyForNewRound();
 				} else if (line.startsWith("DUPWORD")) {
-					Lose();
+					Lose(false);
 				} else if (line.startsWith("GAMEFIN")) {
 					GameRoom.gameFin();
 				} else if (line.startsWith("LOSEGAME")) {
 					deleteFile();
 				} else if (line.startsWith("MESSAGE ")) {
 					Waiting.gotMessage(line.substring(8));
+				} else if (line.startsWith("MYTIMEEND")) {
+					Lose(true);
 				}
-
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -200,16 +228,20 @@ public class Client extends JFrame {
 	 */
 	public static boolean sendLoginRequest(String _ID, String _PW) throws IOException {
 
-		if (!MemberProc.loginChecker(_ID, _PW)) {
-			myLoginGUI.wrongParam();
-
+		if (_ID.isEmpty() || _PW.isEmpty()) {
 			return false;
 		} else {
-			System.out.print(NICK);
-			out.println(NICK);
-			myLoginGUI.setVisible(false);
+			if (!MemberProc.loginChecker(_ID, _PW)) {
+				myLoginGUI.wrongParam();
 
-			return true;
+				return false;
+			} else {
+				System.out.print(NICK);
+				out.println(NICK);
+				myLoginGUI.setVisible(false);
+
+				return true;
+			}
 		}
 
 		/* You can active below codes when DB server is down */
@@ -242,6 +274,7 @@ public class Client extends JFrame {
 	}
 
 	public static void sendAnswer(String answer, int rNo) {
+		timer.cancel();
 		out.println("ROOMANS " + rNo + " " + answer);
 	}
 
@@ -363,29 +396,41 @@ public class Client extends JFrame {
 		System.out.println(resultFile);
 	}
 
-	public static void Lose() {
-		out.println("ILOSEROUND");
+	public static void Lose(boolean isTimeOut) {
+		if (isTimeOut) {
+			out.println("ILOSEROUND TIMEOUT");
+		} else {
+			out.println("ILOSEROUND");
+		}
+
+	}
+
+	public static void TimerIsEnd() {
+		out.println("TIMEEND");
 	}
 
 	public static void setNICK(String _NICK) {
 		NICK = _NICK;
 	}
-	
-	public static void playSound(String uri, boolean loop){
-		Clip clip;
-		try{
+
+	public static Clip playSound(String uri, boolean loop) {
+		Clip clip = null;
+		try {
 			File bgmFile = new File(uri);
-			AudioInputStream ais = AudioSystem.getAudioInputStream(
-					new BufferedInputStream(new FileInputStream(bgmFile)));
+			AudioInputStream ais = AudioSystem
+					.getAudioInputStream(new BufferedInputStream(new FileInputStream(bgmFile)));
 			clip = AudioSystem.getClip();
 			clip.open(ais);
 			clip.start();
-			if(loop){
+			if (loop) {
 				clip.loop(-1);
 			}
-		}catch(Exception e){
+
+			return clip;
+		} catch (Exception e) {
 			e.printStackTrace();
-			
+
 		}
+		return clip;
 	}
 }

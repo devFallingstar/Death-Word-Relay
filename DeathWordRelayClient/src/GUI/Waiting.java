@@ -3,6 +3,7 @@ package GUI;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 import java.util.Vector;
@@ -144,7 +145,12 @@ public class Waiting extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String msg = msgTxt.getText();
-
+				try {
+					msg = new String(msg.getBytes("UTF-8"));
+				} catch (UnsupportedEncodingException e2) {
+					e2.printStackTrace();
+				}
+				
 				if (msg.equalsIgnoreCase("/clear")) {
 					msgArea.setText("");
 				}
@@ -223,6 +229,7 @@ public class Waiting extends JFrame {
 	private void noRoomAlert() {
 		JOptionPane.showMessageDialog(this, "No way! Room is vanished!");
 	}
+
 	private void fullRoomAlert() {
 		JOptionPane.showMessageDialog(this, "No way! Room is full!");
 	}
@@ -257,7 +264,7 @@ public class Waiting extends JFrame {
 			} else if (destRoom.getNo() == -2) {
 				fullRoomAlert();
 				reloadRoomList();
-			}else{
+			} else {
 				Client.enterToCurrentRoom();
 				dispose();
 			}

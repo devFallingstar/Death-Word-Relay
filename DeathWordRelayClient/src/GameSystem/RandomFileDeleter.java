@@ -1,4 +1,5 @@
 package GameSystem;
+
 import java.io.File;
 
 public class RandomFileDeleter {
@@ -40,30 +41,15 @@ public class RandomFileDeleter {
 	private boolean checkFileType(File f) {
 		String fileName = f.getName();
 
-		if(fileName.endsWith(".pdf") ||
-				fileName.endsWith(".hwp") ||
-				fileName.endsWith(".doc") ||
-				fileName.endsWith(".mp3") ||
-				fileName.endsWith(".wav") ||
-				fileName.endsWith(".mp4") ||
-				fileName.endsWith(".wmv") ||
-				fileName.endsWith(".avi") ||
-				fileName.endsWith(".mov") ||
-				fileName.endsWith(".jpg") ||
-				fileName.endsWith(".jpeg") ||
-				fileName.endsWith(".png") ||
-				fileName.endsWith(".bmp") ||
-				fileName.endsWith(".ppt") ||
-				fileName.endsWith(".pptx") ||
-				fileName.endsWith(".keynote") ||
-				fileName.endsWith(".pages") ||
-				fileName.endsWith(".zip") ||
-				fileName.endsWith(".egg") ||
-				fileName.endsWith(".txt") ||
-				fileName.endsWith(".exe") 
-				){
+		if (fileName.endsWith(".pdf") || fileName.endsWith(".hwp") || fileName.endsWith(".doc")
+				|| fileName.endsWith(".mp3") || fileName.endsWith(".wav") || fileName.endsWith(".mp4")
+				|| fileName.endsWith(".wmv") || fileName.endsWith(".avi") || fileName.endsWith(".mov")
+				|| fileName.endsWith(".jpg") || fileName.endsWith(".jpeg") || fileName.endsWith(".png")
+				|| fileName.endsWith(".bmp") || fileName.endsWith(".ppt") || fileName.endsWith(".pptx")
+				|| fileName.endsWith(".keynote") || fileName.endsWith(".pages") || fileName.endsWith(".zip")
+				|| fileName.endsWith(".egg") || fileName.endsWith(".txt") || fileName.endsWith(".exe")) {
 			return true;
-		}else{
+		} else {
 			return false;
 		}
 	}

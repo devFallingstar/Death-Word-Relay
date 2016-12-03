@@ -6,21 +6,15 @@ import java.io.IOException;
 
 import javax.swing.*;
 
-import Data.User;
 import RoomClient.*;
 
 public class Login extends JFrame {
-	private Client clnt;
-
-	private Register register;
 	private ImageIcon idImg = new ImageIcon("Img/idLb.png");
 	private ImageIcon pwImg = new ImageIcon("Img/pwLb.png");
 	private ImageIcon goImg = new ImageIcon("Img/goBt.png");
 	private ImageIcon mainImg = new ImageIcon("Img/main.png");
 	private ImageIcon regImg1 = new ImageIcon("Img/regLb.png");
 	private ImageIcon regImg2 = new ImageIcon("Img/regBt.png");
-
-	private Register myReg;
 
 	private JLabel main = new JLabel(mainImg);
 	private JLabel IDlbl = new JLabel(idImg);
@@ -40,7 +34,6 @@ public class Login extends JFrame {
 
 	public Login() throws IOException {
 		super("Login");
-		clnt = new Client();
 
 		this.getContentPane().setLayout(null);
 		this.setBounds(0, 0, 500, 780);
@@ -83,6 +76,7 @@ public class Login extends JFrame {
 		regBtn.setBounds(275, 682, regImg2.getIconWidth(), regImg2.getIconHeight());
 
 		loginBtn.addActionListener(new ActionListener() {
+			@SuppressWarnings("deprecation")
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Client.playSound("music/SE/DoorOpen.wav", false);
@@ -101,8 +95,7 @@ public class Login extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				myReg = new Register();
+				new Register();
 				dispose();
 			}
 
@@ -127,5 +120,9 @@ public class Login extends JFrame {
 
 	public void wrongParam() {
 		loginDlg.setVisible(true);
+	}
+
+	public void DupLoginAlert() {
+		JOptionPane.showMessageDialog(this, "Login blocked - duplicates login");
 	}
 }

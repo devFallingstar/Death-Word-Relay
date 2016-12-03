@@ -130,6 +130,6 @@ public class Server {
 	public static void setStartOfRoom(int rNo) {
 		RoomManager currentRoom = roomMap.get(rNo);
 		Random rand = new Random(System.currentTimeMillis());
-		currentRoom.setStarter((int)((Math.random()*365) % 2));
+		currentRoom.setStarter((int) ((Math.random() * 365) % 2));
 	}
 }

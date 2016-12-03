@@ -81,7 +81,7 @@ public class WordGame {
 				return true;
 			if (lastWord.equals("녁") && curWord.startsWith("역"))
 				return true;
-			if (lastWord.equals("") && curWord.startsWith("엿"))
+			if (lastWord.equals("녓") && curWord.startsWith("엿"))
 				return true;
 			if (lastWord.equals("념") && curWord.startsWith("염"))
 				return true;
@@ -115,11 +115,11 @@ public class WordGame {
 				return true;
 			if (lastWord.equals("뉵") && curWord.startsWith("육"))
 				return true;
-			if (lastWord.equals("T") && curWord.startsWith("윳"))
+			if (lastWord.equals("늇") && curWord.startsWith("윳"))
 				return true;
 			if (lastWord.equals("늄") && curWord.startsWith("윰"))
 				return true;
-			if (lastWord.equals("H") && curWord.startsWith("윤"))
+			if (lastWord.equals("윤") && curWord.startsWith("윤"))
 				return true;
 			if (lastWord.equals("늉") && curWord.startsWith("융"))
 				return true;
@@ -145,19 +145,19 @@ public class WordGame {
 
 			if (lastWord.equals("랴") && curWord.startsWith("야"))
 				return true;
-			if (lastWord.equals("d") && curWord.startsWith("얍"))
+			if (lastWord.equals("럅") && curWord.startsWith("얍"))
 				return true;
 			if (lastWord.equals("략") && curWord.startsWith("약"))
 				return true;
 			if (lastWord.equals("럇") && curWord.startsWith("얏"))
 				return true;
-			if (lastWord.equals("c") && curWord.startsWith("얌"))
+			if (lastWord.equals("럄") && curWord.startsWith("얌"))
 				return true;
 			if (lastWord.equals("랸") && curWord.startsWith("얀"))
 				return true;
 			if (lastWord.equals("량") && curWord.startsWith("양"))
 				return true;
-			if (lastWord.equals("U") && curWord.startsWith("얄"))
+			if (lastWord.equals("랼") && curWord.startsWith("얄"))
 				return true;
 
 			if (lastWord.equals("려") && curWord.startsWith("여"))
@@ -176,29 +176,29 @@ public class WordGame {
 				return true;
 			if (lastWord.equals("렬") && curWord.startsWith("열"))
 				return true;
-			if (lastWord.equals("") && curWord.startsWith("옆"))
+			if (lastWord.equals("렾") && curWord.startsWith("옆"))
 				return true;
 
 			if (lastWord.equals("례") && curWord.startsWith("예"))
 				return true;
-			if (lastWord.equals("") && curWord.startsWith("옘"))
+			if (lastWord.equals("롐") && curWord.startsWith("옘"))
 				return true;
 			if (lastWord.equals("롄") && curWord.startsWith("옌"))
 				return true;
-			if (lastWord.equals("") && curWord.startsWith(""))
+			if (lastWord.equals("롕") && curWord.startsWith("옝"))
 				return true;
-			if (lastWord.equals("") && curWord.startsWith("옐"))
+			if (lastWord.equals("롈") && curWord.startsWith("옐"))
 				return true;
 
 			if (lastWord.equals("료") && curWord.startsWith("요"))
 				return true;
 			if (lastWord.equals("룝") && curWord.startsWith("욥"))
 				return true;
-			if (lastWord.equals("") && curWord.startsWith("욕"))
+			if (lastWord.equals("룍") && curWord.startsWith("욕"))
 				return true;
 			if (lastWord.equals("룟") && curWord.startsWith("욧"))
 				return true;
-			if (lastWord.equals("") && curWord.startsWith("욤"))
+			if (lastWord.equals("룜") && curWord.startsWith("욤"))
 				return true;
 			if (lastWord.equals("룐") && curWord.startsWith("욘"))
 				return true;
@@ -322,5 +322,4 @@ public class WordGame {
 
 		return false;
 	}
-
 }
