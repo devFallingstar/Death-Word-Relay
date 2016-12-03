@@ -68,7 +68,7 @@ public class Login extends JFrame {
 		cont.add(loginBtn);
 		cont.add(REGlbl);
 		cont.add(regBtn);
-		cont.setBackground(Color.white);
+		cont.setBackground(Color.black);
 
 		// Press enter to login
 		this.getRootPane().setDefaultButton(loginBtn);
