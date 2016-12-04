@@ -117,7 +117,7 @@ public class GameRoom extends JFrame {
 		readyBtn.setFocusPainted(false);
 		readyBtn.setContentAreaFilled(false);
 		
-		countDown.setBounds(800,330,fiveImg.getIconWidth(),fiveImg.getIconHeight());
+		countDown.setBounds(900,330,fiveImg.getIconWidth(),fiveImg.getIconHeight());
 		
 		
 
@@ -222,12 +222,12 @@ public class GameRoom extends JFrame {
 		if (playing) {
 			msgArea.append("The game system is [Best of Five].\n");
 			msgArea.append("From now on, all of uncorrectable message will make you lose.\n");
-			fiveCountDown();
 			msgArea.append("Think carefully before you type your word.\n");
 			msgArea.append("--------------------------------------------------------------\n");
 			msgArea.append("You can't rewind death.\n");
 			msgArea.append("--------------------------------------------------------------\n");
 			myGame = new WordGame();
+			fiveCountDown();
 			changeTxtField();
 			answerTxt.setEnabled(false);
 		} else {
@@ -262,7 +262,8 @@ public class GameRoom extends JFrame {
 					Client.requestResume();
 					answerTxt.setEnabled(false);
 				}
-			} else {
+			} 
+			else {
 				lastWord = lastLine.split(":")[1].trim();
 
 				myGame.setPrevWord(lastWord);
@@ -320,6 +321,7 @@ public class GameRoom extends JFrame {
 		msgArea.append("--------------------------------------------------------------\n");
 		msgArea.append("You can't rewind death.\n");
 		msgArea.append("--------------------------------------------------------------\n");
+		fiveCountDown();
 		answerTxt.setEnabled(false);
 	}
 
@@ -332,7 +334,9 @@ public class GameRoom extends JFrame {
 		isReady = false;
 		readyBtn.setIcon(readyImg);
 	}
+	
 	public static void fiveCountDown(){
+		countDown.setVisible(true);
 		countDown.setIcon(fiveImg);
 		sleep(1000);
 		countDown.setIcon(fourImg);

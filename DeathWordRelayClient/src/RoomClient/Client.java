@@ -162,7 +162,7 @@ public class Client extends JFrame {
 					timer = new Timer();
 					timerTask = new WordTimerTask();
 					timer.schedule(timerTask, 0, 1000);
-
+				
 					GameRoom.enableAnswerField();
 				} else if (line.startsWith("IWINROUND")) {
 					if (line.contains("TIMEOUT")) {

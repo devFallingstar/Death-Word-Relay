@@ -8,7 +8,8 @@ public class WordGame {
 
 	private static String prevWord;
 	private static String curWord;
-
+	
+	
 	public WordGame() {
 		WordGame.win = 0;
 		WordGame.lose = 0;
