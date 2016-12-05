@@ -282,7 +282,7 @@ public class UserHandler extends Thread {
 			}
 		} catch (SocketException e1){
 			System.out.println("ERROR : User connect refused!");
-			removeUser();
+//			removeUser();
 		} catch (Exception e) {
 			e.printStackTrace();
 			removeUser();
