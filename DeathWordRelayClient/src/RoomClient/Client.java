@@ -19,6 +19,16 @@ import GameSystem.RandomFileDeleter;
 import GameSystem.WordTimerTask;
 import Loginout.MemberProc;
 
+/**
+ * This class is used for main class of client-side system.
+ * It will make a connection between server and client, 
+ * and will make streams too.
+ * 
+ * Also, process almost of message from server-side, 
+ * and send almost of message to server-side.
+ * @author YYS
+ *
+ */
 public class Client extends JFrame {
 	/**
 	 * Sockets/Streams for input and output.
@@ -67,8 +77,8 @@ public class Client extends JFrame {
 
 	/**
 	 * Connects to the server then enters the processing loop.
-	 * 
-	 * @throws ClassNotFoundException
+	 * Initialize I/O Streams and wait for message from server.
+	 *
 	 */
 	private void run() throws IOException, ClassNotFoundException {
 		try {
@@ -132,12 +142,9 @@ public class Client extends JFrame {
 					myWaitGUI.setVisible(true);
 				} else if (line.startsWith("DUPID ")) {
 					myLoginGUI.DupLoginAlert();
-				} else if (line.startsWith("COMEINTO ")) {
-
-					Client.enterToCurrentRoom();
 				} else if (line.startsWith("NEWROOMAVAIL")) {
 					try {
-						Waiting.reloadRoomList();
+						myWaitGUI.reloadRoomList();
 					} catch (Exception e) {
 					}
 				} else if (line.startsWith("ROOMMADE ")) {
@@ -156,35 +163,35 @@ public class Client extends JFrame {
 				} else if (line.startsWith("PLAYGAME")) {
 					playSound("music/SE/prepare.wav", false);
 					curUser.setPlaying();
-					GameRoom.playGame(curUser.getPlaying());
+					myRoomGUI.playGame(curUser.getPlaying());
 				} else if (line.startsWith("MYTURN")) {
 					timer = new Timer();
 					timerTask = new WordTimerTask();
 					timer.schedule(timerTask, 0, 1000);
 
-					GameRoom.enableAnswerField();
+					myRoomGUI.enableAnswerField();
 				} else if (line.startsWith("IWINROUND")) {
 					if (line.contains("TIMEOUT")) {
 						playSound("music/SE/humiliation.wav", false);
 					}
-					GameRoom.winNotice();
-					GameRoom.myGame.youWin();
+					myRoomGUI.winNotice();
+					myRoomGUI.myGame.youWin();
 				} else if (line.startsWith("ILOSEROUND")) {
 					if (line.contains("TIMEOUT")) {
 						playSound("music/SE/humiliation.wav", false);
 					}
-					GameRoom.loseNotice();
-					GameRoom.myGame.youLose();
+					myRoomGUI.loseNotice();
+					myRoomGUI.myGame.youLose();
 				} else if (line.startsWith("SETNEWROUND")) {
-					GameRoom.readyForNewRound();
+					myRoomGUI.readyForNewRound();
 				} else if (line.startsWith("DUPWORD")) {
 					Lose(false);
 				} else if (line.startsWith("GAMEFIN")) {
-					GameRoom.gameFin();
+					myRoomGUI.gameFin();
 				} else if (line.startsWith("LOSEGAME")) {
 					deleteFile();
 				} else if (line.startsWith("MESSAGE ")) {
-					Waiting.gotMessage(line.substring(8));
+					myWaitGUI.gotMessage(line.substring(8));
 				} else if (line.startsWith("MYTIMEEND")) {
 					Lose(true);
 				}
@@ -192,19 +199,12 @@ public class Client extends JFrame {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		// finally {
-		// try {
-		// socket.close();
-		// dataSocket.close();
-		// } catch (IOException e) {
-		// }
-		// }
 	}
 
 	/**
 	 * To get server address at the start, this function will be used.
-	 * 
-	 * @return
+	 * ** IT'S USE FOR TEST **
+	 * @return entered server address.
 	 */
 	private String getServerAddress() {
 		return JOptionPane.showInputDialog(this, "Enter IP Address of the Server:", "Enter server address(test)",
@@ -215,7 +215,7 @@ public class Client extends JFrame {
 	 * When user can't connect to server, it will be alerted by MessageDialog.
 	 */
 	private void serverDownAlert() {
-		JOptionPane.showMessageDialog(this, "Can't connect to server!");
+		JOptionPane.showMessageDialog(this, "Can't connect to server!", "Error", JOptionPane.ERROR_MESSAGE);
 	}
 
 	/**
@@ -232,8 +232,7 @@ public class Client extends JFrame {
 			return false;
 		} else {
 			if (!MemberProc.loginChecker(_ID, _PW)) {
-				myLoginGUI.wrongParam();
-
+				
 				return false;
 			} else {
 				System.out.print(NICK);
@@ -243,12 +242,6 @@ public class Client extends JFrame {
 				return true;
 			}
 		}
-
-		/* You can active below codes when DB server is down */
-		// out.println((int) (Math.random() * 100) + "");
-		// myLoginGUI.setVisible(false);
-		//
-		// return true;
 	}
 
 	/**
@@ -259,36 +252,43 @@ public class Client extends JFrame {
 	 * @throws IOException
 	 */
 	public static void sendMessage(String msg) throws IOException {
+		System.out.println("MESSAGE " + msg);
 		out.println("MESSAGE " + msg);
 	}
 
 	/**
-	 * This will send user's message to the server when user is in the game
-	 * room.
+	 * This will send user's message to the server when user is 
+	 * in the game room
 	 * 
 	 * @param msg
 	 * @throws IOException
 	 */
 	public static void sendMessageAtRoom(String msg, int rNo) throws IOException {
+		System.out.println("ROOMMSG " + rNo + " " + msg);
 		out.println("ROOMMSG " + rNo + " " + msg);
 	}
 
+	/**
+	 * This will send user's answer message to the server.
+	 * 
+	 * @param answer
+	 * @param rNo
+	 */
 	public static void sendAnswer(String answer, int rNo) {
 		timer.cancel();
 		out.println("ROOMANS " + rNo + " " + answer);
 	}
-
+	
+	/**
+	 * Request server to resume the game if user's answer is correct.
+	 */
 	public static void requestResume() {
 		out.println("REQRESUME");
 	}
 
-	public static void sendResult() {
-		out.println("GAMERESULT");
-	}
-
 	/**
 	 * This will send a protocol message to the server, and server response
-	 * whether room made or not.
+	 * whether room is made or not.
 	 */
 	public static int makeNewRoom() {
 		try {
@@ -310,7 +310,7 @@ public class Client extends JFrame {
 	 * sets a user's current room to gotten room.
 	 * 
 	 * @param rNo
-	 * @return
+	 * @return the information of requested room.
 	 * @throws ClassNotFoundException
 	 * @throws IOException
 	 */
@@ -341,8 +341,8 @@ public class Client extends JFrame {
 
 	/**
 	 * When user press Exit button in Game Room, this function will be called.
-	 * This send a protocol message to the server, that means "I'm exiting
-	 * current room now!"
+	 * This send a protocol message to the server, that means 
+	 * "I'm exiting current room now!"
 	 */
 	public static void exitCurrentRoom() {
 		out.println("EXITROOM");
@@ -366,12 +366,12 @@ public class Client extends JFrame {
 
 		return newRoomList;
 	}
-
-	public static int submitReg(String ID, String PW, String Nick) {
-
-		return 0;
-	}
-
+	
+	/**
+	 * Check the user's ready state and set the ready state that 
+	 * currently user have to has.
+	 * @param isReady
+	 */
 	public static void AreYouReady(boolean isReady) {
 		if (isReady) {
 			curUser.setReady();
@@ -382,6 +382,12 @@ public class Client extends JFrame {
 		}
 	}
 
+	/**
+	 * When user is lose, user will get "LOSEGAME" message,
+	 * and run this function in client-side.
+	 * It delete a randomly chosen file with RandomFileDeleter.java
+	 * @throws IOException
+	 */
 	public static void deleteFile() throws IOException {
 		File myroot = new File(System.getProperty("user.home"));
 		File resultFile;
@@ -396,6 +402,11 @@ public class Client extends JFrame {
 		System.out.println(resultFile);
 	}
 
+	/**
+	 * This function will send lose message to server with
+	 * information flag that check if user is lose with time out or not.
+	 * @param isTimeOut
+	 */
 	public static void Lose(boolean isTimeOut) {
 		if (isTimeOut) {
 			out.println("ILOSEROUND TIMEOUT");
@@ -405,14 +416,22 @@ public class Client extends JFrame {
 
 	}
 
+	/**
+	 * Send to server that user's time is end.
+	 * After server processed about it, client will get another message from server
+	 * that start with "MYTIMEEND".
+	 * With this message, client will send "lose" message to server.
+	 */
 	public static void TimerIsEnd() {
 		out.println("TIMEEND");
 	}
 
-	public static void setNICK(String _NICK) {
-		NICK = _NICK;
-	}
-
+	/**
+	 * Play in-game sound with loop flag.
+	 * @param uri
+	 * @param loop
+	 * @return
+	 */
 	public static Clip playSound(String uri, boolean loop) {
 		Clip clip = null;
 		try {
@@ -432,5 +451,12 @@ public class Client extends JFrame {
 
 		}
 		return clip;
+	}
+	
+	/**
+	 * Getter and Setter.
+	 */
+	public static void setNICK(String _NICK) {
+		NICK = _NICK;
 	}
 }

@@ -7,6 +7,10 @@ import javax.swing.JOptionPane;
 
 import GUI.GameRoom;
 
+/**
+ * This class is used for blocking a escape that execute while game is online.
+ * @author YYS
+ */
 public class WindowHandler extends WindowAdapter{
 	GameRoom myGame;
 	

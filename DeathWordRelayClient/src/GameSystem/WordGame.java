@@ -2,41 +2,87 @@ package GameSystem;
 
 import java.io.IOException;
 
+/**
+ * This class is used for make a word game system and variable for current game.
+ * It also check the word that entered is right or not with various methods, and
+ * change the word if word follow the rule of 두음법칙.
+ * 
+ * @author YYS
+ *
+ */
 public class WordGame {
-	private static int win, lose;
-	private static int round;
+	private int win, lose;
+	private int round;
 
-	private static String prevWord;
-	private static String curWord;
+	private String prevWord;
+	private String curWord;
 
+	/**
+	 * Constructor.
+	 */
 	public WordGame() {
-		WordGame.win = 0;
-		WordGame.lose = 0;
-		WordGame.round = 0;
+		this.win = 0;
+		this.lose = 0;
+		this.round = 0;
 	}
 
+	/**
+	 * Set previous word that entered just before.
+	 * 
+	 * @param _prevWord
+	 */
 	public void setPrevWord(String _prevWord) {
-		WordGame.prevWord = _prevWord;
+		this.prevWord = _prevWord;
 	}
 
+	/**
+	 * Set current word that entered just right now.
+	 * 
+	 * @param _prevWord
+	 */
 	public void setCurrentWord(String _curWord) {
-		WordGame.curWord = _curWord;
+		this.curWord = _curWord;
 	}
 
-	public static String getPrevWord() {
+	/**
+	 * Get previous word that entered just before.
+	 * 
+	 * @param _prevWord
+	 */
+	public String getPrevWord() {
 		return prevWord;
 	}
 
+	/**
+	 * Get current word that entered just right now.
+	 * 
+	 * @param _prevWord
+	 */
+	public String getCurWord() {
+		return curWord;
+	}
+
+	/**
+	 * Check if the user is win or not and save its result to variables.
+	 */
 	public void youWin() {
 		round++;
 		win++;
 	}
 
+	/**
+	 * Check if the user is lose or not and save its result to variables.
+	 */
 	public void youLose() {
 		round++;
 		lose++;
 	}
 
+	/**
+	 * If some got 3 times of lose or win, the game will be end.
+	 * 
+	 * @return 1 is for winning, -1 is for losing and 0 for 'not end now'.
+	 */
 	public int isFinished() {
 		if (win == 3) {
 			return 1;
@@ -46,14 +92,23 @@ public class WordGame {
 		return 0;
 	}
 
-	public static String getCurWord() {
-		return curWord;
-	}
-
+	/**
+	 * Check if the current word is correct or not.
+	 * 
+	 * @return boolean flag that has information of correct or not.
+	 * @throws IOException
+	 */
 	public boolean isCorrect() throws IOException {
 		return checkLength() && checkWithOnline() && checkWithOffline();
 	}
 
+	/**
+	 * Check if the current word is correct or not with length. If the word is
+	 * longer than 4 and shorter than 2, it will return false.
+	 * 
+	 * @return boolean flag that has information of correct or not.
+	 * @throws IOException
+	 */
 	public boolean checkLength() {
 		if (curWord.length() > 4 || curWord.length() < 2) {
 			return false;
@@ -64,10 +119,25 @@ public class WordGame {
 		return true;
 	}
 
+	/**
+	 * Check if the current word is correct or not with online dictionary
+	 * system.
+	 * 
+	 * @return boolean flag that has information of correct or not.
+	 * @throws IOException
+	 */
 	public boolean checkWithOnline() throws IOException {
 		return SearchNaverDic.checkWordFromNaverDic(curWord);
 	}
 
+	/**
+	 * Check if the current word is correct or not with offline word matching
+	 * system. If current word is not start with previous word's last word, it
+	 * will return false.
+	 * 
+	 * @return boolean flag that has information of correct or not.
+	 * @throws IOException
+	 */
 	public boolean checkWithOffline() {
 		int lastWordIdx = prevWord.length() - 1;
 
@@ -81,7 +151,7 @@ public class WordGame {
 				return true;
 			if (lastWord.equals("녁") && curWord.startsWith("역"))
 				return true;
-			if (lastWord.equals("녓") && curWord.startsWith("엿"))
+			if (lastWord.equals("녓") && curWord.startsWith("엿"))
 				return true;
 			if (lastWord.equals("념") && curWord.startsWith("염"))
 				return true;
@@ -145,7 +215,7 @@ public class WordGame {
 
 			if (lastWord.equals("랴") && curWord.startsWith("야"))
 				return true;
-			if (lastWord.equals("럅") && curWord.startsWith("얍"))
+			if (lastWord.equals("럅") && curWord.startsWith("얍"))
 				return true;
 			if (lastWord.equals("략") && curWord.startsWith("약"))
 				return true;
@@ -157,7 +227,7 @@ public class WordGame {
 				return true;
 			if (lastWord.equals("량") && curWord.startsWith("양"))
 				return true;
-			if (lastWord.equals("랼") && curWord.startsWith("얄"))
+			if (lastWord.equals("랼") && curWord.startsWith("얄"))
 				return true;
 
 			if (lastWord.equals("려") && curWord.startsWith("여"))
@@ -176,18 +246,18 @@ public class WordGame {
 				return true;
 			if (lastWord.equals("렬") && curWord.startsWith("열"))
 				return true;
-			if (lastWord.equals("렾") && curWord.startsWith("옆"))
+			if (lastWord.equals("렾") && curWord.startsWith("옆"))
 				return true;
 
 			if (lastWord.equals("례") && curWord.startsWith("예"))
 				return true;
-			if (lastWord.equals("롐") && curWord.startsWith("옘"))
+			if (lastWord.equals("롐") && curWord.startsWith("옘"))
 				return true;
 			if (lastWord.equals("롄") && curWord.startsWith("옌"))
 				return true;
-			if (lastWord.equals("롕") && curWord.startsWith("옝"))
+			if (lastWord.equals("롕") && curWord.startsWith("옝"))
 				return true;
-			if (lastWord.equals("롈") && curWord.startsWith("옐"))
+			if (lastWord.equals("롈") && curWord.startsWith("옐"))
 				return true;
 
 			if (lastWord.equals("료") && curWord.startsWith("요"))

@@ -1,5 +1,12 @@
 package Loginout;
 
+/**
+ * This class is used to save user information
+ * that will be send to SQL DB Server.
+ * It will be managed by only client-side system.
+ * @author YYS
+ *
+ */
 public class MemberInfo {
 
 	private String id;

@@ -18,12 +18,19 @@ import java.io.IOException;
 
 import javax.swing.JButton;
 
+/**
+ * This class is used for define a GUI system of register window, and process
+ * all of methods that execute in register window.
+ * 
+ * @author YYS
+ *
+ */
 public class Register extends JFrame {
+	/* Basic variables */
 	Client clnt;
 	Login myLogin;
 
-	private Container cont;
-
+	/* Basic GUI variables */
 	private ImageIcon idImg = new ImageIcon("Img/idLb.png");
 	private ImageIcon pwImg = new ImageIcon("Img/pwLb.png");
 	private ImageIcon nickImg = new ImageIcon("Img/nickLb.png");
@@ -46,20 +53,45 @@ public class Register extends JFrame {
 	JLabel PWCautionlbl = new JLabel("at least 6 to 12 chracters");
 	JLabel NickNameCautionlbl = new JLabel("at least 1 to 12 chracters");
 
+	/* Default container */
+	private Container cont;
+
+	/**
+	 * Constructor for GUI system.
+	 */
 	public Register() {
+		/* Initialize default informations */
 		super("Register");
 		clnt = new Client();
 
+		/* Set default frame informations */
 		this.getContentPane().setLayout(null);
 		this.setBounds(0, 0, 470, 400);
 		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
+		this.setResizable(false);
 
-		cont = this.getContentPane();
-
-		// Press enter to submit
+		/* When press enter, submit button will be clicked */
 		this.getRootPane().setDefaultButton(SubmitBtn);
+
+		/* Set default container and add components */
+		cont = this.getContentPane();
+		cont.add(SubmitBtn);
+		cont.add(CancelBtn);
+		cont.add(NickNamelbl);
+		cont.add(NickNametxt);
+		cont.add(IDlbl);
+		cont.add(IDtxt);
+		cont.add(PWlbl);
+		cont.add(PWtxt);
+		cont.add(IDCautionlbl);
+		cont.add(IDCautionlbl2);
+		cont.add(PWCautionlbl);
+		cont.add(NickNameCautionlbl);
+
+		/* Initialize default background design and system */
+		cont.setBackground(Color.white);
 
 		SubmitBtn.setBounds(60, 230, submitImg.getIconWidth(), submitImg.getIconHeight());
 		SubmitBtn.setBackground(Color.red);
@@ -89,20 +121,10 @@ public class Register extends JFrame {
 		NickNameCautionlbl.setBounds(223, 192, 200, 16);
 		NickNameCautionlbl.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
 
-		cont.add(SubmitBtn);
-		cont.add(CancelBtn);
-		cont.add(NickNamelbl);
-		cont.add(NickNametxt);
-		cont.add(IDlbl);
-		cont.add(IDtxt);
-		cont.add(PWlbl);
-		cont.add(PWtxt);
-		cont.add(IDCautionlbl);
-		cont.add(IDCautionlbl2);
-		cont.add(PWCautionlbl);
-		cont.add(NickNameCautionlbl);
-		cont.setBackground(Color.white);
-
+		/*
+		 * When submit button is clicked, check a duplicates of ID and nick
+		 * name, and add user to DB Server.
+		 */
 		SubmitBtn.addActionListener(new ActionListener() {
 			@SuppressWarnings("deprecation")
 			@Override
@@ -118,14 +140,13 @@ public class Register extends JFrame {
 					} else {
 						alertWrong(code);
 					}
-
 				} catch (Exception e1) {
 					e1.printStackTrace();
 				}
 			}
-
 		});
 
+		/* Close the register menu */
 		CancelBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -133,20 +154,24 @@ public class Register extends JFrame {
 					new Login();
 					dispose();
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-
 			}
-
 		});
-
 	}
 
+	/**
+	 * Submit and register is complete.
+	 */
 	public void alertComplete() {
 		JOptionPane.showMessageDialog(this, "You are now the member of death word relay!");
 	}
 
+	/**
+	 * If registering leads error,
+	 * alert it.
+	 * @param code
+	 */
 	public void alertWrong(int code) {
 		if (code == -1) {
 			JOptionPane.showMessageDialog(this, "Duplicate ID!");

@@ -8,7 +8,15 @@ import javax.swing.*;
 
 import RoomClient.*;
 
+/**
+ * This class is used for define a GUI system of login window, and process all
+ * of methods that execute in login window.
+ * 
+ * @author YYS
+ *
+ */
 public class Login extends JFrame {
+	/* Basic GUI variables */
 	private ImageIcon idImg = new ImageIcon("Img/idLb.png");
 	private ImageIcon pwImg = new ImageIcon("Img/pwLb.png");
 	private ImageIcon goImg = new ImageIcon("Img/goBt.png");
@@ -26,20 +34,48 @@ public class Login extends JFrame {
 	private JLabel REGlbl = new JLabel(regImg1);
 	private JButton regBtn = new JButton(regImg2);
 
-	private JDialog loginDlg = new JDialog(this, "Notice");
-	private JLabel loginWronglbl = new JLabel("Wrong ID or Password!");
-	private JButton loginWrongBtn = new JButton("Okay");
-
+	/* Default container */
 	private Container cont;
 
+	/**
+	 * Constructor for GUI system.
+	 * 
+	 * @throws IOException
+	 */
 	public Login() throws IOException {
+		/* Initialize default informations */
 		super("Login");
 
+		/* Set default frame informations */
 		this.getContentPane().setLayout(null);
 		this.setBounds(0, 0, 500, 780);
 		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
+		this.setResizable(false);
+
+		/* Set default container and add components */
+		cont = this.getContentPane();
+		cont.add(main);
+		cont.add(IDlbl);
+		cont.add(PWlbl);
+		cont.add(IDtxt);
+		cont.add(PWtxt);
+		cont.add(loginBtn);
+		cont.add(REGlbl);
+		cont.add(regBtn);
+
+		/* Initialize default background design and system */
+		cont.setBackground(Color.white);
+
+		main.setBounds(0, 0, mainImg.getIconWidth(), mainImg.getIconHeight());
+		IDlbl.setBounds(127, 601, idImg.getIconWidth(), idImg.getIconHeight());
+		PWlbl.setBounds(125, 636, pwImg.getIconWidth(), pwImg.getIconHeight());
+		IDtxt.setBounds(185, 601, 100, 23);
+		PWtxt.setBounds(186, 636, 100, 23);
+		loginBtn.setBounds(306, 594, goImg.getIconWidth(), goImg.getIconHeight());
+		REGlbl.setBounds(87, 680, regImg1.getIconWidth(), regImg1.getIconHeight());
+		regBtn.setBounds(275, 682, regImg2.getIconWidth(), regImg2.getIconHeight());
 
 		loginBtn.setBackground(Color.red);
 		loginBtn.setBorderPainted(false);
@@ -51,30 +87,10 @@ public class Login extends JFrame {
 		regBtn.setFocusPainted(false);
 		regBtn.setContentAreaFilled(false);
 
-		cont = this.getContentPane();
-
-		cont.add(main);
-		cont.add(IDlbl);
-		cont.add(PWlbl);
-		cont.add(IDtxt);
-		cont.add(PWtxt);
-		cont.add(loginBtn);
-		cont.add(REGlbl);
-		cont.add(regBtn);
-		cont.setBackground(Color.white);
-
-		// Press enter to login
+		/* When press enter, login button will be clicked. */
 		this.getRootPane().setDefaultButton(loginBtn);
 
-		main.setBounds(0, 0, mainImg.getIconWidth(), mainImg.getIconHeight());
-		IDlbl.setBounds(127, 601, idImg.getIconWidth(), idImg.getIconHeight());
-		PWlbl.setBounds(125, 636, pwImg.getIconWidth(), pwImg.getIconHeight());
-		IDtxt.setBounds(185, 601, 100, 23);
-		PWtxt.setBounds(186, 636, 100, 23);
-		loginBtn.setBounds(306, 594, goImg.getIconWidth(), goImg.getIconHeight());
-		REGlbl.setBounds(87, 680, regImg1.getIconWidth(), regImg1.getIconHeight());
-		regBtn.setBounds(275, 682, regImg2.getIconWidth(), regImg2.getIconHeight());
-
+		/* Send a login request with some door opening sound. */
 		loginBtn.addActionListener(new ActionListener() {
 			@SuppressWarnings("deprecation")
 			@Override
@@ -83,45 +99,35 @@ public class Login extends JFrame {
 				try {
 					if (Client.sendLoginRequest(IDtxt.getText(), PWtxt.getText())) {
 						dispose();
+					} else {
+						wrongParam();
 					}
-
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
 			}
 		});
 
+		/* Open register menu. */
 		regBtn.addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				new Register();
 				dispose();
 			}
-
 		});
-
-		loginWronglbl.setVerticalAlignment(SwingConstants.CENTER);
-		loginDlg.setSize(200, 100);
-		loginDlg.setVisible(false);
-		loginDlg.setLocationRelativeTo(this);
-		loginDlg.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
-		loginDlg.getContentPane().add(loginWronglbl, "Center");
-		loginDlg.getContentPane().add(loginWrongBtn, "South");
-		loginWrongBtn.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				loginDlg.setVisible(false);
-			}
-		});
-		this.setResizable(false);
 	}
 
+	/**
+	 * Make toast message when login information is wrong.
+	 */
 	public void wrongParam() {
-		loginDlg.setVisible(true);
+		JOptionPane.showMessageDialog(this, "Wrong informations!", "Login failed!", JOptionPane.WARNING_MESSAGE);
 	}
 
+	/**
+	 * Make toast message when same user is already in server.
+	 */
 	public void DupLoginAlert() {
 		JOptionPane.showMessageDialog(this, "Login blocked - duplicates login");
 	}

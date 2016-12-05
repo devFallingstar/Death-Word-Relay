@@ -2,17 +2,39 @@ package GameSystem;
 
 import java.io.File;
 
+/**
+ * This class is used for select a random file from user's system, and delete
+ * the file that selected randomly.
+ * 
+ * @author YYS
+ *
+ */
 public class RandomFileDeleter {
 	File originRoot;
 
+	/**
+	 * Constructor for root path.
+	 * 
+	 * @param _root
+	 */
 	public RandomFileDeleter(File _root) {
 		this.originRoot = _root;
 	}
 
+	/**
+	 * Get random file with recursive method.
+	 * 
+	 * @return Random file selected by findFile().
+	 */
 	public File getRandomFile() {
 		return findFile(originRoot);
 	}
 
+	/**
+	 * Find file that has appropriate file type.
+	 * 
+	 * @return Randomly selected file.
+	 */
 	private File findFile(File rootPath) {
 
 		try {
@@ -38,6 +60,14 @@ public class RandomFileDeleter {
 		}
 	}
 
+	/**
+	 * Check if the file has appropriate type or not.
+	 * 
+	 * @param file
+	 *            selected by findFile()
+	 * @return boolean flag that has information about if file has appropriate
+	 *         type or not.
+	 */
 	private boolean checkFileType(File f) {
 		String fileName = f.getName();
 

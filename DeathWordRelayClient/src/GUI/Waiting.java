@@ -11,12 +11,21 @@ import java.util.Vector;
 import javax.swing.*;
 
 import Data.Room;
-import Data.User;
 import RoomClient.*;
 
+/**
+ * This class is used for define a GUI system of waiting room, and process all
+ * of methods that execute in waiting room.
+ * 
+ * @author YYS
+ *
+ */
 public class Waiting extends JFrame {
-	private Client clnt;
+	/* Basic variables */
+	private HashMap<Integer, String> newRoomList;
+	private Vector<String> rooms = new Vector<String>();
 
+	/* Basic background GUI variables */
 	private ImageIcon waiting = new ImageIcon("Img/waitingBg3.png");
 	private ImageIcon rank = new ImageIcon("Img/rankList1.png");
 	private ImageIcon room = new ImageIcon("Img/roomList.png");
@@ -26,15 +35,7 @@ public class Waiting extends JFrame {
 	private ImageIcon chat = new ImageIcon("Img/chatBg.png");
 	private ImageIcon userImg = new ImageIcon("Img/userInform.png");
 
-	private JPanel chatPanel = new JPanel() {
-
-		public void paintComponent(Graphics g) {
-			g.drawImage(chat.getImage(), 0, 0, null);
-			setOpaque(false);
-			super.paintComponent(g);
-		}
-	};
-
+	/* Basic background GUI variables */
 	private JLabel waitBg = new JLabel(waiting);
 	private JLabel ranklbl = new JLabel(rank);
 	private JLabel roomlbl = new JLabel(room);
@@ -44,37 +45,47 @@ public class Waiting extends JFrame {
 	private JLabel userRate = new JLabel();
 	private JLabel chatlbl = new JLabel(chat);
 
-	private static List roomList = new List(10, false);
+	private List roomList = new List(10, false);
 	private List rankList = new List(10, false);
 
 	private JButton MakeRoomBtn = new JButton(mkr);
 	private JButton EnterBtn = new JButton(ent);
 	private JButton RefreshBtn = new JButton(rf);
 
-	private static JTextField msgTxt = new JTextField(41);
-	private static JTextArea msgArea = new JTextArea(9, 65);
+	/* Basic Chatting panel */
+	private JPanel chatPanel = new JPanel() {
+		public void paintComponent(Graphics g) {
+			g.drawImage(chat.getImage(), 0, 0, null);
+			setOpaque(false);
+			super.paintComponent(g);
+		}
+	};
+	private JTextField msgTxt = new JTextField(41);
+	private JTextArea msgArea = new JTextArea(9, 65);
 	private JScrollPane msgScrlPane = new JScrollPane(msgArea);
 	private JScrollPane roomScrlPane = new JScrollPane(roomList);
 
+	/* Default container */
 	private Container cont;
 
-	private static HashMap<Integer, String> newRoomList;
-	private static Vector<String> rooms = new Vector<String>();
-
+	/**
+	 * Constructor for GUI system
+	 */
 	public Waiting() {
-		super("Death Word Relay ver.0.01");
+		/* Initialize default informations */
+		super("Death Word Relay");
 
-		clnt = new Client();
-
+		/* Set default frame informations */
 		this.getContentPane().setLayout(null);
 		this.setBounds(0, 0, 800, 800);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		chatPanel.setLayout(null);
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
+		this.setResizable(false);
 
+		/* Set default container and add components */
 		cont = this.getContentPane();
-
 		cont.add(MakeRoomBtn);
 		cont.add(EnterBtn);
 		cont.add(RefreshBtn);
@@ -88,6 +99,9 @@ public class Waiting extends JFrame {
 		cont.add(userRate);
 		cont.add(waitBg);
 		cont.add(chatlbl);
+
+		/* Initialize default background design and system */
+		waitBg.setBounds(0, 0, waiting.getIconWidth(), waiting.getIconHeight());
 
 		MakeRoomBtn.setBounds(45, 30, mkr.getIconWidth(), mkr.getIconHeight());
 		MakeRoomBtn.setBackground(Color.red);
@@ -109,12 +123,15 @@ public class Waiting extends JFrame {
 
 		roomScrlPane.setBounds(15, 121, 588, 277);
 		rankList.setBounds(630, 121, 150, 277);
-
 		roomlbl.setBounds(205, 3, room.getIconWidth(), room.getIconHeight());
-
 		ranklbl.setBounds(630, 40, rank.getIconWidth(), rank.getIconHeight());
-
 		userInfo.setBounds(610, 450, userImg.getIconWidth(), userImg.getIconHeight());
+
+		/* Initialize default chatting panel's design and system */
+		chatPanel.setBounds(15, 450, 588, 295);
+		chatPanel.add(msgScrlPane);
+		chatPanel.add(msgTxt);
+		chatPanel.add(chatlbl);
 
 		msgScrlPane.setBounds(0, 10, 583, 255);
 		msgScrlPane.setOpaque(false);
@@ -127,21 +144,11 @@ public class Waiting extends JFrame {
 		msgArea.setForeground(Color.white);
 		msgArea.setSize(583, 255);
 
-		chatPanel.setBounds(15, 450, 588, 295);
-
-		chatPanel.add(msgScrlPane);
-		chatPanel.add(msgTxt);
-		chatPanel.add(chatlbl);
-
-		waitBg.setBounds(0, 0, waiting.getIconWidth(), waiting.getIconHeight());
-
+		/*
+		 * Send message to server when user press enter key with some text in
+		 * msgTxt(TextField). If user enter /clear, msgArea will be cleared.
+		 */
 		msgTxt.addActionListener(new ActionListener() {
-			/**
-			 * Responds to pressing the enter key in the textfield by sending
-			 * the contents of the text field to the server. Then clear the text
-			 * area in preparation for the next message. If user input "/clear",
-			 * all of log are cleared.
-			 */
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String msg = msgTxt.getText();
@@ -150,7 +157,7 @@ public class Waiting extends JFrame {
 				} catch (UnsupportedEncodingException e2) {
 					e2.printStackTrace();
 				}
-				
+
 				if (msg.equalsIgnoreCase("/clear")) {
 					msgArea.setText("");
 				}
@@ -163,8 +170,11 @@ public class Waiting extends JFrame {
 			}
 		});
 
+		/*
+		 * If user press make room button, room will be created, and
+		 * automatically join to the room.
+		 */
 		MakeRoomBtn.addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (Client.makeNewRoom() == 1) {
@@ -173,8 +183,10 @@ public class Waiting extends JFrame {
 			}
 		});
 
+		/*
+		 * If user press refresh button, room list will be refreshed.
+		 */
 		RefreshBtn.addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -185,6 +197,10 @@ public class Waiting extends JFrame {
 			}
 		});
 
+		/*
+		 * If user press enter button with selection of room that listed, user
+		 * will be enter to room if the room is not full.
+		 */
 		EnterBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -194,9 +210,12 @@ public class Waiting extends JFrame {
 					e1.printStackTrace();
 				}
 			}
-
 		});
 
+		/*
+		 * When user click double time the room that listed, user will be enter
+		 * to room if the room is not full.
+		 */
 		roomList.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent evt) {
 				if (evt.getClickCount() == 2) {
@@ -212,44 +231,54 @@ public class Waiting extends JFrame {
 				}
 			}
 		});
-
-		this.setResizable(false);
 	}
 
 	/**
-	 * When user press "Make Room" Button, this function will take title value
-	 * and return it.
+	 * When user press "Make Room" Button, this function will take title string.
 	 * 
-	 * @return
+	 * @return title that user entered.
 	 */
 	public String getRoomName() {
 		return JOptionPane.showInputDialog(this, "Enter the Room Name", "Make new room", JOptionPane.QUESTION_MESSAGE);
 	}
 
+	/**
+	 * If the room is removed before entering, this method will alert to user.
+	 */
 	private void noRoomAlert() {
 		JOptionPane.showMessageDialog(this, "No way! Room is vanished!");
 	}
 
+	/**
+	 * If the room is full, this method will alert to user.
+	 */
 	private void fullRoomAlert() {
 		JOptionPane.showMessageDialog(this, "No way! Room is full!");
 	}
 
-	public static void gotMessage(String msg) {
+	/**
+	 * When client got room message, this method will print it to message area.
+	 * 
+	 * @param message
+	 *            from server.
+	 */
+	public void gotMessage(String msg) {
 		int pos;
 
 		msgArea.append(msg + "\n");
 
-		/*
-		 * After get a message, because user can feel uncomfortable, reload a
-		 * scroll bar to bottom of Area. Plus, after reload a scroll bar, make a
-		 * focus on textField.
-		 */
+		/* reload text area to below */
 		pos = msgArea.getText().length();
 		msgArea.setCaretPosition(pos);
 		msgArea.requestFocus();
 		msgTxt.requestFocus();
 	}
 
+	/**
+	 * Enter to room that selected.
+	 * @throws ClassNotFoundException
+	 * @throws IOException
+	 */
 	private void enterToRoom() throws ClassNotFoundException, IOException {
 		String[] elemStr = roomList.getSelectedItems();
 		if (elemStr.length != 0) {
@@ -271,11 +300,16 @@ public class Waiting extends JFrame {
 		}
 	}
 
-	public static void reloadRoomList() throws ClassNotFoundException, IOException {
+	/**
+	 * reload room list to new version.
+	 * @throws ClassNotFoundException
+	 * @throws IOException
+	 */
+	public void reloadRoomList() throws ClassNotFoundException, IOException {
 		newRoomList = Client.getNewRoomList();
 		rooms.removeAllElements();
 		for (Integer rNo : newRoomList.keySet()) {
-			rooms.add(rNo + "  |         " + newRoomList.get(rNo));
+			rooms.add(rNo + " |     " + newRoomList.get(rNo));
 		}
 
 		roomList.removeAll();
