@@ -121,9 +121,10 @@ public class RoomManager {
 		} else {
 			starter = 1;
 		}
-		Server.broadCast("The Starter is " + userArrTmp.get(starter).getName(), roomNo);
+		Server.broadCast("[SYSTEM] The Starter is \"" + userArrTmp.get(starter).getName()+"\"", roomNo);
 		Server.broadCast("--------------------------------------------------------------\n", roomNo);
-		Server.broadCast("First Word : " + initWord + "\n", roomNo);
+		Server.broadCast("--------------------------------------------------------------\n", roomNo);
+		Server.broadCast("[SYSTEM] First Word : " + initWord + "\n", roomNo);
 		userArrTmp.get(starter).getOut().println("MYTURN");
 		if (starter == 1) {
 			nextUser = 0;
@@ -131,7 +132,6 @@ public class RoomManager {
 			nextUser = 1;
 		}
 		wordList = new ArrayList<String>();
-		System.out.println(initWord);
 		addPrevWord(initWord.trim());
 	}
 
@@ -155,7 +155,6 @@ public class RoomManager {
 
 	public boolean isNotDup(String _word) {
 		for (String prevWord : wordList) {
-			System.out.println(prevWord);
 			if (_word.equals(prevWord)) {
 				return false;
 			}
