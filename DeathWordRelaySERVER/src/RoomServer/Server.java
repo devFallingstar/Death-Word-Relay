@@ -39,6 +39,7 @@ public class Server {
 		Field charset = Charset.class.getDeclaredField("defaultCharset");
 		charset.setAccessible(true);
 		charset.set(null,null);
+		
 		System.out.println("The chat server is running. with port " + PORT);
 		listener = new ServerSocket(PORT);
 		dataListener = new ServerSocket(DATAPORT);
