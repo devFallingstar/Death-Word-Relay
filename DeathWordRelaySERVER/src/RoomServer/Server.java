@@ -68,6 +68,7 @@ public class Server {
 		destRoom.addUserToRoom(u);
 
 		destRoom.broadCastRoom("ROOMMSG [SYSTEM] " + u.getName() + " connected.");
+		destRoom.broadCastRoom("NEWOPP");
 	}
 
 	public static void removeUserFromRoom(User u) {

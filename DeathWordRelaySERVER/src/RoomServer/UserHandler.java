@@ -181,8 +181,7 @@ public class UserHandler extends Thread {
 				} else if (input.startsWith("COMESUCC")) {
 					Server.addUserToRoom(this.myUser);
 				} else if (input.startsWith("READY")) {
-					User oppUser = Server.getOppUser(myUser);
-					myOppUser = oppUser;
+					myOppUser = Server.getOppUser(myUser);
 					myUser.setReady();
 
 					if (myOppUser != null) {
@@ -190,9 +189,9 @@ public class UserHandler extends Thread {
 					}
 
 					try {
-						if (oppUser.getReady()) {
+						if (myOppUser.getReady()) {
 							out.println("PLAYGAME");
-							oppUser.getOut().println("PLAYGAME");
+							myOppUser.getOut().println("PLAYGAME");
 							myUser.setPlaying();
 							myOppUser.setPlaying();
 							setStart();
@@ -248,6 +247,11 @@ public class UserHandler extends Thread {
 						broadCast(name + ": " + input.substring(8));
 						System.out.println(
 								"LOG : " + input + " (By. " + name + " With room number " + myUser.getrNo() + ")");
+					}
+				} else if (input.startsWith("REQOPPUSER")){
+					myOppUser = Server.getOppUser(myUser);
+					if(myOppUser != null){
+						myUser.getOut().println("OPPUSER "+myOppUser.getName());
 					}
 				}
 			}
@@ -305,7 +309,9 @@ public class UserHandler extends Thread {
 	}
 
 	public void setStart() {
-		myUser.getOut().println("");
+		myUser.getOut().println("SETNEWROUND");
+		myOppUser.getOut().println("SETNEWROUND");
+
 		Server.setStartOfRoom(myUser.getrNo());
 
 		gameStartTimer = new Timer();
@@ -353,10 +359,6 @@ public class UserHandler extends Thread {
 			loseUser.getOut().println("ILOSEROUND");
 			winUser.getOut().println("IWINROUND");
 		}
-		
-
-		loseUser.getOut().println("SETNEWROUND");
-		winUser.getOut().println("SETNEWROUND");
 	}
 
 	public boolean FinGame() {
