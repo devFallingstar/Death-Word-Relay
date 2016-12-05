@@ -1,7 +1,9 @@
 package RoomClient;
 
 import java.io.*;
+import java.lang.reflect.Field;
 import java.net.Socket;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.StringTokenizer;
@@ -70,6 +72,11 @@ public class Client extends JFrame {
 	 * Runs the client as an application with a closeable frame.
 	 */
 	public static void main(String[] args) throws Exception {
+		System.setProperty("file.encoding","UTF-8");
+		Field charset = Charset.class.getDeclaredField("defaultCharset");
+		charset.setAccessible(true);
+		charset.set(null,null);
+		
 		Client myClnt = new Client();
 
 		myClnt.run();
@@ -88,7 +95,7 @@ public class Client extends JFrame {
 			 * Make connection and initialize streams
 			 */
 			String serverAddress = "127.0.0.1";
-			// serverAddress = getServerAddress();
+			serverAddress = getServerAddress();
 
 			try {
 				socket = new Socket(serverAddress, 9001);

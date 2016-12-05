@@ -1,6 +1,8 @@
 package RoomServer;
 
+import java.lang.reflect.Field;
 import java.net.*;
+import java.nio.charset.Charset;
 import java.util.*;
 
 import Data.User;
@@ -33,6 +35,10 @@ public class Server {
 	 * handler threads.
 	 */
 	public static void main(String[] args) throws Exception {
+		System.setProperty("file.encoding","UTF-8");
+		Field charset = Charset.class.getDeclaredField("defaultCharset");
+		charset.setAccessible(true);
+		charset.set(null,null);
 		System.out.println("The chat server is running. with port " + PORT);
 		listener = new ServerSocket(PORT);
 		dataListener = new ServerSocket(DATAPORT);
