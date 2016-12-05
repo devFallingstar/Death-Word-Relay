@@ -14,7 +14,6 @@ import Data.Room;
 import Data.User;
 
 public class RoomManager {
-	private String startWord;
 	private Room myRoom;
 	private Integer roomNo;
 	private String roomName;
