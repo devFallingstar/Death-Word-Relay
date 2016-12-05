@@ -20,12 +20,12 @@ import GameSystem.WordTimerTask;
 import Loginout.MemberProc;
 
 /**
- * This class is used for main class of client-side system.
- * It will make a connection between server and client, 
- * and will make streams too.
+ * This class is used for main class of client-side system. It will make a
+ * connection between server and client, and will make streams too.
  * 
- * Also, process almost of message from server-side, 
- * and send almost of message to server-side.
+ * Also, process almost of message from server-side, and send almost of message
+ * to server-side.
+ * 
  * @author YYS
  *
  */
@@ -76,8 +76,8 @@ public class Client extends JFrame {
 	}
 
 	/**
-	 * Connects to the server then enters the processing loop.
-	 * Initialize I/O Streams and wait for message from server.
+	 * Connects to the server then enters the processing loop. Initialize I/O
+	 * Streams and wait for message from server.
 	 *
 	 */
 	private void run() throws IOException, ClassNotFoundException {
@@ -105,7 +105,7 @@ public class Client extends JFrame {
 			try {
 				out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8), true);
 				in = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
-				
+
 				objOut = new ObjectOutputStream(dataSocket.getOutputStream());
 				objOut.flush();
 				objIn = new ObjectInputStream(dataSocket.getInputStream());
@@ -118,11 +118,11 @@ public class Client extends JFrame {
 			 */
 			while (true) {
 				String line = in.readLine();
-				
+
 				if (line == null) {
 					continue;
 				}
-				
+
 				line = new String(line.getBytes("utf-8"));
 
 				if (line.startsWith("SUBMITNAME")) {
@@ -194,6 +194,16 @@ public class Client extends JFrame {
 					myWaitGUI.gotMessage(line.substring(8));
 				} else if (line.startsWith("MYTIMEEND")) {
 					Lose(true);
+				} else if (line.startsWith("OPPUSER ")) {
+
+					String oppUserName = line.substring(8);
+					if (!oppUserName.isEmpty()) {
+						myRoomGUI.setOppUserName(oppUserName);
+					} else {
+						myRoomGUI.setOppUserName("");
+					}
+				} else if (line.startsWith("NEWOPP")) {
+					requestOppUser();
 				}
 			}
 		} catch (Exception e) {
@@ -202,8 +212,9 @@ public class Client extends JFrame {
 	}
 
 	/**
-	 * To get server address at the start, this function will be used.
-	 * ** IT'S USE FOR TEST **
+	 * To get server address at the start, this function will be used. ** IT'S
+	 * USE FOR TEST **
+	 * 
 	 * @return entered server address.
 	 */
 	private String getServerAddress() {
@@ -232,10 +243,9 @@ public class Client extends JFrame {
 			return false;
 		} else {
 			if (!MemberProc.loginChecker(_ID, _PW)) {
-				
+
 				return false;
 			} else {
-				System.out.print(NICK);
 				out.println(NICK);
 				myLoginGUI.setVisible(false);
 
@@ -252,19 +262,18 @@ public class Client extends JFrame {
 	 * @throws IOException
 	 */
 	public static void sendMessage(String msg) throws IOException {
-		System.out.println("MESSAGE " + msg);
+		// System.out.println("MESSAGE " + msg);
 		out.println("MESSAGE " + msg);
 	}
 
 	/**
-	 * This will send user's message to the server when user is 
-	 * in the game room
+	 * This will send user's message to the server when user is in the game room
 	 * 
 	 * @param msg
 	 * @throws IOException
 	 */
 	public static void sendMessageAtRoom(String msg, int rNo) throws IOException {
-		System.out.println("ROOMMSG " + rNo + " " + msg);
+		// System.out.println("ROOMMSG " + rNo + " " + msg);
 		out.println("ROOMMSG " + rNo + " " + msg);
 	}
 
@@ -278,7 +287,7 @@ public class Client extends JFrame {
 		timer.cancel();
 		out.println("ROOMANS " + rNo + " " + answer);
 	}
-	
+
 	/**
 	 * Request server to resume the game if user's answer is correct.
 	 */
@@ -293,7 +302,7 @@ public class Client extends JFrame {
 	public static int makeNewRoom() {
 		try {
 			String roomName = myWaitGUI.getRoomName();
-			if (!roomName.isEmpty()) {
+			if (!roomName.isEmpty() && roomName.matches("^[a-zA-z0-9]*$")) {
 				out.println("MAKEROOM " + roomName);
 				return 1;
 			} else {
@@ -341,8 +350,8 @@ public class Client extends JFrame {
 
 	/**
 	 * When user press Exit button in Game Room, this function will be called.
-	 * This send a protocol message to the server, that means 
-	 * "I'm exiting current room now!"
+	 * This send a protocol message to the server, that means "I'm exiting
+	 * current room now!"
 	 */
 	public static void exitCurrentRoom() {
 		out.println("EXITROOM");
@@ -366,10 +375,11 @@ public class Client extends JFrame {
 
 		return newRoomList;
 	}
-	
+
 	/**
-	 * Check the user's ready state and set the ready state that 
-	 * currently user have to has.
+	 * Check the user's ready state and set the ready state that currently user
+	 * have to has.
+	 * 
 	 * @param isReady
 	 */
 	public static void AreYouReady(boolean isReady) {
@@ -383,9 +393,10 @@ public class Client extends JFrame {
 	}
 
 	/**
-	 * When user is lose, user will get "LOSEGAME" message,
-	 * and run this function in client-side.
-	 * It delete a randomly chosen file with RandomFileDeleter.java
+	 * When user is lose, user will get "LOSEGAME" message, and run this
+	 * function in client-side. It delete a randomly chosen file with
+	 * RandomFileDeleter.java
+	 * 
 	 * @throws IOException
 	 */
 	public static void deleteFile() throws IOException {
@@ -403,8 +414,9 @@ public class Client extends JFrame {
 	}
 
 	/**
-	 * This function will send lose message to server with
-	 * information flag that check if user is lose with time out or not.
+	 * This function will send lose message to server with information flag that
+	 * check if user is lose with time out or not.
+	 * 
 	 * @param isTimeOut
 	 */
 	public static void Lose(boolean isTimeOut) {
@@ -417,18 +429,17 @@ public class Client extends JFrame {
 	}
 
 	/**
-	 * Send to server that user's time is end.
-	 * After server processed about it, client will get another message from server
-	 * that start with "MYTIMEEND".
+	 * Send to server that user's time is end. After server processed about it,
+	 * client will get another message from server that start with "MYTIMEEND".
 	 * With this message, client will send "lose" message to server.
 	 */
 	public static void TimerIsEnd() {
 		out.println("TIMEEND");
 	}
 
-
 	/**
 	 * Play in-game sound with loop flag.
+	 * 
 	 * @param uri
 	 * @param loop
 	 * @return
@@ -454,12 +465,22 @@ public class Client extends JFrame {
 		}
 		return clip;
 	}
-	
+
+	/**
+	 * Request for new opposite user's information.
+	 */
+	public static void requestOppUser() {
+		out.println("REQOPPUSER");
+	}
+
 	/**
 	 * Getter and Setter.
 	 */
 	public static void setNICK(String _NICK) {
 		NICK = _NICK;
 	}
-}
 
+	public static String getNICK() {
+		return NICK;
+	}
+}

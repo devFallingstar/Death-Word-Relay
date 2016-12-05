@@ -24,7 +24,7 @@ public class WordGame {
 	public WordGame() {
 		this.win = 0;
 		this.lose = 0;
-		this.round = 0;
+		this.setRound(0);
 	}
 
 	/**
@@ -64,10 +64,26 @@ public class WordGame {
 	}
 
 	/**
+	 * Getter and setter for win, lose and round
+	 */
+	public int getRound() {
+		return round;
+	}
+	public void setRound(int round) {
+		this.round = round;
+	}
+	public int getWin() {
+		return win;
+	}
+	public int getLose() {
+		return lose;
+	}
+	
+	/**
 	 * Check if the user is win or not and save its result to variables.
 	 */
 	public void youWin() {
-		round++;
+		setRound(getRound() + 1);
 		win++;
 	}
 
@@ -75,7 +91,7 @@ public class WordGame {
 	 * Check if the user is lose or not and save its result to variables.
 	 */
 	public void youLose() {
-		round++;
+		setRound(getRound() + 1);
 		lose++;
 	}
 

@@ -41,6 +41,22 @@ public class MemberProc {
 		pwd = dto.getpwd();
 		nickname = dto.getnickName();
 
+		if (id.length() < 6 || id.length() > 12) {
+			return 0;
+		}
+		if (pwd.length() < 6 || pwd.length() > 12) {
+			return 0;
+		}
+		if (nickname.length() < 1 || nickname.length() > 8) {
+			return 0;
+		}
+		if (!id.matches("^[a-zA-z0-9]*$")) {
+			return 0;
+		}
+		if (!nickname.matches("^[a-zA-z0-9]*$")) {
+			return 0;
+		}
+
 		sql1 = "SELECT COUNT(*) from " + memberTable + " WHERE ID=\'" + id + "\'";
 		sql2 = "INSERT INTO " + memberTable + " VALUES (\'" + id + "\',\'" + pwd + "\',\'" + nickname + "\')";
 

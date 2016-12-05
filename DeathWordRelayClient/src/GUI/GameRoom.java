@@ -35,6 +35,7 @@ public class GameRoom extends JFrame {
 	public WordGame myGame;
 	private boolean isReady;
 	private User myUser;
+	String oppName;
 	// private User oppUser; <- Not implemented yet. DO NOT ERASE.
 
 	/* Basic background GUI variables */
@@ -47,6 +48,7 @@ public class GameRoom extends JFrame {
 
 	private JLabel background = new JLabel(bgImg);
 	private JLabel competitor = new JLabel(cptImg);
+	private JLabel compId = new JLabel("userNICK");
 
 	private JButton exitBtn = new JButton(exitImg);
 	private JButton readyBtn = new JButton(readyImg);
@@ -101,6 +103,7 @@ public class GameRoom extends JFrame {
 
 		/* Set default container and add components */
 		cont = this.getContentPane();
+		cont.add(compId);
 		cont.add(chatPanel);
 		cont.add(readyBtn);
 		cont.add(exitBtn);
@@ -122,6 +125,10 @@ public class GameRoom extends JFrame {
 		exitBtn.setContentAreaFilled(false);
 
 		competitor.setBounds(640, 40, cptImg.getIconWidth(), cptImg.getIconHeight());
+		compId.setBounds(900, 133, 80, 25);
+		compId.setFont(new Font("chiller", Font.BOLD, 20));
+		compId.setForeground(Color.red);
+
 		background.setBounds(0, 0, bgImg.getIconWidth(), bgImg.getIconHeight());
 
 		/* Initialize default chatting panel's design and system */
@@ -142,7 +149,7 @@ public class GameRoom extends JFrame {
 		msgArea.setOpaque(false);
 		msgArea.setEditable(false);
 		msgArea.setForeground(Color.white);
-		msgArea.setFont(new Font("Arial", Font.BOLD, 15));
+		msgArea.setFont(new Font("Malgun Gothic", Font.BOLD, 15));
 		answerTxt.setBounds(23, 490, 529, 31);
 
 		/* Initialize answer text field and text area for chatting */
@@ -192,7 +199,6 @@ public class GameRoom extends JFrame {
 					msgArea.setText("");
 				} else {
 					try {
-						System.out.println("2. " + msg + " " + myUser.getrNo());
 						Client.sendMessageAtRoom(msg, myUser.getrNo());
 					} catch (IOException e1) {
 						e1.printStackTrace();
@@ -215,7 +221,6 @@ public class GameRoom extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				System.out.println("asd");
 				isReady = !isReady;
 				Client.AreYouReady(isReady);
 				if (isReady) {
@@ -253,12 +258,7 @@ public class GameRoom extends JFrame {
 	public void gotMessage(String msg) {
 		msgArea.append(msg + "\n");
 
-		/* reload text area to below */
-		int pos;
-		pos = msgArea.getText().length();
-		msgArea.setCaretPosition(pos);
-		msgArea.requestFocus();
-		msgTxt.requestFocus();
+		reloadMsgArea();
 	}
 
 	/**
@@ -283,6 +283,7 @@ public class GameRoom extends JFrame {
 			exitBtn.setEnabled(true);
 			readyBtn.setEnabled(true);
 		}
+		reloadMsgArea();
 	}
 
 	/**
@@ -355,6 +356,7 @@ public class GameRoom extends JFrame {
 			readyBtn.setEnabled(true);
 			readyBtn.setText("Ready");
 		}
+		reloadMsgArea();
 	}
 
 	/**
@@ -364,6 +366,7 @@ public class GameRoom extends JFrame {
 		msgArea.append("YOU LOSE!!!\n");
 		myGame.youLose();
 		answerTxt.setEnabled(false);
+		reloadMsgArea();
 	}
 
 	/**
@@ -373,31 +376,40 @@ public class GameRoom extends JFrame {
 		msgArea.append("YOU WIN!!!!\n");
 		myGame.youWin();
 		answerTxt.setEnabled(false);
+		reloadMsgArea();
 	}
 
 	/**
 	 * If new round is started, it prints a new round notice to message area.
 	 */
 	public void readyForNewRound() {
-		msgArea.append("--------------------------------------------------------------\n");
-		msgArea.append("You can't rewind death.\n");
-		msgArea.append("--------------------------------------------------------------\n");
-		fiveCountDown();
-		answerTxt.setEnabled(false);
+		if (!((myGame.getLose() == 3) || (myGame.getWin() == 3))) {
+			msgArea.append("--------------------------------------------------------------\n");
+			msgArea.append("You can't rewind death.\n");
+			msgArea.append("--------------------------------------------------------------\n");
+			reloadMsgArea();
+			fiveCountDown();
+			answerTxt.setEnabled(false);
+		}
 	}
 
 	/**
 	 * If game is finished, it prints a game finished message to message area.
 	 */
 	public void gameFin() {
+		msgArea.append("--------------------------------------------------------------\n");
 		msgArea.append("Finished!!!\n");
 		msgArea.append("--------------------------------------------------------------\n");
+		reloadMsgArea();
 		changeTxtField();
 		myUser.gameFinInit();
 		isReady = false;
 		readyBtn.setIcon(readyImg);
 	}
 
+	/**
+	 * Make count down image before start match.
+	 */
 	public static void fiveCountDown() {
 		countDown.setVisible(true);
 		countDown.setIcon(fiveImg);
@@ -416,14 +428,33 @@ public class GameRoom extends JFrame {
 	}
 
 	public static void sleep(int time) {
-
 		try {
-
 			Thread.sleep(time);
-
 		} catch (InterruptedException e) {
-
 		}
+	}
 
+	/**
+	 * Reload message area when new message income.
+	 */
+	public void reloadMsgArea() {
+		int pos;
+		pos = msgArea.getText().length();
+		msgArea.setCaretPosition(pos);
+		msgArea.requestFocus();
+		msgTxt.requestFocus();
+	}
+
+	/**
+	 * Set opposite user label to opposite user's name.
+	 * 
+	 * @param _name
+	 */
+	public void setOppUserName(String _name) {
+		if (_name.isEmpty()) {
+			compId.setText("");
+		} else {
+			compId.setText(_name);
+		}
 	}
 }

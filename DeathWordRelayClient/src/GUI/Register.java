@@ -51,7 +51,7 @@ public class Register extends JFrame {
 	JLabel IDCautionlbl = new JLabel("at least 6 to 12 chracters");
 	JLabel IDCautionlbl2 = new JLabel("only english and number accepted");
 	JLabel PWCautionlbl = new JLabel("at least 6 to 12 chracters");
-	JLabel NickNameCautionlbl = new JLabel("at least 1 to 12 chracters");
+	JLabel NickNameCautionlbl = new JLabel("at least 1 to 8 chracters");
 
 	/* Default container */
 	private Container cont;
@@ -66,7 +66,7 @@ public class Register extends JFrame {
 
 		/* Set default frame informations */
 		this.getContentPane().setLayout(null);
-		this.setBounds(0, 0, 470, 400);
+		this.setBounds(0, 0, 430, 380);
 		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
@@ -112,13 +112,13 @@ public class Register extends JFrame {
 		NickNamelbl.setBounds(40, 160, nickImg.getIconWidth(), nickImg.getIconHeight());
 		NickNametxt.setBounds(190, 160, 172, 26);
 
-		IDCautionlbl.setBounds(223, 60, 200, 16);
+		IDCautionlbl.setBounds(190, 60, 200, 16);
 		IDCautionlbl.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
-		IDCautionlbl2.setBounds(220, 80, 200, 16);
+		IDCautionlbl2.setBounds(190, 80, 200, 16);
 		IDCautionlbl2.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
-		PWCautionlbl.setBounds(223, 135, 200, 16);
+		PWCautionlbl.setBounds(190, 135, 200, 16);
 		PWCautionlbl.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
-		NickNameCautionlbl.setBounds(223, 192, 200, 16);
+		NickNameCautionlbl.setBounds(190, 192, 200, 16);
 		NickNameCautionlbl.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
 
 		/*
@@ -174,11 +174,17 @@ public class Register extends JFrame {
 	 */
 	public void alertWrong(int code) {
 		if (code == -1) {
-			JOptionPane.showMessageDialog(this, "Duplicate ID!");
+			JOptionPane.showMessageDialog(this, "Duplicated ID! \nTry another.", "Register failed!",
+					JOptionPane.WARNING_MESSAGE);
 		} else if (code == -2) {
-			JOptionPane.showMessageDialog(this, "Duplicate Nickname!");
+			JOptionPane.showMessageDialog(this, "Duplicated Nickname! \nTry another.", "Register failed!",
+					JOptionPane.WARNING_MESSAGE);
+		} else if (code == 0) {
+			JOptionPane.showMessageDialog(this, "Wrong ID, PW or Nickname.", "Register failed!",
+					JOptionPane.WARNING_MESSAGE);
 		} else {
-			JOptionPane.showMessageDialog(this, "Unknow error. Try again later!");
+			JOptionPane.showMessageDialog(this, "Unknow error. Try again later!", "Register failed!",
+					JOptionPane.ERROR_MESSAGE);
 		}
 	}
 }

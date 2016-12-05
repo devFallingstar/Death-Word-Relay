@@ -25,7 +25,6 @@ public class Waiting extends JFrame {
 	private HashMap<Integer, String> newRoomList;
 	private Vector<String> rooms = new Vector<String>();
 
-
 	/* Basic background GUI variables */
 	private ImageIcon waiting = new ImageIcon("Img/waitingBg.jpg");
 
@@ -48,8 +47,8 @@ public class Waiting extends JFrame {
 	private JLabel userRate = new JLabel();
 	private JLabel chatlbl = new JLabel(chat);
 
-	private List roomList = new List(10, false);
-	private List rankList = new List(10, false);
+	private List roomList = new List(15, false);
+	private List rankList = new List(15, false);
 
 	private JButton MakeRoomBtn = new JButton(mkr);
 	private JButton EnterBtn = new JButton(ent);
@@ -99,7 +98,7 @@ public class Waiting extends JFrame {
 		cont.add(chatPanel);
 		cont.add(userId);
 		cont.add(userInfo);
-		
+
 		cont.add(userRate);
 		cont.add(waitBg);
 		cont.add(chatlbl);
@@ -126,23 +125,22 @@ public class Waiting extends JFrame {
 		RefreshBtn.setContentAreaFilled(false);
 
 		roomScrlPane.setBounds(15, 121, 588, 277);
+		roomList.setFont(new Font("Malgun Gothic", Font.BOLD, 15));
 		rankList.setBounds(630, 121, 150, 277);
 
 		roomlbl.setBounds(205, 3, room.getIconWidth(), room.getIconHeight());
 		ranklbl.setBounds(630, 40, rank.getIconWidth(), rank.getIconHeight());
 		userInfo.setBounds(610, 450, userImg.getIconWidth(), userImg.getIconHeight());
 
-
 		/* Initialize default chatting panel's design and system */
 		chatPanel.setBounds(15, 450, 588, 295);
 		chatPanel.add(msgScrlPane);
 		chatPanel.add(msgTxt);
-		chatPanel.add(chatlbl);
 
 		userId.setBounds(635, 525, 80, 25);
-		userId.setFont(new Font("chiller", Font.BOLD, 25));
+		userId.setFont(new Font("chiller", Font.BOLD, 20));
 		userId.setForeground(Color.red);
-		//userId = new JLabel(Client.getNICK());
+		userId.setText(Client.getNICK());
 
 		msgScrlPane.setBounds(0, 10, 583, 255);
 		msgScrlPane.setOpaque(false);
@@ -154,7 +152,7 @@ public class Waiting extends JFrame {
 		msgArea.setEditable(false);
 		msgArea.setForeground(Color.white);
 		msgArea.setSize(583, 255);
-		msgArea.setFont(new Font("Arial", Font.PLAIN, 15));
+		msgArea.setFont(new Font("Malgun Gothic", Font.BOLD, 15));
 
 		/*
 		 * Send message to server when user press enter key with some text in
@@ -191,6 +189,8 @@ public class Waiting extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if (Client.makeNewRoom() == 1) {
 					dispose();
+				} else {
+					WrongRoomAlert();
 				}
 			}
 		});
@@ -258,14 +258,21 @@ public class Waiting extends JFrame {
 	 * If the room is removed before entering, this method will alert to user.
 	 */
 	private void noRoomAlert() {
-		JOptionPane.showMessageDialog(this, "No way! Room is vanished!");
+		JOptionPane.showMessageDialog(this, "No way! Room is vanished!", "Alert", JOptionPane.WARNING_MESSAGE);
 	}
 
 	/**
 	 * If the room is full, this method will alert to user.
 	 */
 	private void fullRoomAlert() {
-		JOptionPane.showMessageDialog(this, "No way! Room is full!");
+		JOptionPane.showMessageDialog(this, "No way! Room is fulled!", "Alert", JOptionPane.WARNING_MESSAGE);
+	}
+
+	/**
+	 * If the room make is failed, this method will alert to user.
+	 */
+	private void WrongRoomAlert() {
+		JOptionPane.showMessageDialog(this, "Wrong room name.", "Room make failed", JOptionPane.WARNING_MESSAGE);
 	}
 
 	/**
@@ -288,6 +295,7 @@ public class Waiting extends JFrame {
 
 	/**
 	 * Enter to room that selected.
+	 * 
 	 * @throws ClassNotFoundException
 	 * @throws IOException
 	 */
@@ -314,6 +322,7 @@ public class Waiting extends JFrame {
 
 	/**
 	 * reload room list to new version.
+	 * 
 	 * @throws ClassNotFoundException
 	 * @throws IOException
 	 */
