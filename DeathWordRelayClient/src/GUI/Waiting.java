@@ -187,9 +187,12 @@ public class Waiting extends JFrame {
 		MakeRoomBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (Client.makeNewRoom() == 1) {
+				int code = Client.makeNewRoom();
+				if (code == 1) {
 					dispose();
-				} else {
+				} else if(code == -1) {
+					//Cancel
+				} else{
 					WrongRoomAlert();
 				}
 			}

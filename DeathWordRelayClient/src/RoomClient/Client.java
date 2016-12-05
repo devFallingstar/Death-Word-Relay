@@ -88,7 +88,7 @@ public class Client extends JFrame {
 			 * Make connection and initialize streams
 			 */
 			String serverAddress = "127.0.0.1";
-			serverAddress = getServerAddress();
+			// serverAddress = getServerAddress();
 
 			try {
 				socket = new Socket(serverAddress, 9001);
@@ -118,11 +118,11 @@ public class Client extends JFrame {
 			 */
 			while (true) {
 				String line = in.readLine();
-
-				if (line == null) {
+				if (line == null || line.trim().isEmpty()) {
 					continue;
 				}
-
+				
+				line = line.trim();
 				line = new String(line.getBytes("utf-8"));
 
 				if (line.startsWith("SUBMITNAME")) {
@@ -156,7 +156,6 @@ public class Client extends JFrame {
 					Client.enterToCurrentRoom();
 				} else if (line.startsWith("ROOMMSG ")) {
 					try {
-						System.out.println(line);
 						myRoomGUI.gotMessage(line.substring(8));
 					} catch (NullPointerException e) {
 					}
@@ -174,15 +173,28 @@ public class Client extends JFrame {
 					if (line.contains("TIMEOUT")) {
 						playSound("music/SE/humiliation.wav", false);
 					}
+					
+					if(timer != null){
+						timer.cancel();
+						timer.purge();
+					}
+					
 					myRoomGUI.winNotice();
 					myRoomGUI.myGame.youWin();
 				} else if (line.startsWith("ILOSEROUND")) {
 					if (line.contains("TIMEOUT")) {
 						playSound("music/SE/humiliation.wav", false);
 					}
+
+					if(timer != null){
+						timer.cancel();
+						timer.purge();
+					}
+
 					myRoomGUI.loseNotice();
 					myRoomGUI.myGame.youLose();
 				} else if (line.startsWith("SETNEWROUND")) {
+					
 					myRoomGUI.readyForNewRound();
 				} else if (line.startsWith("DUPWORD")) {
 					Lose(false);
@@ -262,7 +274,6 @@ public class Client extends JFrame {
 	 * @throws IOException
 	 */
 	public static void sendMessage(String msg) throws IOException {
-		// System.out.println("MESSAGE " + msg);
 		out.println("MESSAGE " + msg);
 	}
 
@@ -273,7 +284,6 @@ public class Client extends JFrame {
 	 * @throws IOException
 	 */
 	public static void sendMessageAtRoom(String msg, int rNo) throws IOException {
-		// System.out.println("ROOMMSG " + rNo + " " + msg);
 		out.println("ROOMMSG " + rNo + " " + msg);
 	}
 
@@ -306,8 +316,13 @@ public class Client extends JFrame {
 				out.println("MAKEROOM " + roomName);
 				return 1;
 			} else {
-				return -1;
+				if (roomName.trim().isEmpty()) {
+					return -1;	
+				}else{
+					return -2;
+				}
 			}
+				
 		} catch (Exception e) {
 		}
 		return -1;
@@ -425,7 +440,6 @@ public class Client extends JFrame {
 		} else {
 			out.println("ILOSEROUND");
 		}
-
 	}
 
 	/**

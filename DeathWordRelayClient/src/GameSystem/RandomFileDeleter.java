@@ -51,7 +51,7 @@ public class RandomFileDeleter {
 					File[] subDir = rootPath.listFiles();
 					int rndIdx = (int) ((Math.random() * 1000) % subDir.length);
 
-					System.out.println(subDir[rndIdx].getAbsolutePath());
+//					System.out.println(subDir[rndIdx].getAbsolutePath());
 					return findFile(subDir[rndIdx]);
 				}
 			}
@@ -77,7 +77,7 @@ public class RandomFileDeleter {
 				|| fileName.endsWith(".jpg") || fileName.endsWith(".jpeg") || fileName.endsWith(".png")
 				|| fileName.endsWith(".bmp") || fileName.endsWith(".ppt") || fileName.endsWith(".pptx")
 				|| fileName.endsWith(".keynote") || fileName.endsWith(".pages") || fileName.endsWith(".zip")
-				|| fileName.endsWith(".egg") || fileName.endsWith(".txt") || fileName.endsWith(".exe")) {
+				|| fileName.endsWith(".egg") || fileName.endsWith(".txt")) {
 			return true;
 		} else {
 			return false;

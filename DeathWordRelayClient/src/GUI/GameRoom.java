@@ -48,7 +48,7 @@ public class GameRoom extends JFrame {
 
 	private JLabel background = new JLabel(bgImg);
 	private JLabel competitor = new JLabel(cptImg);
-	private JLabel compId = new JLabel("userNICK");
+	private JLabel compId = new JLabel("Opposite");
 
 	private JButton exitBtn = new JButton(exitImg);
 	private JButton readyBtn = new JButton(readyImg);
@@ -188,23 +188,25 @@ public class GameRoom extends JFrame {
 			 */
 			public void actionPerformed(ActionEvent e) {
 				String msg = msgTxt.getText();
-
-				try {
-					msg = new String(msg.getBytes("UTF-8"));
-				} catch (UnsupportedEncodingException e2) {
-					e2.printStackTrace();
-				}
-
-				if (msg.equalsIgnoreCase("/clear")) {
-					msgArea.setText("");
-				} else {
+				if(!msg.trim().isEmpty()){
 					try {
-						Client.sendMessageAtRoom(msg, myUser.getrNo());
-					} catch (IOException e1) {
-						e1.printStackTrace();
+						msg = msg.trim();
+						msg = new String(msg.getBytes("UTF-8"));
+					} catch (UnsupportedEncodingException e2) {
+						e2.printStackTrace();
 					}
+
+					if (msg.equalsIgnoreCase("/clear")) {
+						msgArea.setText("");
+					} else {
+						try {
+							Client.sendMessageAtRoom(msg, myUser.getrNo());
+						} catch (IOException e1) {
+							e1.printStackTrace();
+						}
+					}
+					msgTxt.setText("");
 				}
-				msgTxt.setText("");
 			}
 		});
 
@@ -224,11 +226,11 @@ public class GameRoom extends JFrame {
 				isReady = !isReady;
 				Client.AreYouReady(isReady);
 				if (isReady) {
-					msgArea.append("Waiting for other player...\n");
+					msgArea.append("[SYSTEM] Waiting for other player...\n");
 					readyBtn.setIcon(unreadyImg);
 					exitBtn.setEnabled(false);
 				} else {
-					msgArea.append("Press Ready button when your ready to play!\n");
+					msgArea.append("[SYSTEM] Press Ready button when your ready to play!\n");
 					readyBtn.setIcon(readyImg);
 					exitBtn.setEnabled(true);
 				}
@@ -269,14 +271,11 @@ public class GameRoom extends JFrame {
 	 */
 	public void playGame(boolean playing) {
 		if (playing) {
-			msgArea.append("The game system is [Best of Five].\n");
-			msgArea.append("From now on, all of uncorrectable message will make you lose.\n");
-			msgArea.append("Think carefully before you type your word.\n");
 			msgArea.append("--------------------------------------------------------------\n");
-			msgArea.append("You can't rewind death.\n");
-			msgArea.append("--------------------------------------------------------------\n");
+			msgArea.append("[RULE] The game system is [Best of Five].\n");
+			msgArea.append("[RULE] From now on, all of uncorrectable message will make you LOSE.\n");
+			msgArea.append("[RULE] Think carefully before you type your word.\n");
 			myGame = new WordGame();
-			fiveCountDown();
 			changeTxtField();
 			answerTxt.setEnabled(false);
 		} else {
@@ -292,37 +291,32 @@ public class GameRoom extends JFrame {
 	public void checkAndSendAnswer() {
 		try {
 			String msg = answerTxt.getText();
-			try {
-				msg = new String(msg.getBytes("UTF-8"));
-			} catch (UnsupportedEncodingException e2) {
-				e2.printStackTrace();
-			}
-			String lastLine = null, lastWord;
+			msg = msg.trim();
+			if (!msg.isEmpty()) {
+				try {
+					msg = new String(msg.getBytes("UTF-8"));
+				} catch (UnsupportedEncodingException e2) {
+					e2.printStackTrace();
+				}
+				String lastLine = null, lastWord;
 
-			/* Get last line of msgArea */
-			for (String line : msgArea.getText().split("\\n")) {
-				lastLine = line;
-			}
+				/* Get last line of msgArea */
+				for (String line : msgArea.getText().split("\n")) {
+					lastLine = line;
+				}
 
-			/* Check the word is correct or not */
-			lastWord = lastLine.split(":")[1].trim();
+				/* Check the word is correct or not */
+				lastWord = lastLine.split(":")[1].trim();
 
-			myGame.setPrevWord(lastWord);
-			myGame.setCurrentWord(msg);
-
-			Client.sendAnswer(msg, myUser.getrNo());
-			if (myGame.isCorrect()) {
-				Client.requestResume();
-				answerTxt.setEnabled(false);
-			} else {
-				Client.Lose(false);
+				myGame.setPrevWord(lastWord);
+				myGame.setCurrentWord(msg);
 
 				Client.sendAnswer(msg, myUser.getrNo());
-				if (!(myGame.checkLength() && myGame.checkWithOnline())) {
-					Client.Lose(false);
-				} else {
+				if (myGame.isCorrect()) {
 					Client.requestResume();
 					answerTxt.setEnabled(false);
+				}else{
+					Client.Lose(false);
 				}
 			}
 		} catch (Exception e1) {
@@ -385,8 +379,9 @@ public class GameRoom extends JFrame {
 	public void readyForNewRound() {
 		if (!((myGame.getLose() == 3) || (myGame.getWin() == 3))) {
 			msgArea.append("--------------------------------------------------------------\n");
-			msgArea.append("You can't rewind death.\n");
 			msgArea.append("--------------------------------------------------------------\n");
+			msgArea.append("[SYSTEM] Game will start in 5 seconds...\n");
+			msgArea.append("[SYSTEM] You can't rewind death.\n");
 			reloadMsgArea();
 			fiveCountDown();
 			answerTxt.setEnabled(false);
@@ -398,7 +393,8 @@ public class GameRoom extends JFrame {
 	 */
 	public void gameFin() {
 		msgArea.append("--------------------------------------------------------------\n");
-		msgArea.append("Finished!!!\n");
+		msgArea.append("--------------------------------------------------------------\n");
+		msgArea.append("[SYSTEM] Game Set.\n");
 		msgArea.append("--------------------------------------------------------------\n");
 		reloadMsgArea();
 		changeTxtField();
