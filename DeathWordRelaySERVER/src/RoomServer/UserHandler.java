@@ -3,6 +3,7 @@ package RoomServer;
 
 import java.io.*;
 import java.net.Socket;
+import java.net.SocketException;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -176,7 +177,7 @@ public class UserHandler extends Thread {
 					String roomNoStr = toks.nextToken();
 					int roomNo = Integer.parseInt(roomNoStr);
 
-					if (!input.substring(9).startsWith("\n")) {
+					if (!(input.substring(9).isEmpty())) {
 						Server.broadCast(name + ": " + input.substring(9), roomNo);
 					}
 				} else if (input.startsWith("COMESUCC")) {
@@ -245,14 +246,15 @@ public class UserHandler extends Thread {
 				} else if (input.startsWith("TIMEEND")) {
 					out.println("MYTIMEEND");
 				} else if (input.startsWith("MESSAGE ")) {
-					if (!(input.substring(8).isEmpty() || input.substring(8).startsWith("\n"))) {
+					if (!(input.substring(8).isEmpty())) {
 						broadCast(name + ": " + input.substring(8));
 						System.out.println(
 								"LOG : " + input + " (By. " + name + " With room number " + myUser.getrNo() + ")");
-
 					}
 				}
 			}
+		} catch (SocketException e1){
+			System.out.println("ERROR : User connect refused!");
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -358,9 +360,5 @@ public class UserHandler extends Thread {
 		boolean isFinished = myUser.isFin();
 
 		return isFinished;
-	}
-	
-	public void sendResultToDB() {
-
 	}
 }
