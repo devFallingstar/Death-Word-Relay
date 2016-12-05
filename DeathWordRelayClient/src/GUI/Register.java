@@ -91,7 +91,7 @@ public class Register extends JFrame {
 		cont.add(NickNameCautionlbl);
 
 		/* Initialize default background design and system */
-		cont.setBackground(Color.white);
+		cont.setBackground(Color.black);
 
 		SubmitBtn.setBounds(60, 230, submitImg.getIconWidth(), submitImg.getIconHeight());
 		SubmitBtn.setBackground(Color.red);
@@ -168,8 +168,8 @@ public class Register extends JFrame {
 	}
 
 	/**
-	 * If registering leads error,
-	 * alert it.
+	 * If registering leads error, alert it.
+	 * 
 	 * @param code
 	 */
 	public void alertWrong(int code) {

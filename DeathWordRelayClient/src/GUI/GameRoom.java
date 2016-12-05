@@ -2,6 +2,7 @@ package GUI;
 
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -50,6 +51,14 @@ public class GameRoom extends JFrame {
 	private JButton exitBtn = new JButton(exitImg);
 	private JButton readyBtn = new JButton(readyImg);
 
+	/* countDown */
+	private static ImageIcon oneImg = new ImageIcon("Img/count1.png");
+	private static ImageIcon twoImg = new ImageIcon("Img/count2.png");
+	private static ImageIcon threeImg = new ImageIcon("Img/count3.png");
+	private static ImageIcon fourImg = new ImageIcon("Img/count4.png");
+	private static ImageIcon fiveImg = new ImageIcon("Img/count5.png");
+	private static ImageIcon startImg = new ImageIcon("Img/start.png");
+
 	/* Basic Chatting panel */
 	private JPanel chatPanel = new JPanel() {
 		public void paintComponent(Graphics g) {
@@ -58,9 +67,12 @@ public class GameRoom extends JFrame {
 			super.paintComponent(g);
 		}
 	};
-	private JTextField msgTxt = new JTextField(41);
-	private JTextField answerTxt = new JTextField(41);
-	private JTextArea msgArea = new JTextArea(9, 65);
+
+	private static JLabel countDown = new JLabel();
+
+	private static JTextField msgTxt = new JTextField(41);
+	private static JTextField answerTxt = new JTextField(41);
+	private static JTextArea msgArea = new JTextArea(9, 65);
 	private JScrollPane msgScrlPane = new JScrollPane(msgArea);
 
 	/* Default container */
@@ -92,6 +104,7 @@ public class GameRoom extends JFrame {
 		cont.add(chatPanel);
 		cont.add(readyBtn);
 		cont.add(exitBtn);
+		cont.add(countDown);
 		cont.add(competitor);
 		cont.add(background);
 
@@ -129,10 +142,30 @@ public class GameRoom extends JFrame {
 		msgArea.setOpaque(false);
 		msgArea.setEditable(false);
 		msgArea.setForeground(Color.white);
-
+		msgArea.setFont(new Font("Arial", Font.BOLD, 15));
 		answerTxt.setBounds(23, 490, 529, 31);
 
 		/* Initialize answer text field and text area for chatting */
+		chatPanel.setBounds(23, 30, 555, 540);
+
+		readyBtn.setBounds(670, 345, readyImg.getIconWidth(), readyImg.getIconHeight());
+		readyBtn.setBackground(Color.red);
+		readyBtn.setBorderPainted(false);
+		readyBtn.setFocusPainted(false);
+		readyBtn.setContentAreaFilled(false);
+
+		countDown.setBounds(900, 330, fiveImg.getIconWidth(), fiveImg.getIconHeight());
+
+		exitBtn.setBounds(910, 510, exitImg.getIconWidth(), exitImg.getIconHeight());
+		exitBtn.setBackground(Color.red);
+		exitBtn.setBorderPainted(false);
+		exitBtn.setFocusPainted(false);
+		exitBtn.setContentAreaFilled(false);
+
+		competitor.setBounds(640, 40, cptImg.getIconWidth(), cptImg.getIconHeight());
+
+		background.setBounds(0, 0, bgImg.getIconWidth(), bgImg.getIconHeight());
+
 		answerTxt.setEnabled(false);
 		answerTxt.setVisible(false);
 		msgArea.setEditable(false);
@@ -238,12 +271,12 @@ public class GameRoom extends JFrame {
 		if (playing) {
 			msgArea.append("The game system is [Best of Five].\n");
 			msgArea.append("From now on, all of uncorrectable message will make you lose.\n");
-
 			msgArea.append("Think carefully before you type your word.\n");
 			msgArea.append("--------------------------------------------------------------\n");
 			msgArea.append("You can't rewind death.\n");
 			msgArea.append("--------------------------------------------------------------\n");
 			myGame = new WordGame();
+			fiveCountDown();
 			changeTxtField();
 			answerTxt.setEnabled(false);
 		} else {
@@ -282,6 +315,14 @@ public class GameRoom extends JFrame {
 				answerTxt.setEnabled(false);
 			} else {
 				Client.Lose(false);
+
+				Client.sendAnswer(msg, myUser.getrNo());
+				if (!(myGame.checkLength() && myGame.checkWithOnline())) {
+					Client.Lose(false);
+				} else {
+					Client.requestResume();
+					answerTxt.setEnabled(false);
+				}
 			}
 		} catch (Exception e1) {
 		}
@@ -341,6 +382,7 @@ public class GameRoom extends JFrame {
 		msgArea.append("--------------------------------------------------------------\n");
 		msgArea.append("You can't rewind death.\n");
 		msgArea.append("--------------------------------------------------------------\n");
+		fiveCountDown();
 		answerTxt.setEnabled(false);
 	}
 
@@ -354,5 +396,34 @@ public class GameRoom extends JFrame {
 		myUser.gameFinInit();
 		isReady = false;
 		readyBtn.setIcon(readyImg);
+	}
+
+	public static void fiveCountDown() {
+		countDown.setVisible(true);
+		countDown.setIcon(fiveImg);
+		sleep(1000);
+		countDown.setIcon(fourImg);
+		sleep(1000);
+		countDown.setIcon(threeImg);
+		sleep(1000);
+		countDown.setIcon(twoImg);
+		sleep(1000);
+		countDown.setIcon(oneImg);
+		sleep(1000);
+		countDown.setIcon(startImg);
+		sleep(1000);
+		countDown.setVisible(false);
+	}
+
+	public static void sleep(int time) {
+
+		try {
+
+			Thread.sleep(time);
+
+		} catch (InterruptedException e) {
+
+		}
+
 	}
 }

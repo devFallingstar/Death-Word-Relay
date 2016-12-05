@@ -105,7 +105,7 @@ public class Client extends JFrame {
 			try {
 				out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8), true);
 				in = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
-	
+				
 				objOut = new ObjectOutputStream(dataSocket.getOutputStream());
 				objOut.flush();
 				objIn = new ObjectInputStream(dataSocket.getInputStream());
@@ -168,8 +168,8 @@ public class Client extends JFrame {
 					timer = new Timer();
 					timerTask = new WordTimerTask();
 					timer.schedule(timerTask, 0, 1000);
-
 					myRoomGUI.enableAnswerField();
+
 				} else if (line.startsWith("IWINROUND")) {
 					if (line.contains("TIMEOUT")) {
 						playSound("music/SE/humiliation.wav", false);
@@ -426,12 +426,14 @@ public class Client extends JFrame {
 		out.println("TIMEEND");
 	}
 
+
 	/**
 	 * Play in-game sound with loop flag.
 	 * @param uri
 	 * @param loop
 	 * @return
 	 */
+
 	public static Clip playSound(String uri, boolean loop) {
 		Clip clip = null;
 		try {
@@ -460,3 +462,4 @@ public class Client extends JFrame {
 		NICK = _NICK;
 	}
 }
+

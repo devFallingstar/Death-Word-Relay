@@ -17,6 +17,7 @@ public class WordGame {
 	private String prevWord;
 	private String curWord;
 
+	
 	/**
 	 * Constructor.
 	 */
@@ -264,11 +265,11 @@ public class WordGame {
 				return true;
 			if (lastWord.equals("룝") && curWord.startsWith("욥"))
 				return true;
-			if (lastWord.equals("룍") && curWord.startsWith("욕"))
+			if (lastWord.equals("룍") && curWord.startsWith("욕"))
 				return true;
 			if (lastWord.equals("룟") && curWord.startsWith("욧"))
 				return true;
-			if (lastWord.equals("룜") && curWord.startsWith("욤"))
+			if (lastWord.equals("룜") && curWord.startsWith("욤"))
 				return true;
 			if (lastWord.equals("룐") && curWord.startsWith("욘"))
 				return true;
@@ -389,7 +390,7 @@ public class WordGame {
 			if (lastWord.equals("를") && curWord.startsWith("을"))
 				return true;
 		}
-
 		return false;
 	}
 }
+

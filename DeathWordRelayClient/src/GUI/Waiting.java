@@ -25,8 +25,10 @@ public class Waiting extends JFrame {
 	private HashMap<Integer, String> newRoomList;
 	private Vector<String> rooms = new Vector<String>();
 
+
 	/* Basic background GUI variables */
-	private ImageIcon waiting = new ImageIcon("Img/waitingBg3.png");
+	private ImageIcon waiting = new ImageIcon("Img/waitingBg.jpg");
+
 	private ImageIcon rank = new ImageIcon("Img/rankList1.png");
 	private ImageIcon room = new ImageIcon("Img/roomList.png");
 	private ImageIcon mkr = new ImageIcon("Img/mkrBt.png");
@@ -34,6 +36,7 @@ public class Waiting extends JFrame {
 	private ImageIcon rf = new ImageIcon("Img/rfBt.png");
 	private ImageIcon chat = new ImageIcon("Img/chatBg.png");
 	private ImageIcon userImg = new ImageIcon("Img/userInform.png");
+	private ImageIcon rankImg = new ImageIcon("Img/rankBg.png");
 
 	/* Basic background GUI variables */
 	private JLabel waitBg = new JLabel(waiting);
@@ -41,7 +44,7 @@ public class Waiting extends JFrame {
 	private JLabel roomlbl = new JLabel(room);
 
 	private JLabel userInfo = new JLabel(userImg);
-	private JLabel userId = new JLabel();
+	private JLabel userId = new JLabel("userNICK");
 	private JLabel userRate = new JLabel();
 	private JLabel chatlbl = new JLabel(chat);
 
@@ -94,8 +97,9 @@ public class Waiting extends JFrame {
 		cont.add(rankList);
 		cont.add(ranklbl);
 		cont.add(chatPanel);
-		cont.add(userInfo);
 		cont.add(userId);
+		cont.add(userInfo);
+		
 		cont.add(userRate);
 		cont.add(waitBg);
 		cont.add(chatlbl);
@@ -123,15 +127,22 @@ public class Waiting extends JFrame {
 
 		roomScrlPane.setBounds(15, 121, 588, 277);
 		rankList.setBounds(630, 121, 150, 277);
+
 		roomlbl.setBounds(205, 3, room.getIconWidth(), room.getIconHeight());
 		ranklbl.setBounds(630, 40, rank.getIconWidth(), rank.getIconHeight());
 		userInfo.setBounds(610, 450, userImg.getIconWidth(), userImg.getIconHeight());
+
 
 		/* Initialize default chatting panel's design and system */
 		chatPanel.setBounds(15, 450, 588, 295);
 		chatPanel.add(msgScrlPane);
 		chatPanel.add(msgTxt);
 		chatPanel.add(chatlbl);
+
+		userId.setBounds(635, 525, 80, 25);
+		userId.setFont(new Font("chiller", Font.BOLD, 25));
+		userId.setForeground(Color.red);
+		//userId = new JLabel(Client.getNICK());
 
 		msgScrlPane.setBounds(0, 10, 583, 255);
 		msgScrlPane.setOpaque(false);
@@ -143,6 +154,7 @@ public class Waiting extends JFrame {
 		msgArea.setEditable(false);
 		msgArea.setForeground(Color.white);
 		msgArea.setSize(583, 255);
+		msgArea.setFont(new Font("Arial", Font.PLAIN, 15));
 
 		/*
 		 * Send message to server when user press enter key with some text in
