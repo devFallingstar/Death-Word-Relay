@@ -253,29 +253,34 @@ public class UserHandler extends Thread {
 			}
 		} catch (SocketException e1){
 			System.out.println("ERROR : User connect refused!");
+			removeUser();
 		} catch (Exception e) {
 			e.printStackTrace();
+			removeUser();
 		} finally {
-			if (name != null) {
-				broadCast("User [" + name + "] is disconnected.");
-				System.out.println("LOG : User [" + name + "] disconnected.");
-				names.remove(name);
-				if (myUser.getrNo() == -1) {
-					Server.removeUser(myUser);
-				} else {
-					Server.removeUserFromRoom(myUser);
-
-					// TODO If they exit while playing a game, put it to the
-					// black list.
-				}
-			}
-			try {
-				socket.close();
-			} catch (IOException e) {
-			}
+			removeUser();
 		}
 	}
 
+	private void removeUser(){
+		if (name != null) {
+			broadCast("User [" + name + "] is disconnected.");
+			System.out.println("LOG : User [" + name + "] disconnected.");
+			names.remove(name);
+			if (myUser.getrNo() == -1) {
+				Server.removeUser(myUser);
+			} else {
+				Server.removeUserFromRoom(myUser);
+
+				// TODO If they exit while playing a game, put it to the
+				// black list.
+			}
+		}
+		try {
+			socket.close();
+		} catch (IOException e) {
+		}
+	}
 	private Room getRoomInfo(int rNo) {
 		RoomManager newRoomM = Server.getRoomWithNumber(rNo);
 		if (newRoomM == null) {
