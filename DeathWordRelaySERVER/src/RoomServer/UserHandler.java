@@ -1,4 +1,3 @@
-
 package RoomServer;
 
 import java.io.*;
@@ -61,7 +60,6 @@ public class UserHandler extends Thread {
 
 			out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8), true);
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
-			out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8), true);
 			objOut = new ObjectOutputStream(dataSocket.getOutputStream());
 			objIn = new ObjectInputStream(dataSocket.getInputStream());
 
@@ -72,7 +70,6 @@ public class UserHandler extends Thread {
 			while (true) {
 				out.println("SUBMITNAME");
 				name = in.readLine();
-				
 				if (name == null) {
 					this.interrupt();
 				}
@@ -102,12 +99,13 @@ public class UserHandler extends Thread {
 			} else {
 				myUser = new User(name, in, out);
 			}
-			System.out.println("LOG : User [" + myUser.getName() + "] is connected.");
+			System.out.println("LOG : User " + myUser.getName() + " connected.");
 			System.out.println("LOG : The number of current users : " + users.size());
 
 			Server.addUser(myUser);
 
 			broadCast("[SYSTEM] User [" + name + "] is connected.");
+			System.out.println("LOG : User [" + name + "] connected.");
 
 			/*
 			 * wait for the message from client and send it to others. If User
@@ -362,3 +360,4 @@ public class UserHandler extends Thread {
 		return isFinished;
 	}
 }
+
