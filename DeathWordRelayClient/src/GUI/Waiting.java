@@ -358,12 +358,18 @@ public class Waiting extends JFrame {
 		}
 	}
 	
-	/*
-	public void reloadRank(){
+	public void setRank(){
+		
+		rankList.setText("");
+		
+	}
+	
+	public void reloadRank(String ranking){
+		
+		rankList.append(ranking);
+		rankList.append("\n");
 		
 		
-		rankList
-		
-	}*/
+	}
 	
 }
