@@ -11,6 +11,7 @@ import java.util.Vector;
 import javax.swing.*;
 
 import Data.Room;
+import Database.RankDB;
 import RoomClient.*;
 
 /**
@@ -25,6 +26,10 @@ public class Waiting extends JFrame {
 	private HashMap<Integer, String> newRoomList;
 	private Vector<String> rooms = new Vector<String>();
 
+	private RankDB rate = new RankDB();
+	
+	
+	
 	/* Basic background GUI variables */
 	private ImageIcon waiting = new ImageIcon("Img/waitingBg.jpg");
 
@@ -44,12 +49,15 @@ public class Waiting extends JFrame {
 
 	private JLabel userInfo = new JLabel(userImg);
 	private JLabel userId = new JLabel("userNICK");
-	private JLabel userRate = new JLabel();
+	private JLabel userRate = new JLabel("userRate");
 	private JLabel chatlbl = new JLabel(chat);
 
 	private List roomList = new List(15, false);
-	private List rankList = new List(15, false);
-
+	//private List rankList = new List(15, false);
+	private JTextArea rankList = new JTextArea("  ID  | Rate\n", 9, 65);
+	private JScrollPane rankScrlPane = new JScrollPane(rankList);
+	
+	
 	private JButton MakeRoomBtn = new JButton(mkr);
 	private JButton EnterBtn = new JButton(ent);
 	private JButton RefreshBtn = new JButton(rf);
@@ -138,10 +146,18 @@ public class Waiting extends JFrame {
 		chatPanel.add(msgTxt);
 
 		userId.setBounds(635, 525, 80, 25);
-		userId.setFont(new Font("chiller", Font.BOLD, 20));
+		userId.setFont(new Font("chiller", Font.BOLD, 25));
 		userId.setForeground(Color.red);
 		userId.setText(Client.getNICK());
 
+		userRate.setBounds(635, 560, 80, 25);
+		userRate.setFont(new Font("chiller", Font.BOLD, 25));
+		userRate.setForeground(Color.red);
+		userRate.setText(RankDB.getRate(Client.getID())+"");
+
+		
+		
+		
 		msgScrlPane.setBounds(0, 10, 583, 255);
 		msgScrlPane.setOpaque(false);
 		msgScrlPane.getViewport().setOpaque(false);
@@ -341,4 +357,13 @@ public class Waiting extends JFrame {
 			roomList.add(str);
 		}
 	}
+	
+	/*
+	public void reloadRank(){
+		
+		
+		rankList
+		
+	}*/
+	
 }

@@ -16,6 +16,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import Data.*;
+import Database.RankDB;
 import GUI.*;
 import GameSystem.RandomFileDeleter;
 import GameSystem.WordTimerTask;
@@ -60,7 +61,11 @@ public class Client extends JFrame {
 	private static Login myLoginGUI;
 	private static Waiting myWaitGUI;
 	private static GameRoom myRoomGUI;
-
+	/**
+	 * DataBase
+	 */
+	private static RankDB rank = new RankDB();
+	
 	/**
 	 * BGM and SE
 	 */
@@ -72,11 +77,11 @@ public class Client extends JFrame {
 	 * Runs the client as an application with a closeable frame.
 	 */
 	public static void main(String[] args) throws Exception {
-		System.setProperty("file.encoding","UTF-8");
+		System.setProperty("file.encoding", "UTF-8");
 		Field charset = Charset.class.getDeclaredField("defaultCharset");
 		charset.setAccessible(true);
-		charset.set(null,null);
-		
+		charset.set(null, null);
+
 		Client myClnt = new Client();
 
 		myClnt.run();
@@ -128,7 +133,7 @@ public class Client extends JFrame {
 				if (line == null || line.trim().isEmpty()) {
 					continue;
 				}
-				
+
 				line = line.trim();
 				line = new String(line.getBytes("utf-8"));
 
@@ -180,12 +185,12 @@ public class Client extends JFrame {
 					if (line.contains("TIMEOUT")) {
 						playSound("music/SE/humiliation.wav", false);
 					}
-					
-					if(timer != null){
+
+					if (timer != null) {
 						timer.cancel();
 						timer.purge();
 					}
-					
+
 					myRoomGUI.winNotice();
 					myRoomGUI.myGame.youWin();
 				} else if (line.startsWith("ILOSEROUND")) {
@@ -193,7 +198,7 @@ public class Client extends JFrame {
 						playSound("music/SE/humiliation.wav", false);
 					}
 
-					if(timer != null){
+					if (timer != null) {
 						timer.cancel();
 						timer.purge();
 					}
@@ -201,7 +206,7 @@ public class Client extends JFrame {
 					myRoomGUI.loseNotice();
 					myRoomGUI.myGame.youLose();
 				} else if (line.startsWith("SETNEWROUND")) {
-					
+
 					myRoomGUI.readyForNewRound();
 				} else if (line.startsWith("DUPWORD")) {
 					Lose(false);
@@ -209,13 +214,17 @@ public class Client extends JFrame {
 					myRoomGUI.gameFin();
 				} else if (line.startsWith("LOSEGAME")) {
 					deleteFile();
-					/* When Lose,
-					 * Add lose count to DB server.
+					/*
+					 * When Lose, Add lose count to DB server.
 					 */
+					RankDB.updateLose(ID);
+					
 				} else if (line.startsWith("WINGAME")) {
-					/* When Win,
-					 * Add win count to DB server.
+					/*
+					 * When Win, Add win count to DB server.
 					 */
+					RankDB.updateWin(ID);
+					
 				} else if (line.startsWith("MESSAGE ")) {
 					myWaitGUI.gotMessage(line.substring(8));
 				} else if (line.startsWith("MYTIMEEND")) {
@@ -331,12 +340,12 @@ public class Client extends JFrame {
 				return 1;
 			} else {
 				if (roomName.trim().isEmpty()) {
-					return -1;	
-				}else{
+					return -1;
+				} else {
 					return -2;
 				}
 			}
-				
+
 		} catch (Exception e) {
 		}
 		return -1;
@@ -504,6 +513,14 @@ public class Client extends JFrame {
 	/**
 	 * Getter and Setter.
 	 */
+	public static void setID(String _ID){
+		
+		ID = _ID;
+	}
+	public static String getID() {
+		return ID;
+	}
+	
 	public static void setNICK(String _NICK) {
 		NICK = _NICK;
 	}

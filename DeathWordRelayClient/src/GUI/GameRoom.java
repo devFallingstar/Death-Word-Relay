@@ -19,6 +19,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import Data.User;
+import Database.RankDB;
 import GameSystem.WordGame;
 import RoomClient.*;
 import SubClass.WindowHandler;
@@ -35,9 +36,13 @@ public class GameRoom extends JFrame {
 	public WordGame myGame;
 	private boolean isReady;
 	private User myUser;
-	String oppName;
+	
+	/* Get Opposite user info*/
 	// private User oppUser; <- Not implemented yet. DO NOT ERASE.
-
+	String oppName;
+	double oppRate;
+	private RankDB rank = new RankDB();
+	
 	/* Basic background GUI variables */
 	private ImageIcon bgImg = new ImageIcon("Img/gameRoomBg.png");
 	private ImageIcon chat = new ImageIcon("Img/gchatBg.png");
@@ -49,6 +54,7 @@ public class GameRoom extends JFrame {
 	private JLabel background = new JLabel(bgImg);
 	private JLabel competitor = new JLabel(cptImg);
 	private JLabel compId = new JLabel("Opposite");
+	private JLabel compR = new JLabel("Opp rate");
 
 	private JButton exitBtn = new JButton(exitImg);
 	private JButton readyBtn = new JButton(readyImg);
@@ -104,6 +110,7 @@ public class GameRoom extends JFrame {
 		/* Set default container and add components */
 		cont = this.getContentPane();
 		cont.add(compId);
+		cont.add(compR);
 		cont.add(chatPanel);
 		cont.add(readyBtn);
 		cont.add(exitBtn);
@@ -126,9 +133,14 @@ public class GameRoom extends JFrame {
 
 		competitor.setBounds(640, 40, cptImg.getIconWidth(), cptImg.getIconHeight());
 		compId.setBounds(900, 133, 80, 25);
-		compId.setFont(new Font("chiller", Font.BOLD, 20));
+		compId.setFont(new Font("chiller", Font.BOLD, 25));
 		compId.setForeground(Color.red);
+		compR.setBounds(900, 233, 80, 25);
+		compR.setFont(new Font("chiller", Font.BOLD, 25));
+		compR.setForeground(Color.red);
 
+		
+		
 		background.setBounds(0, 0, bgImg.getIconWidth(), bgImg.getIconHeight());
 
 		/* Initialize default chatting panel's design and system */
@@ -449,8 +461,11 @@ public class GameRoom extends JFrame {
 	public void setOppUserName(String _name) {
 		if (_name.isEmpty()) {
 			compId.setText("");
+			oppRate = 0;
 		} else {
 			compId.setText(_name);
+			oppRate = RankDB.getRate(_name);
+			
 		}
 	}
 }
