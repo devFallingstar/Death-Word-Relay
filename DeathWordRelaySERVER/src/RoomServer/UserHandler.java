@@ -255,7 +255,8 @@ public class UserHandler extends Thread {
 						myOppUser.getOut().println("GAMEFIN");
 
 						myUser.getOut().println("LOSEGAME");
-
+						myOppUser.getOut().println("WINGAME");
+						
 						myUser.InitRoundScore();
 						myOppUser.InitRoundScore();
 						myUser.setUnPlaying();

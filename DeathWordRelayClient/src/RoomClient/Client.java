@@ -209,6 +209,13 @@ public class Client extends JFrame {
 					myRoomGUI.gameFin();
 				} else if (line.startsWith("LOSEGAME")) {
 					deleteFile();
+					/* When Lose,
+					 * Add lose count to DB server.
+					 */
+				} else if (line.startsWith("WINGAME")) {
+					/* When Win,
+					 * Add win count to DB server.
+					 */
 				} else if (line.startsWith("MESSAGE ")) {
 					myWaitGUI.gotMessage(line.substring(8));
 				} else if (line.startsWith("MYTIMEEND")) {
