@@ -18,7 +18,7 @@ import RoomClient.Client;
 public class MemberProc {
 
 	/* Basic variables for SQL query. */
-	static String sql1, sql2,sql3;
+	static String sql1, sql2, sql3;
 	static Connection con;
 	static Statement stmt1, stmt2;
 	static String memberTable = "Users";
@@ -59,7 +59,7 @@ public class MemberProc {
 
 		sql1 = "SELECT COUNT(*) from " + memberTable + " WHERE ID=\'" + id + "\'";
 		sql2 = "INSERT INTO " + memberTable + " VALUES (\'" + id + "\',\'" + pwd + "\',\'" + nickname + "\')";
-		sql3 = "INSERT INTO WinLose VALUES ('"+id+"',0,0)";
+		sql3 = "INSERT INTO WinLose VALUES ('" + id + "',0,0)";
 		try {
 			makeConnection();
 			ResultSet rs = executeSQL(sql1, 1);
@@ -70,7 +70,7 @@ public class MemberProc {
 				rs.next();
 				if (rs.getInt(1) != 1) {
 					executeSQL(sql2, 0);
-					executeSQL(sql3,0);
+					executeSQL(sql3, 0);
 					return 1;
 				} else {
 					return -2;
@@ -110,9 +110,13 @@ public class MemberProc {
 			ResultSet rs = executeSQL(loginsql, 1);
 			if (rs != null) {
 				rs.next();
-				Client.setNICK(rs.getString(3));
-				Client.setID(rs.getString(1));
-				return true;
+				if (ID.equals(rs.getString(1)) && PW.equals(rs.getString(2))) {
+					Client.setNICK(rs.getString(3));
+					Client.setID(rs.getString(1));
+					return true;
+				} else {
+					return false;
+				}
 			} else {
 				return false;
 			}
@@ -121,8 +125,6 @@ public class MemberProc {
 			return false;
 		}
 	}
-	
-
 
 	/**
 	 * Initialize default connection.
@@ -148,11 +150,11 @@ public class MemberProc {
 	 */
 	public static ResultSet executeSQL(String query, int mode) throws SQLException {
 		try {
-			if (mode == 0) { // execute Update (that return null)
+			if (mode == 0) { // execute Query (that return null)
 				stmt2.executeUpdate(query);
 
 				return null;
-			} else {// execute Query (that return result string)
+			} else { // execute Query (that return result string)
 				return stmt1.executeQuery(query);
 			}
 		} catch (Exception e) {

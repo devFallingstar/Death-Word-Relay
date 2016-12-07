@@ -17,7 +17,6 @@ public class WordGame {
 	private String prevWord;
 	private String curWord;
 
-	
 	/**
 	 * Constructor.
 	 */
@@ -69,16 +68,19 @@ public class WordGame {
 	public int getRound() {
 		return round;
 	}
+
 	public void setRound(int round) {
 		this.round = round;
 	}
+
 	public int getWin() {
 		return win;
 	}
+
 	public int getLose() {
 		return lose;
 	}
-	
+
 	/**
 	 * Check if the user is win or not and save its result to variables.
 	 */
@@ -409,4 +411,3 @@ public class WordGame {
 		return false;
 	}
 }
-

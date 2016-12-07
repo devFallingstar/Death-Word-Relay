@@ -31,18 +31,17 @@ import SubClass.WindowHandler;
  * @author YYS
  *
  */
+@SuppressWarnings("serial")
 public class GameRoom extends JFrame {
+
 	/* Basic variables */
 	public WordGame myGame;
 	private boolean isReady;
 	private User myUser;
-	
-	/* Get Opposite user info*/
-	// private User oppUser; <- Not implemented yet. DO NOT ERASE.
+
+	/* Get Opposite user info */
 	String oppName;
 	double oppRate;
-	private RankDB rank = new RankDB();
-	
 	/* Basic background GUI variables */
 	private ImageIcon bgImg = new ImageIcon("Img/gameRoomBg.png");
 	private ImageIcon chat = new ImageIcon("Img/gchatBg.png");
@@ -69,6 +68,7 @@ public class GameRoom extends JFrame {
 
 	/* Basic Chatting panel */
 	private JPanel chatPanel = new JPanel() {
+
 		public void paintComponent(Graphics g) {
 			g.drawImage(chat.getImage(), 0, 0, null);
 			setOpaque(false);
@@ -139,8 +139,6 @@ public class GameRoom extends JFrame {
 		compR.setFont(new Font("chiller", Font.BOLD, 25));
 		compR.setForeground(Color.red);
 
-		
-		
 		background.setBounds(0, 0, bgImg.getIconWidth(), bgImg.getIconHeight());
 
 		/* Initialize default chatting panel's design and system */
@@ -200,7 +198,7 @@ public class GameRoom extends JFrame {
 			 */
 			public void actionPerformed(ActionEvent e) {
 				String msg = msgTxt.getText();
-				if(!msg.trim().isEmpty()){
+				if (!msg.trim().isEmpty()) {
 					try {
 						msg = msg.trim();
 						msg = new String(msg.getBytes("UTF-8"));
@@ -234,7 +232,6 @@ public class GameRoom extends JFrame {
 		readyBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				isReady = !isReady;
 				Client.AreYouReady(isReady);
 				if (isReady) {
@@ -256,7 +253,6 @@ public class GameRoom extends JFrame {
 		exitBtn.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				Client.exitCurrentRoom();
 				dispose();
 			}
@@ -327,7 +323,7 @@ public class GameRoom extends JFrame {
 				if (myGame.isCorrect()) {
 					Client.requestResume();
 					answerTxt.setEnabled(false);
-				}else{
+				} else {
 					Client.Lose(false);
 				}
 			}
@@ -462,12 +458,12 @@ public class GameRoom extends JFrame {
 		if (_name.isEmpty()) {
 			compId.setText("");
 			oppRate = 0;
-			compR.setText(oppRate+"%");
+			compR.setText(oppRate + "%");
 		} else {
 			compId.setText(_name);
 			oppRate = RankDB.getRate(_name);
-			compR.setText(oppRate+"%");
-			
+			compR.setText(oppRate + "%");
+
 		}
 	}
 }

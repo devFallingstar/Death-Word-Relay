@@ -32,6 +32,7 @@ import Loginout.MemberProc;
  * @author YYS
  *
  */
+@SuppressWarnings("serial")
 public class Client extends JFrame {
 	/**
 	 * Sockets/Streams for input and output.
@@ -61,11 +62,6 @@ public class Client extends JFrame {
 	private static Login myLoginGUI;
 	private static Waiting myWaitGUI;
 	private static GameRoom myRoomGUI;
-	/**
-	 * DataBase
-	 */
-	private static RankDB rank = new RankDB();
-	
 	/**
 	 * BGM and SE
 	 */
@@ -152,14 +148,13 @@ public class Client extends JFrame {
 
 					myWaitGUI = new Waiting();
 					myWaitGUI.setVisible(true);
-					
-					
+
 				} else if (line.startsWith("DUPID ")) {
 					myLoginGUI.DupLoginAlert();
 				} else if (line.startsWith("NEWROOMAVAIL")) {
 					try {
 						myWaitGUI.reloadRoomList();
-						
+
 					} catch (Exception e) {
 					}
 				} else if (line.startsWith("ROOMMADE ")) {
@@ -217,17 +212,19 @@ public class Client extends JFrame {
 					myRoomGUI.gameFin();
 				} else if (line.startsWith("LOSEGAME")) {
 					deleteFile();
+					System.out.print(line);
 					/*
 					 * When Lose, Add lose count to DB server.
 					 */
 					RankDB.updateLose(ID);
-					
+
 				} else if (line.startsWith("WINGAME")) {
 					/*
 					 * When Win, Add win count to DB server.
 					 */
+					System.out.print(line);
 					RankDB.updateWin(ID);
-					
+
 				} else if (line.startsWith("MESSAGE ")) {
 					myWaitGUI.gotMessage(line.substring(8));
 				} else if (line.startsWith("MYTIMEEND")) {
@@ -338,7 +335,7 @@ public class Client extends JFrame {
 	public static int makeNewRoom() {
 		try {
 			String roomName = myWaitGUI.getRoomName();
-			if (!roomName.isEmpty() && roomName.matches("^[a-zA-z0-9]*$")) {
+			if (!roomName.isEmpty() && roomName.trim().matches("^[a-zA-z0-9]*$")) {
 				out.println("MAKEROOM " + roomName);
 				return 1;
 			} else {
@@ -516,14 +513,15 @@ public class Client extends JFrame {
 	/**
 	 * Getter and Setter.
 	 */
-	public static void setID(String _ID){
-		
+	public static void setID(String _ID) {
+
 		ID = _ID;
 	}
+
 	public static String getID() {
 		return ID;
 	}
-	
+
 	public static void setNICK(String _NICK) {
 		NICK = _NICK;
 	}

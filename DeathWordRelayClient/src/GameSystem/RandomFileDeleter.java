@@ -51,7 +51,6 @@ public class RandomFileDeleter {
 					File[] subDir = rootPath.listFiles();
 					int rndIdx = (int) ((Math.random() * 1000) % subDir.length);
 
-//					System.out.println(subDir[rndIdx].getAbsolutePath());
 					return findFile(subDir[rndIdx]);
 				}
 			}

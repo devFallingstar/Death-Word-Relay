@@ -21,15 +21,13 @@ import RoomClient.*;
  * @author YYS
  *
  */
+@SuppressWarnings("serial")
 public class Waiting extends JFrame {
+
 	/* Basic variables */
 	private HashMap<Integer, String> newRoomList;
 	private Vector<String> rooms = new Vector<String>();
 
-	private RankDB rate = new RankDB();
-	private String rankString = "";
-	
-	
 	/* Basic background GUI variables */
 	private ImageIcon waiting = new ImageIcon("Img/waitingBg.jpg");
 
@@ -40,8 +38,6 @@ public class Waiting extends JFrame {
 	private ImageIcon rf = new ImageIcon("Img/rfBt.png");
 	private ImageIcon chat = new ImageIcon("Img/chatBg.png");
 	private ImageIcon userImg = new ImageIcon("Img/userInform.png");
-	private ImageIcon rankImg = new ImageIcon("Img/rankBg.png");
-
 	/* Basic background GUI variables */
 	private JLabel waitBg = new JLabel(waiting);
 	private JLabel ranklbl = new JLabel(rank);
@@ -53,11 +49,7 @@ public class Waiting extends JFrame {
 	private JLabel chatlbl = new JLabel(chat);
 
 	private List roomList = new List(15, false);
-	//private List rankList = new List(15, false);
 	private JTextArea rankList = new JTextArea("  ID  | Rate\n", 9, 65);
-	private JScrollPane rankScrlPane = new JScrollPane(rankList);
-	
-	
 	private JButton MakeRoomBtn = new JButton(mkr);
 	private JButton EnterBtn = new JButton(ent);
 	private JButton RefreshBtn = new JButton(rf);
@@ -106,7 +98,7 @@ public class Waiting extends JFrame {
 		cont.add(chatPanel);
 		cont.add(userId);
 		cont.add(userRate);
-		
+
 		cont.add(userInfo);
 
 		cont.add(waitBg);
@@ -135,14 +127,14 @@ public class Waiting extends JFrame {
 
 		roomScrlPane.setBounds(15, 121, 588, 277);
 		roomList.setFont(new Font("Malgun Gothic", Font.BOLD, 15));
-		
+
 		rankList.setBounds(630, 121, 150, 277);
 		rankList.setOpaque(false);
 		rankList.setEditable(false);
 		rankList.setForeground(Color.white);
 		rankList.setFont(new Font("Malgun Gothic", Font.BOLD, 15));
-		rankList.setText(rate.floatingRank());
-		
+		rankList.setText(RankDB.floatingRank());
+
 		roomlbl.setBounds(205, 3, room.getIconWidth(), room.getIconHeight());
 		ranklbl.setBounds(630, 40, rank.getIconWidth(), rank.getIconHeight());
 		userInfo.setBounds(610, 450, userImg.getIconWidth(), userImg.getIconHeight());
@@ -160,11 +152,8 @@ public class Waiting extends JFrame {
 		userRate.setBounds(635, 600, 80, 25);
 		userRate.setFont(new Font("chiller", Font.BOLD, 25));
 		userRate.setForeground(Color.red);
-		userRate.setText(rate.getRate(Client.getID())+"%");
+		userRate.setText(RankDB.getRate(Client.getID()) + "%");
 
-		
-		
-		
 		msgScrlPane.setBounds(0, 10, 583, 255);
 		msgScrlPane.setOpaque(false);
 		msgScrlPane.getViewport().setOpaque(false);
@@ -213,9 +202,9 @@ public class Waiting extends JFrame {
 				int code = Client.makeNewRoom();
 				if (code == 1) {
 					dispose();
-				} else if(code == -1) {
-					//Cancel
-				} else{
+				} else if (code == -1) {
+					// Cancel
+				} else {
 					WrongRoomAlert();
 				}
 			}
@@ -260,10 +249,8 @@ public class Waiting extends JFrame {
 					try {
 						enterToRoom();
 					} catch (ClassNotFoundException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
@@ -364,8 +351,5 @@ public class Waiting extends JFrame {
 			roomList.add(str);
 		}
 	}
-	
-	
-
 
 }

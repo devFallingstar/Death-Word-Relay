@@ -8,9 +8,8 @@ import java.util.*;
 import Data.User;
 
 /**
- * This class is used for main class of server-side system. 
- * It will make a connection between server and client, 
- * and will make streams too.
+ * This class is used for main class of server-side system. It will make a
+ * connection between server and client, and will make streams too.
  * 
  * @author YYS
  *
@@ -35,11 +34,11 @@ public class Server {
 	 * handler threads.
 	 */
 	public static void main(String[] args) throws Exception {
-		System.setProperty("file.encoding","UTF-8");
+		System.setProperty("file.encoding", "UTF-8");
 		Field charset = Charset.class.getDeclaredField("defaultCharset");
 		charset.setAccessible(true);
-		charset.set(null,null);
-		
+		charset.set(null, null);
+
 		System.out.println("The chat server is running. with port " + PORT);
 		listener = new ServerSocket(PORT);
 		dataListener = new ServerSocket(DATAPORT);
@@ -56,15 +55,16 @@ public class Server {
 
 	/**
 	 * Add user to the current server
+	 * 
 	 * @param u
 	 */
 	public static void addUser(User u) {
 		users.add(u);
 	}
-	
-	
+
 	/**
 	 * Remove user from the current server
+	 * 
 	 * @param u
 	 */
 	public static void removeUser(User u) {
@@ -72,7 +72,8 @@ public class Server {
 	}
 
 	/**
-	 * Add room to the current server with room name. 
+	 * Add room to the current server with room name.
+	 * 
 	 * @param roomName
 	 * @return given room number(ID)
 	 */
@@ -93,6 +94,7 @@ public class Server {
 
 	/**
 	 * Remove room from the current server with room number(ID)
+	 * 
 	 * @param roomID
 	 */
 	public static void removeRoom(int roomID) {
@@ -101,6 +103,7 @@ public class Server {
 
 	/**
 	 * Add new user to the room with the user's room number.
+	 * 
 	 * @param u
 	 */
 	public static void addUserToRoom(User u) {
@@ -113,6 +116,7 @@ public class Server {
 
 	/**
 	 * Remove a user from the room.
+	 * 
 	 * @param u
 	 */
 	public static void removeUserFromRoom(User u) {
@@ -131,9 +135,10 @@ public class Server {
 	}
 
 	/**
-	 * Broadcast the message to waiting room or game room.
-	 * If rNo is -1, it means message will be broadcasted to waiting room,
-	 * if not, message will be broadcasted to specific room.
+	 * Broadcast the message to waiting room or game room. If rNo is -1, it
+	 * means message will be broadcasted to waiting room, if not, message will
+	 * be broadcasted to specific room.
+	 * 
 	 * @param msg
 	 * @param rNo
 	 */
@@ -151,6 +156,7 @@ public class Server {
 
 	/**
 	 * Get RoomManager of room that has room number rNo.
+	 * 
 	 * @param rNo
 	 * @return Appropriate RoomManager instance
 	 */
@@ -162,6 +168,7 @@ public class Server {
 
 	/**
 	 * Get all room list that running in current server.
+	 * 
 	 * @return Room list with HashMap() instance
 	 */
 	public static HashMap<Integer, String> getRoomList() {
@@ -176,6 +183,7 @@ public class Server {
 
 	/**
 	 * Get opposite user of user me.
+	 * 
 	 * @param me
 	 * @return Opposite user or null
 	 */
@@ -195,6 +203,7 @@ public class Server {
 
 	/**
 	 * Set first user of each rounds.
+	 * 
 	 * @param rNo
 	 */
 	public static void setStartOfRoom(int rNo) {

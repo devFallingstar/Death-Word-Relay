@@ -16,12 +16,10 @@ import Data.User;
 /**
  * This class is used for Handling each user with thread.
  * 
- * Also, process almost of message from client-side, 
- * and send almost of message 
+ * Also, process almost of message from client-side, and send almost of message
  * to client-side.
  * 
- * Also, process almost of message from client-side, 
- * and send almost of message
+ * Also, process almost of message from client-side, and send almost of message
  * to client-side.
  * 
  * @author YYS
@@ -35,9 +33,10 @@ public class UserHandler extends Thread {
 	private Socket dataSocket;
 	private BufferedReader in;
 	private PrintWriter out;
+	@SuppressWarnings("unused")
 	private ObjectInputStream objIn;
 	private ObjectOutputStream objOut;
-	
+
 	/**
 	 * Basic information for users
 	 */
@@ -64,8 +63,7 @@ public class UserHandler extends Thread {
 	public static HashSet<User> users = new HashSet<User>();
 
 	/**
-	 * Construct  for UserHandler class.
-	 * It will get a sockets for one client.
+	 * Construct for UserHandler class. It will get a sockets for one client.
 	 * Most of methods will be done in run() method.
 	 * 
 	 */
@@ -76,9 +74,8 @@ public class UserHandler extends Thread {
 	}
 
 	/**
-	 * Services current user client
-	 * by requesting the name and broadcasting informations, 
-	 * with input and output streams.
+	 * Services current user client by requesting the name and broadcasting
+	 * informations, with input and output streams.
 	 * 
 	 */
 	public void run() {
@@ -103,7 +100,6 @@ public class UserHandler extends Thread {
 						names.add(name);
 						break;
 					} else {
-						// TODO response have to add.
 						out.println("DUPID ");
 						continue;
 					}
@@ -149,13 +145,13 @@ public class UserHandler extends Thread {
 			 */
 			while (true) {
 				String input = in.readLine();
-				
+
 				if (input == null || input.trim().isEmpty()) {
 					return;
 				}
 				input = input.trim();
 				input = new String(input.getBytes("utf-8"));
-				
+
 				if (input.startsWith("MAKEROOM ")) {
 					String roomTitle = input.substring(9);
 					int roomNo = Server.addRoom(roomTitle);
@@ -208,7 +204,7 @@ public class UserHandler extends Thread {
 					int roomNo = Integer.parseInt(roomNoStr);
 
 					currentAnswer = input.substring(9);
-					if(!currentAnswer.isEmpty() || !currentAnswer.startsWith("\n")){
+					if (!currentAnswer.isEmpty() || !currentAnswer.startsWith("\n")) {
 						Server.broadCast(name + " : " + currentAnswer.trim(), roomNo);
 					}
 				} else if (input.startsWith("COMESUCC")) {
@@ -244,19 +240,19 @@ public class UserHandler extends Thread {
 						setResume();
 					}
 				} else if (input.startsWith("ILOSEROUND")) {
-					if(input.contains("TIMEOUT")){
+					if (input.contains("TIMEOUT")) {
 						WhenLose(true);
-					}else{
+					} else {
 						WhenLose(false);
 					}
-					
+
 					if (FinGame()) {
 						out.println("GAMEFIN");
 						myOppUser.getOut().println("GAMEFIN");
 
 						myUser.getOut().println("LOSEGAME");
 						myOppUser.getOut().println("WINGAME");
-						
+
 						myUser.InitRoundScore();
 						myOppUser.InitRoundScore();
 						myUser.setUnPlaying();
@@ -268,10 +264,10 @@ public class UserHandler extends Thread {
 					}
 				} else if (input.startsWith("TIMEEND")) {
 					out.println("MYTIMEEND");
-				} else if (input.startsWith("REQOPPUSER")){
+				} else if (input.startsWith("REQOPPUSER")) {
 					myOppUser = Server.getOppUser(myUser);
-					if(myOppUser != null){
-						myUser.getOut().println("OPPUSER "+myOppUser.getName());
+					if (myOppUser != null) {
+						myUser.getOut().println("OPPUSER " + myOppUser.getName());
 					}
 				} else if (input.startsWith("MESSAGE ")) {
 					if (!(input.substring(8).isEmpty())) {
@@ -281,9 +277,8 @@ public class UserHandler extends Thread {
 					}
 				}
 			}
-		} catch (SocketException e1){
+		} catch (SocketException e1) {
 			System.out.println("ERROR : User connect refused!");
-//			removeUser();
 		} catch (Exception e) {
 			e.printStackTrace();
 			removeUser();
@@ -295,15 +290,15 @@ public class UserHandler extends Thread {
 	/**
 	 * Remove current user from server
 	 */
-	private void removeUser(){
-		if(myUser.getPlaying() == true){
+	private void removeUser() {
+		if (myUser.getPlaying() == true) {
 			myUser.getOut().println("LOSEGAME");
 			myOppUser.getOut().println("GAMEFIN");
 			myOppUser.setUnPlaying();
 			myOppUser.setUnReady();
 			myOppUser.InitRoundScore();
 		}
-		
+
 		if (name != null) {
 			broadCast("User [" + name + "] is disconnected.");
 			System.out.println("LOG : User [" + name + "] disconnected.");
@@ -312,9 +307,6 @@ public class UserHandler extends Thread {
 				Server.removeUser(myUser);
 			} else {
 				Server.removeUserFromRoom(myUser);
-
-				// TODO If they exit while playing a game, put it to the
-				// black list.
 			}
 		}
 		try {
@@ -322,7 +314,12 @@ public class UserHandler extends Thread {
 		} catch (IOException e) {
 		}
 	}
-	
+
+	/**
+	 * Get Information of room with room number.
+	 * @param rNo
+	 * @return
+	 */
 	private Room getRoomInfo(int rNo) {
 		RoomManager newRoomM = Server.getRoomWithNumber(rNo);
 		if (newRoomM == null) {
@@ -333,6 +330,11 @@ public class UserHandler extends Thread {
 		return currentRoom;
 	}
 
+	/**
+	 * Check if the name of user is exist in server or not.
+	 * @param name
+	 * @return
+	 */
 	private boolean isNameExist(String name) {
 		for (User requestedUser : users) {
 			if (requestedUser.getName().equalsIgnoreCase(name)) {
@@ -342,10 +344,17 @@ public class UserHandler extends Thread {
 		return false;
 	}
 
+	/**
+	 * Broadcast the message to server or room.
+	 * @param msg
+	 */
 	public void broadCast(String msg) {
 		Server.broadCast(msg, myUser.getrNo());
 	}
 
+	/**
+	 * Set starting of game.
+	 */
 	public void setStart() {
 		myUser.getOut().println("SETNEWROUND");
 		myOppUser.getOut().println("SETNEWROUND");
@@ -363,30 +372,41 @@ public class UserHandler extends Thread {
 		gameStartTimer.schedule(gameStartTask, 5000);
 	}
 
+	/**
+	 * Set resume of game.
+	 */
 	public void setResume() {
 		Server.getRoomWithNumber(myUser.getrNo()).resumeGame();
 	}
 
+	/**
+	 * When someone lose, make the information of winner and loser correctly
+	 * and print result of previous round.
+	 * @param isTimeOut
+	 */
 	public void WhenLose(boolean isTimeOut) {
 		User loseUser = myUser;
 		User winUser = myOppUser;
 
 		loseUser.Lose();
 		winUser.Win();
-		
-		if(isTimeOut){
+
+		if (isTimeOut) {
 			loseUser.getOut().println("ILOSEROUND TIMEOUT");
 			winUser.getOut().println("IWINROUND TIMEOUT");
-		}else{
+		} else {
 			loseUser.getOut().println("ILOSEROUND");
 			winUser.getOut().println("IWINROUND");
 		}
 	}
 
+	/**
+	 * When game is finished, alert it.
+	 * @return
+	 */
 	public boolean FinGame() {
 		boolean isFinished = myUser.isFin();
 
 		return isFinished;
 	}
 }
-

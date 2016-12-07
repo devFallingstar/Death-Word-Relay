@@ -25,7 +25,9 @@ import javax.swing.JButton;
  * @author YYS
  *
  */
+@SuppressWarnings("serial")
 public class Register extends JFrame {
+
 	/* Basic variables */
 	Client clnt;
 	Login myLogin;

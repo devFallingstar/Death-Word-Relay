@@ -15,7 +15,9 @@ import RoomClient.*;
  * @author YYS
  *
  */
+@SuppressWarnings("serial")
 public class Login extends JFrame {
+
 	/* Basic GUI variables */
 	private ImageIcon idImg = new ImageIcon("Img/idLb.png");
 	private ImageIcon pwImg = new ImageIcon("Img/pwLb.png");

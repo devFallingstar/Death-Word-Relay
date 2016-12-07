@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.PrintWriter;
 import java.io.Serializable;
 
-
+@SuppressWarnings("serial")
 public class User implements Serializable {
 	private String name;
 	private BufferedReader in;
@@ -12,16 +12,16 @@ public class User implements Serializable {
 	private int rNo;
 	private boolean isReady;
 	private boolean isPlaying;
-	
-	public User(){
-		//Make blank user.
+
+	public User() {
+		// Make blank user.
 	}
-	
-	public User(String _name){
+
+	public User(String _name) {
 		this.name = _name;
 	}
-	
-	public User(String _name, BufferedReader _in, PrintWriter _out){
+
+	public User(String _name, BufferedReader _in, PrintWriter _out) {
 		this.name = _name;
 		this.in = _in;
 		this.out = _out;
@@ -29,7 +29,7 @@ public class User implements Serializable {
 		isReady = false;
 		isPlaying = false;
 	}
-	
+
 	public int getrNo() {
 		return rNo;
 	}
@@ -45,7 +45,7 @@ public class User implements Serializable {
 	public PrintWriter getOut() {
 		return out;
 	}
-	
+
 	public void setrNo(int rNo) {
 		this.rNo = rNo;
 	}
@@ -61,31 +61,33 @@ public class User implements Serializable {
 	public void setOut(PrintWriter out) {
 		this.out = out;
 	}
-	
-	public void sendMsg(String msg){
+
+	public void sendMsg(String msg) {
 		this.out.println(msg);
 	}
-	
-	public void setReady(){
-		if(isReady){
+
+	public void setReady() {
+		if (isReady) {
 			isReady = false;
-		}else{
+		} else {
 			isReady = true;
 		}
 	}
-	public boolean getReady(){
+
+	public boolean getReady() {
 		return isReady;
-		
+
 	}
-	
-	public void setPlaying(){
+
+	public void setPlaying() {
 		isPlaying = true;
 	}
-	public boolean getPlaying(){
+
+	public boolean getPlaying() {
 		return isPlaying;
 	}
-	
-	public void gameFinInit(){
+
+	public void gameFinInit() {
 		isReady = false;
 		isPlaying = false;
 	}

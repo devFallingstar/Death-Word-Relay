@@ -1,8 +1,6 @@
 package RoomServer;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -121,7 +119,7 @@ public class RoomManager {
 		} else {
 			starter = 1;
 		}
-		Server.broadCast("[SYSTEM] The Starter is \"" + userArrTmp.get(starter).getName()+"\"", roomNo);
+		Server.broadCast("[SYSTEM] The Starter is \"" + userArrTmp.get(starter).getName() + "\"", roomNo);
 		Server.broadCast("--------------------------------------------------------------\n", roomNo);
 		Server.broadCast("--------------------------------------------------------------\n", roomNo);
 		Server.broadCast("[SYSTEM] First Word : " + initWord + "\n", roomNo);

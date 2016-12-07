@@ -3,6 +3,7 @@ package Data;
 import java.io.Serializable;
 import java.util.Vector;
 
+@SuppressWarnings("serial")
 public class Room implements Serializable {
 	private String name;
 	private Integer No;
@@ -13,14 +14,14 @@ public class Room implements Serializable {
 		this.name = roomName;
 	}
 
-	public void addUser(User u){
+	public void addUser(User u) {
 		this.roomV.add(u);
 	}
-	
-	public void removeUser(User u){
+
+	public void removeUser(User u) {
 		this.roomV.remove(u);
 	}
-	
+
 	public String getName() {
 		return name;
 	}
