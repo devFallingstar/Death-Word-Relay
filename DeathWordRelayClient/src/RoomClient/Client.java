@@ -152,14 +152,14 @@ public class Client extends JFrame {
 
 					myWaitGUI = new Waiting();
 					myWaitGUI.setVisible(true);
-				
-					rank.floatingRank();
+					
+					
 				} else if (line.startsWith("DUPID ")) {
 					myLoginGUI.DupLoginAlert();
 				} else if (line.startsWith("NEWROOMAVAIL")) {
 					try {
 						myWaitGUI.reloadRoomList();
-						rank.floatingRank();
+						
 					} catch (Exception e) {
 					}
 				} else if (line.startsWith("ROOMMADE ")) {

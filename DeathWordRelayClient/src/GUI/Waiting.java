@@ -27,7 +27,7 @@ public class Waiting extends JFrame {
 	private Vector<String> rooms = new Vector<String>();
 
 	private RankDB rate = new RankDB();
-	
+	private String rankString = "";
 	
 	
 	/* Basic background GUI variables */
@@ -105,9 +105,10 @@ public class Waiting extends JFrame {
 		cont.add(ranklbl);
 		cont.add(chatPanel);
 		cont.add(userId);
+		cont.add(userRate);
+		
 		cont.add(userInfo);
 
-		cont.add(userRate);
 		cont.add(waitBg);
 		cont.add(chatlbl);
 
@@ -134,8 +135,14 @@ public class Waiting extends JFrame {
 
 		roomScrlPane.setBounds(15, 121, 588, 277);
 		roomList.setFont(new Font("Malgun Gothic", Font.BOLD, 15));
+		
 		rankList.setBounds(630, 121, 150, 277);
-
+		rankList.setOpaque(false);
+		rankList.setEditable(false);
+		rankList.setForeground(Color.white);
+		rankList.setFont(new Font("Malgun Gothic", Font.BOLD, 15));
+		rankList.setText(rate.floatingRank());
+		
 		roomlbl.setBounds(205, 3, room.getIconWidth(), room.getIconHeight());
 		ranklbl.setBounds(630, 40, rank.getIconWidth(), rank.getIconHeight());
 		userInfo.setBounds(610, 450, userImg.getIconWidth(), userImg.getIconHeight());
@@ -150,10 +157,10 @@ public class Waiting extends JFrame {
 		userId.setForeground(Color.red);
 		userId.setText(Client.getNICK());
 
-		userRate.setBounds(635, 560, 80, 25);
+		userRate.setBounds(635, 600, 80, 25);
 		userRate.setFont(new Font("chiller", Font.BOLD, 25));
 		userRate.setForeground(Color.red);
-		userRate.setText(RankDB.getRate(Client.getID())+"");
+		userRate.setText(rate.getRate(Client.getID())+"%");
 
 		
 		
@@ -358,18 +365,7 @@ public class Waiting extends JFrame {
 		}
 	}
 	
-	public void setRank(){
-		
-		rankList.setText("");
-		
-	}
 	
-	public void reloadRank(String ranking){
-		
-		rankList.append(ranking);
-		rankList.append("\n");
-		
-		
-	}
-	
+
+
 }

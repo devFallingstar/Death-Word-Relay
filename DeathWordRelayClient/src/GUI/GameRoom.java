@@ -53,8 +53,8 @@ public class GameRoom extends JFrame {
 
 	private JLabel background = new JLabel(bgImg);
 	private JLabel competitor = new JLabel(cptImg);
-	private JLabel compId = new JLabel("Opposite");
-	private JLabel compR = new JLabel("Opp rate");
+	private JLabel compId = new JLabel("");
+	private JLabel compR = new JLabel("");
 
 	private JButton exitBtn = new JButton(exitImg);
 	private JButton readyBtn = new JButton(readyImg);
@@ -462,9 +462,11 @@ public class GameRoom extends JFrame {
 		if (_name.isEmpty()) {
 			compId.setText("");
 			oppRate = 0;
+			compR.setText(oppRate+"%");
 		} else {
 			compId.setText(_name);
 			oppRate = RankDB.getRate(_name);
+			compR.setText(oppRate+"%");
 			
 		}
 	}
