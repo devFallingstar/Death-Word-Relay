@@ -133,10 +133,10 @@ public class GameRoom extends JFrame {
 
 		competitor.setBounds(640, 40, cptImg.getIconWidth(), cptImg.getIconHeight());
 		compId.setBounds(900, 133, 80, 25);
-		compId.setFont(new Font("chiller", Font.BOLD, 25));
+		compId.setFont(new Font("chiller", Font.BOLD, 20));
 		compId.setForeground(Color.red);
 		compR.setBounds(900, 233, 80, 25);
-		compR.setFont(new Font("chiller", Font.BOLD, 25));
+		compR.setFont(new Font("chiller", Font.BOLD, 20));
 		compR.setForeground(Color.red);
 
 		background.setBounds(0, 0, bgImg.getIconWidth(), bgImg.getIconHeight());

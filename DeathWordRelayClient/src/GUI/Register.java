@@ -115,13 +115,17 @@ public class Register extends JFrame {
 		NickNametxt.setBounds(190, 160, 172, 26);
 
 		IDCautionlbl.setBounds(190, 60, 200, 16);
+		IDCautionlbl.setForeground(Color.white);
 		IDCautionlbl.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
 		IDCautionlbl2.setBounds(190, 80, 200, 16);
 		IDCautionlbl2.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
+		IDCautionlbl2.setForeground(Color.white);
 		PWCautionlbl.setBounds(190, 135, 200, 16);
 		PWCautionlbl.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
+		PWCautionlbl.setForeground(Color.white);
 		NickNameCautionlbl.setBounds(190, 192, 200, 16);
 		NickNameCautionlbl.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
+		NickNameCautionlbl.setForeground(Color.white);
 
 		/*
 		 * When submit button is clicked, check a duplicates of ID and nick

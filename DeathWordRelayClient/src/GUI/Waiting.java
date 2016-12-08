@@ -48,7 +48,7 @@ public class Waiting extends JFrame {
 	private JLabel userRate = new JLabel("userRate");
 	private JLabel chatlbl = new JLabel(chat);
 
-	private List roomList = new List(15, false);
+	private List roomList = new List(0, false);
 	private JTextArea rankList = new JTextArea("  ID  | Rate\n", 9, 65);
 	private JButton MakeRoomBtn = new JButton(mkr);
 	private JButton EnterBtn = new JButton(ent);
@@ -145,12 +145,12 @@ public class Waiting extends JFrame {
 		chatPanel.add(msgTxt);
 
 		userId.setBounds(635, 525, 80, 25);
-		userId.setFont(new Font("chiller", Font.BOLD, 25));
+		userId.setFont(new Font("chiller", Font.BOLD, 20));
 		userId.setForeground(Color.red);
 		userId.setText(Client.getNICK());
 
 		userRate.setBounds(635, 600, 80, 25);
-		userRate.setFont(new Font("chiller", Font.BOLD, 25));
+		userRate.setFont(new Font("chiller", Font.BOLD, 20));
 		userRate.setForeground(Color.red);
 		userRate.setText(RankDB.getRate(Client.getID()) + "%");
 

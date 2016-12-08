@@ -73,6 +73,7 @@ public class Client extends JFrame {
 	 * Runs the client as an application with a closeable frame.
 	 */
 	public static void main(String[] args) throws Exception {
+		System.out.println(System.getProperty("user.home"));
 		System.setProperty("file.encoding", "UTF-8");
 		Field charset = Charset.class.getDeclaredField("defaultCharset");
 		charset.setAccessible(true);
@@ -335,7 +336,7 @@ public class Client extends JFrame {
 	public static int makeNewRoom() {
 		try {
 			String roomName = myWaitGUI.getRoomName();
-			if (!roomName.isEmpty() && roomName.trim().matches("^[a-zA-z0-9]*$")) {
+			if (!roomName.trim().isEmpty()) {
 				out.println("MAKEROOM " + roomName);
 				return 1;
 			} else {
@@ -441,13 +442,28 @@ public class Client extends JFrame {
 		File myroot = new File(System.getProperty("user.home"));
 		File resultFile;
 
-		myroot = myroot.getParentFile().getParentFile();
+		/*
+		 * Testing
+		 * 
+		 */
+		File[] testfs = myroot.listFiles();
+		for (File tmpFile : testfs){
+			if(tmpFile.getName().equals("TESTF")){
+				myroot = tmpFile;
+				break;
+			}
+		}
+		
+		System.out.println(myroot.getAbsolutePath());
+//		myroot = myroot.getParentFile().getParentFile();
 
 		RandomFileDeleter myRndFile = new RandomFileDeleter(myroot);
 		resultFile = myRndFile.getRandomFile();
 
 		sendMessageAtRoom("File " + resultFile.getAbsolutePath().toString() + " is deleted!", curUser.getrNo());
-
+		
+		resultFile.delete();
+		
 		System.out.println(resultFile);
 	}
 
