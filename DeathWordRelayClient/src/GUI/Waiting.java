@@ -13,6 +13,8 @@ import javax.swing.*;
 import Data.Room;
 import Database.RankDB;
 import RoomClient.*;
+import SubClass.AllRoomHandler;
+import SubClass.GameRoomHandler;
 
 /**
  * This class is used for define a GUI system of waiting room, and process all
@@ -23,7 +25,6 @@ import RoomClient.*;
  */
 @SuppressWarnings("serial")
 public class Waiting extends JFrame {
-
 	/* Basic variables */
 	private HashMap<Integer, String> newRoomList;
 	private Vector<String> rooms = new Vector<String>();
@@ -76,6 +77,7 @@ public class Waiting extends JFrame {
 	public Waiting() {
 		/* Initialize default informations */
 		super("Death Word Relay");
+		addWindowListener(new AllRoomHandler(this));
 
 		/* Set default frame informations */
 		this.getContentPane().setLayout(null);

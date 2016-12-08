@@ -95,6 +95,9 @@ public class UserHandler extends Thread {
 				if (name == null) {
 					this.interrupt();
 				}
+				if (name.equals("ICLOSEMYGAMEBECAUSEIMANGRY")) {
+					return;
+				}
 				synchronized (names) {
 					if (!names.contains(name)) {
 						names.add(name);
@@ -269,6 +272,9 @@ public class UserHandler extends Thread {
 					if (myOppUser != null) {
 						myUser.getOut().println("OPPUSER " + myOppUser.getName());
 					}
+				} else if (input.startsWith("ICLOSEMYGAMEBECAUSEIMANGRY")) {
+					removeUser();
+					return;
 				} else if (input.startsWith("MESSAGE ")) {
 					if (!(input.substring(8).isEmpty())) {
 						broadCast(name + ": " + input.substring(8));
@@ -279,10 +285,9 @@ public class UserHandler extends Thread {
 			}
 		} catch (SocketException e1) {
 			System.out.println("ERROR : User connect refused!");
+			removeUser();
 		} catch (Exception e) {
 			e.printStackTrace();
-			removeUser();
-		} finally {
 			removeUser();
 		}
 	}
@@ -291,14 +296,6 @@ public class UserHandler extends Thread {
 	 * Remove current user from server
 	 */
 	private void removeUser() {
-		if (myUser.getPlaying() == true) {
-			myUser.getOut().println("LOSEGAME");
-			myOppUser.getOut().println("GAMEFIN");
-			myOppUser.setUnPlaying();
-			myOppUser.setUnReady();
-			myOppUser.InitRoundScore();
-		}
-
 		if (name != null) {
 			broadCast("User [" + name + "] is disconnected.");
 			System.out.println("LOG : User [" + name + "] disconnected.");
@@ -317,6 +314,7 @@ public class UserHandler extends Thread {
 
 	/**
 	 * Get Information of room with room number.
+	 * 
 	 * @param rNo
 	 * @return
 	 */
@@ -332,6 +330,7 @@ public class UserHandler extends Thread {
 
 	/**
 	 * Check if the name of user is exist in server or not.
+	 * 
 	 * @param name
 	 * @return
 	 */
@@ -346,6 +345,7 @@ public class UserHandler extends Thread {
 
 	/**
 	 * Broadcast the message to server or room.
+	 * 
 	 * @param msg
 	 */
 	public void broadCast(String msg) {
@@ -380,8 +380,9 @@ public class UserHandler extends Thread {
 	}
 
 	/**
-	 * When someone lose, make the information of winner and loser correctly
-	 * and print result of previous round.
+	 * When someone lose, make the information of winner and loser correctly and
+	 * print result of previous round.
+	 * 
 	 * @param isTimeOut
 	 */
 	public void WhenLose(boolean isTimeOut) {
@@ -402,6 +403,7 @@ public class UserHandler extends Thread {
 
 	/**
 	 * When game is finished, alert it.
+	 * 
 	 * @return
 	 */
 	public boolean FinGame() {

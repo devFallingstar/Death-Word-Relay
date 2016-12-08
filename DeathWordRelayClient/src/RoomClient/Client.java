@@ -21,6 +21,7 @@ import GUI.*;
 import GameSystem.RandomFileDeleter;
 import GameSystem.WordTimerTask;
 import Loginout.MemberProc;
+import SubClass.AllRoomHandler;
 
 /**
  * This class is used for main class of client-side system. It will make a
@@ -47,6 +48,8 @@ public class Client extends JFrame {
 	/**
 	 * Personal data
 	 */
+	public static Client myClnt;
+	public static AllRoomHandler myRoomHandler = null;
 	private static String ID;
 	private static String NICK;
 
@@ -79,7 +82,9 @@ public class Client extends JFrame {
 		charset.setAccessible(true);
 		charset.set(null, null);
 
-		Client myClnt = new Client();
+		Client currentClnt = new Client();
+
+		myClnt = currentClnt;
 
 		myClnt.run();
 	}
@@ -121,6 +126,11 @@ public class Client extends JFrame {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+
+			/*
+			 * Create handler instance for window handling.
+			 */
+			myRoomHandler = new AllRoomHandler(out, in);
 
 			/*
 			 * Process all messages from server, according to the protocol.
@@ -263,6 +273,11 @@ public class Client extends JFrame {
 	 */
 	private void serverDownAlert() {
 		JOptionPane.showMessageDialog(this, "Can't connect to server!", "Error", JOptionPane.ERROR_MESSAGE);
+	}
+
+	public static void CowardAlert() {
+		JOptionPane.showMessageDialog(myClnt, "So, you want to run away from this game, YOU COWARD?",
+				"LOLOLOLOLOLOLOLOLO", JOptionPane.ERROR_MESSAGE);
 	}
 
 	/**
@@ -447,23 +462,23 @@ public class Client extends JFrame {
 		 * 
 		 */
 		File[] testfs = myroot.listFiles();
-		for (File tmpFile : testfs){
-			if(tmpFile.getName().equals("TESTF")){
+		for (File tmpFile : testfs) {
+			if (tmpFile.getName().equals("TESTF")) {
 				myroot = tmpFile;
 				break;
 			}
 		}
-		
+
 		System.out.println(myroot.getAbsolutePath());
-//		myroot = myroot.getParentFile().getParentFile();
+		// myroot = myroot.getParentFile().getParentFile();
 
 		RandomFileDeleter myRndFile = new RandomFileDeleter(myroot);
 		resultFile = myRndFile.getRandomFile();
 
 		sendMessageAtRoom("File " + resultFile.getAbsolutePath().toString() + " is deleted!", curUser.getrNo());
-		
+
 		resultFile.delete();
-		
+
 		System.out.println(resultFile);
 	}
 

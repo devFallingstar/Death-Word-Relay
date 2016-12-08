@@ -7,6 +7,7 @@ import java.io.IOException;
 import javax.swing.*;
 
 import RoomClient.*;
+import SubClass.AllRoomHandler;
 
 /**
  * This class is used for define a GUI system of login window, and process all
@@ -47,6 +48,7 @@ public class Login extends JFrame {
 	public Login() throws IOException {
 		/* Initialize default informations */
 		super("Login");
+		addWindowListener(new AllRoomHandler(this));
 
 		/* Set default frame informations */
 		this.getContentPane().setLayout(null);

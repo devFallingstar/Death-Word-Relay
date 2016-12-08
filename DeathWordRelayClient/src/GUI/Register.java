@@ -10,6 +10,8 @@ import javax.swing.JTextField;
 
 import Loginout.*;
 import RoomClient.Client;
+import SubClass.AllRoomHandler;
+
 import java.awt.Font;
 import javax.swing.ImageIcon;
 import java.awt.event.ActionEvent;
@@ -65,6 +67,7 @@ public class Register extends JFrame {
 		/* Initialize default informations */
 		super("Register");
 		clnt = new Client();
+		addWindowListener(new AllRoomHandler(this));
 
 		/* Set default frame informations */
 		this.getContentPane().setLayout(null);

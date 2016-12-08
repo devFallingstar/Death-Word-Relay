@@ -28,7 +28,6 @@ public class RankDB {
 	public static void updateWin(String _ID) {
 
 		queryWin = "update WinLose set Win = Win+1 where ID = \'" + _ID + "\';";
-		System.out.println(queryWin);
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			con = DriverManager.getConnection("jdbc:mysql://madstar.synology.me/DWR", "DWR", "1234");
@@ -73,7 +72,7 @@ public class RankDB {
 	 *
 	 */
 
-	public static double getRate(String _ID) {
+	public static int getRate(String _ID) {
 
 		double rate = 0.00;
 		int nWin = 1, nLose = 1;
@@ -93,16 +92,13 @@ public class RankDB {
 				}
 			}
 
-			System.out.println(rate + "\n");
-
 		} catch (SQLException sqle) {
 			System.out.println("추가 도중  에러 발생  ㅡ! " + sqle.toString());
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 
-		return rate;
-
+		return (int) rate;
 	}
 
 	public static String floatingRank() {
@@ -122,7 +118,6 @@ public class RankDB {
 			while (rs.next()) {
 				arg += i + " |  " + rs.getString("ID") + "	" + rs.getInt("rank") + "\n";
 				i++;
-				System.out.println(arg);
 			}
 
 		} catch (ClassNotFoundException e1) {

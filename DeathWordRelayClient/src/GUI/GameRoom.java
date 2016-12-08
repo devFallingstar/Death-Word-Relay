@@ -22,7 +22,7 @@ import Data.User;
 import Database.RankDB;
 import GameSystem.WordGame;
 import RoomClient.*;
-import SubClass.WindowHandler;
+import SubClass.GameRoomHandler;
 
 /**
  * This class is used for define a GUI system of game room, and process all of
@@ -96,7 +96,7 @@ public class GameRoom extends JFrame {
 		/* Initialize default informations */
 		super(rNo + ". " + title);
 		this.myUser = Client.curUser;
-		addWindowListener(new WindowHandler(this));
+		addWindowListener(new GameRoomHandler(this));
 
 		/* Set default frame informations */
 		this.getContentPane().setLayout(null);
